@@ -69,6 +69,7 @@ The guiding principle in the development of HopeFOAM-0.1 is to reuse the primiti
 * **Installation** 
 
   Please refer to the file Linux_Install_Guide located at root dir of HopeFOAM 
+  [https://github.com/HopeFOAM/HopeFOAM/blob/master/Linux_Install_Guide]
   
 * **Document**
 
