@@ -77,12 +77,12 @@ The guiding principle in the development of HopeFOAM-0.1 is to reuse the primiti
 
 * **Download**
 
-  [https://github.com/HopeFOAM/HopeFOAM [Source Code]]  
+  [[Source Code] https://github.com/HopeFOAM/HopeFOAM]  
   
-  [https://codeload.github.com/HopeFOAM/HopeFOAM/zip/master  [Source Code zip download]]
+  [[Source Code zip download] https://codeload.github.com/HopeFOAM/HopeFOAM/zip/master]
   
   
-  [https://github.com/HopeFOAM/HopeFOAM/tree/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_Programmers_Guide.pdf [Programmers Guide]]  
+  [[Programmers Guide] https://github.com/HopeFOAM/HopeFOAM/tree/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_Programmers_Guide.pdf]  
   
-  [https://github.com/HopeFOAM/HopeFOAM/tree/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_User_Guide.pdf  [User Guide]]
+  [[User Guide] https://github.com/HopeFOAM/HopeFOAM/tree/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_User_Guide.pdf]
   
