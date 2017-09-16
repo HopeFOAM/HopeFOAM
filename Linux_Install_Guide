@@ -137,7 +137,7 @@ Description
 
                    # # # # # # # # # # # # # # # # # # #
                    #				       #
-                   #			Appendix 1     #
+                   #		Appendix 1             #
                    #				       #
                    #	 PETSc-3.7.6  Installation     #
 	           #                                   #
@@ -195,7 +195,7 @@ Description
 4.To set some paths, compile source code in its directory with command:
 
     ./configure --prefix=<Installation path of PETSC-3.7.6> --download-hypre 
-				--with-debugging=0 COPTFLAGS=-O3 CXXOPTFLAGS=-O3 --with-blas-lapack-dir=<lapack installation path>
+	        --with-debugging=0 COPTFLAGS=-O3 CXXOPTFLAGS=-O3 --with-blas-lapack-dir=<lapack installation path>
 
   Note: --prefix=<path>: used for setting installation path.
             Installation path of PETSC-3.7.6 is different from the directory of source
@@ -214,7 +214,7 @@ Description
         --with-mpi-dir=<MPI Path>: only used when your operating system has several
             types of MPI. Then you need to select one of them.
 			
-		--with-blas-lapack-dir: used for setting lapack installation path.
+	--with-blas-lapack-dir: used for setting lapack installation path.
 		
         There are more compiling option on PETSc`s official website
         <http://www.mcs.anl.gov/petsc/documentation/installation.html>.
