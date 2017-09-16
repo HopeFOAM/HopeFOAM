@@ -32,7 +32,7 @@ Description
 
 1.Pre-requisites
     Compiler: GCC >= 4.8.0
-			  gfortran
+	      gfortran
 
 2.The first step is the same as the OpenFOAM-4.0 installation. Actually, this part is
   used to install OpenFOAM-4.0 on the computer. There is some advice shown as below.
