@@ -1,0 +1,123 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:52 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetAddTile" "3" "June  7, 2011" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetAddTile \-\- add a tile to the logical display.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+int \fBicetAddTile\fP(	IceTInt	\fIx\fP,
+	IceTInt	\fIy\fP,
+	IceTSizeType	\fIwidth\fP,
+	IceTSizeType	\fIheight\fP,
+	int	\fIdisplay_rank\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+Adds a tile to the tiled display. Every process, whether actually 
+displaying a tile or not, must declare the tiles in the display and which 
+processes drive them with \fBicetResetTiles\fP
+and \fBicetAddTile\fP\&.
+Thus, each process calls \fBicetAddTile\fP
+once for each tile in the 
+display, and all processes must declare them in the same order. 
+.PP
+The parameters \fIx\fP,
+\fIy\fP,
+\fIwidth\fP,
+and \fIheight\fP
+define 
+the tile\&'s viewport in the logical global display much in the same way 
+\fBglViewport\fP
+declares a region in a physical display in 
+\fbOpenGL \fP\&.\fBIceT \fPplaces no limits on the extents of the logical global 
+display. That is, there are no limits on the values of \fIx\fP
+and 
+\fIy\fP\&.
+They can extend as far as they want in both the positive and 
+negative directions. 
+.PP
+\fBIceT \fPwill project its images onto the region of the logical global 
+display that just covers all of the tiles. Therefore, shifting all the 
+tiles in the logical global display by the same amount will have no real 
+overall effect. 
+.PP
+The \fIdisplay_rank\fP
+parameter identifies the rank of the process 
+that will be displaying the given tile. It is assumed that the output of 
+the rendering window of the given process is projected onto the space in 
+a tiled display given by \fIx\fP,
+\fIy\fP,
+\fIwidth\fP,
+and 
+\fIheight\fP\&.
+Each tile must have a valid rank (between 0 and 
+$\fBICET_NUM_PROCESSES\fP
+\- 1$). Furthermore, no process may be 
+displaying more than one tile. 
+.PP
+.SH Return Value
+
+.PP
+Returns the index of the tile created or \-1 if the tile could not be 
+created. 
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_VALUE\fP
+ Raised if \fIdisplay_rank\fP
+is not a valid process rank, if \fIdisplay_rank\fP
+is already 
+assigned to another tile, or if \fIwidth\fP
+or \fIheight\fP
+is 
+smaller than 1. If this error is raised, nothing is done and \-1 is 
+returned. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+All processes must specify the same tiles in the same order. \fBIceT \fP
+will assume this even though it is not explicitly detected or enforced. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetResetTiles\fP(3),
+\fIicetPhysicalRenderSize\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

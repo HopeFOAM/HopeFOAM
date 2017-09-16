@@ -1,0 +1,92 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:54 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetImageNull" "3" "September 20, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetImageNull \-\- retrieve a placeholder for an empty image.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+\fBIceTImage\fP \fBicetImageNull\fP(	void	);
+.TE
+.PP
+.SH Description
+
+.PP
+Images are created internally by the \fBIceT \fPlibrary. Sometimes it is 
+convenient to have a placeholder for a .igimage!null``null\&''
+image, 
+an image that does not and cannot hold data. Null images require no 
+allocated memory to function. 
+.PP
+If your code has the potential of using an \fBIceTImage\fP
+image object 
+that might not otherwise be initialized, use \fBicetImageNull\fP
+to set 
+it to a null object. This will ensure that \fBIceT \fPimage functions that 
+operate on it will behave deterministically. 
+.PP
+A null image simply looks like an image with no pixels and has no color 
+buffers. \fBicetImageGetWidth\fP,
+\fBicetImageGetHeight\fP,
+and 
+\fBicetImageGetNumPixels\fP
+all return 0 for a null image. 
+\fBicetSetColorFormat\fPand \fBicetSetDepthFormat\fPreturn 
+\fBICET_IMAGE_COLOR_NONE\fP
+and \fBICET_IMAGE_DEPTH_NONE\fP,
+respectively. 
+.PP
+You can identify a null image with the \fBicetImageIsNull\fP
+function. 
+.PP
+.SH Return Value
+
+.PP
+A null image object. 
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Copyright
+
+Copyright (C)2010 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetImageIsNull\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

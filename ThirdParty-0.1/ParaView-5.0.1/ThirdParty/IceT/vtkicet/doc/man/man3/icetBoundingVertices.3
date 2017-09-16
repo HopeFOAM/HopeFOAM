@@ -1,0 +1,128 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:52 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetBoundingVertices" "3" "September 20, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetBoundingVertices \-\- set bounds of geometry.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+void \fBicetBoundingVertices\fP(	IceTInt	\fIsize\fP,
+	IceTEnum	\fItype\fP,
+	IceTSizeType	\fIstride\fP,
+	IceTSizeType	\fIcount\fP,
+	const IceTVoid *	\fIpointer\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+\fBicetBoundingVertices\fP
+is used to tell \fBIceT \fPwhat the bounds of the 
+geometry drawn by the callback registered with \fBicetDrawCallback\fP
+or \fBicetGLDrawCallback\fP
+are. The bounds are assumed to be the 
+convex hull of the vertices given. The user should take care to make 
+sure that the drawn geometry actually does fit within the convex hull, or 
+the data may be culled in unexpected ways. \fBIceT \fPruns most efficiently 
+when the bounds given are tight (match the actual volume of the data 
+well) and when the number of vertices given is minimal. 
+.PP
+The \fIsize\fP
+parameter specifies the number of coordinates given for 
+each vertex. Coordinates are given in X\-Y\-Z\-W order. Any Y or Z 
+coordinate not given (because \fIsize\fP
+is less than 3) is assumed to 
+be 0.0, and any W coordinate not given (because \fIsize\fP
+is less 
+than 4) is assumed to be 1.0\&. 
+.PP
+The \fItype\fP
+parameter specifies in what data type the coordinates are 
+given. Valid \fItype\fPs
+are \fBICET_SHORT\fP,
+\fBICET_INT\fP,
+\fBICET_FLOAT\fP,
+and \fBICET_DOUBLE\fP,
+which correspond to types 
+IceTShort,
+IceTInt,
+IceTFloat,
+and 
+IceTDouble,
+respectively. 
+.PP
+The \fIstride\fP
+parameter specifies the offset between consecutive 
+vertices in bytes. If \fIstride\fP
+is 0, the array is assumed to be 
+tightly packed. 
+.PP
+The \fIcount\fP
+parameter specifies the number of vertices to set. 
+.PP
+The \fIpointer\fP
+parameter is an array of vertices with the first 
+vertex starting at the first byte. 
+.PP
+If data replication is being used, each process in a data replication 
+group should register the same bounding vertices that encompass the 
+entire geometry. By default there is no data replication, so unless you 
+call \fBicetDataReplicationGroup\fP,
+all process can have their own 
+bounds. 
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_ENUM\fP
+ Raised if \fItype\fP
+is not one of \fBICET_SHORT\fP,
+\fBICET_INT\fP,
+\fBICET_FLOAT\fP,
+or \fBICET_DOUBLE\fP\&.
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetBoundingBox\fP(3),
+\fIicetDataReplicationGroup\fP(3),
+\fIicetDrawCallback\fP(3),
+\fIicetGLDrawCallback\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

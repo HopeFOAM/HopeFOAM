@@ -1,0 +1,15 @@
+vtk_module(vtkIOCore
+  GROUPS
+    StandAlone
+  DEPENDS
+    vtkCommonDataModel
+    vtkCommonExecutionModel
+    vtkCommonMisc
+  PRIVATE_DEPENDS
+    vtkzlib
+    vtksys
+  TEST_DEPENDS
+    vtkTestingCore
+  KIT
+    vtkIO
+  )

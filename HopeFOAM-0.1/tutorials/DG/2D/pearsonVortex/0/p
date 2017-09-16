@@ -1,0 +1,41 @@
+/*------------------------------------------------------------------------------------*\
+|     __  ______  ____  ______ |                                                       |
+|    / / / / __ \/ __ \/ ____/ | HopeFOAM: High Order Parallel Extensible CFD Software |
+|   / /_/ / / / / /_/ / __/    |                                                       |
+|  / __  / /_/ / ____/ /___    |                                                       |
+| /_/ /_/\____/_/   /_____/    | Copyright(c) 2017-2017 The Exercise Group, AMS, China.|
+|                              |                                                       |
+\*------------------------------------------------------------------------------------*/
+FoamFile
+{
+    version     0.1;
+    format      ascii;
+    class       dgScalarField;
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    inlet
+    {
+        type            zeroGradient;
+    }
+
+    outlet
+    {
+	type		fixedValue;
+	value		uniform 0;
+    }
+
+    frontAndBackPlanes
+    {
+        type            empty;
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,22 @@
+vtk_module(vtkPVServerManagerRendering
+  GROUPS
+    ParaViewRendering
+  IMPLEMENTS
+    vtkPVServerManagerCore
+  DEPENDS
+    vtkPVServerImplementationRendering
+    vtkPVServerManagerCore
+  PRIVATE_DEPENDS
+    vtkCommonColor
+    vtkjsoncpp
+    vtksys
+  COMPILE_DEPENDS
+    vtkUtilitiesProcessXML
+  TEST_DEPENDS
+    vtkjsoncpp
+    vtkPVServerManagerApplication
+  TEST_LABELS
+    PARAVIEW
+  KIT
+    vtkPVServerManager
+)

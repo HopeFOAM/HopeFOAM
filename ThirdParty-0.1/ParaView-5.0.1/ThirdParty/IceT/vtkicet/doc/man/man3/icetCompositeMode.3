@@ -1,0 +1,125 @@
+'\" t
+.\" Manual page created with latex2man on Fri Sep 26 14:31:02 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetCompositeMode" "3" "September 26, 2014" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetCompositeMode \-\- set the type of operation used for compositing\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+void \fBicetCompositeMode\fP(	IceTEnum	\fImode\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+Sets the composite mode used when combining images. \fBIceT \fPenables 
+parallel rendering by allowing each process in your code to independently 
+render images of partial geometry. These partial\-geometry images are 
+then ``composited\&'' to form a single image equivalent to if all the 
+geometry were rendered by a single process. 
+.PP
+\fBIceT \fPsupports multiple operations that can be used to combine images. 
+The operator you use should be equivalent to that used by your rendering 
+system to resolve .ighidden surfacehidden
+surfaces or mix occluding 
+geometry with that behind it. 
+.PP
+The argument \fImode\fP
+is one of the following enumerations: 
+.PP
+.TP
+\fBICET_COMPOSITE_MODE_Z_BUFFER\fP
+ Use the 
+.igz\-bufferz\-buffer
+hidden\-surface removal operation. The 
+compositing operation compares the distance of pixel fragments from the 
+viewpoint and passes the fragment closest to the user. In order for 
+this operation to work, images must have a depth buffer (set with 
+\fBicetSetDepthFormat\fP).
+.TP
+\fBICET_COMPOSITE_MODE_BLEND\fP
+ Blend two fragments together 
+using the standard 
+.igover operator.igunder operatorover/under
+operator. in 
+order for this operation to work, images must have a color buffer (set 
+with \fBicetSetColorFormat\fP)that has an alpha channel and there must be 
+\fIno\fP
+depth buffer (as the operation makes no sense with depth). 
+Also, this mode will only work if \fBICET_ORDERED_COMPOSITE\fP
+is 
+enabled and the order is set with \fBicetCompositeOrder\fP\&.
+.PP
+The default compositing mode is 
+\fBICET_COMPOSITE_MODE_Z_BUFFER\fP\&.
+The current composite mode is 
+stored in the \fBICET_COMPOSITE_MODE\fP
+state variable. 
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_ENUM\fP
+ \fImode\fP
+is not a valid composite mode. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+\fBicetCompositeMode\fP
+will let you set a mode even if it is 
+incompatible with other current settings. Some settings will be checked 
+during a call to \fBicetDrawFrame\fP
+or \fBicetCompositeImage\fP\&.
+For example, if the image format (specified with \fBicetSetColorFormat\fPand 
+\fBicetSetDepthFormat\fP)does not support the composite mode picked, you will 
+get an error during the call to \fBicetDrawFrame\fP\&.
+.PP
+Other incompatibilities are also not checked. For example, if the 
+composite mode is set to \fBICET_COMPOSITE_MODE_BLEND\fP,
+\fBIceT \fPwill 
+happily use this operator even if \fBICET_ORDERED_COMPOSITE\fP
+is not 
+enabled. However, because order matters in the blend mode, you will 
+probably get incorrect images if the compositing happens in arbitrary 
+order. 
+.PP
+.SH Copyright
+
+Copyright (C)2010 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetCompositeOrder\fP(3),
+\fIicetSetColorFormat\fP(3),
+\fIicetSetDepthFormat\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

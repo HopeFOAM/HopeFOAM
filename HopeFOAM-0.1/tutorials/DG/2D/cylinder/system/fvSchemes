@@ -1,0 +1,57 @@
+/*------------------------------------------------------------------------------------*\
+|     __  ______  ____  ______ |                                                       |
+|    / / / / __ \/ __ \/ ____/ | HopeFOAM: High Order Parallel Extensible CFD Software |
+|   / /_/ / / / / /_/ / __/    |                                                       |
+|  / __  / /_/ / ____/ /___    |                                                       |
+| /_/ /_/\____/_/   /_____/    | Copyright(c) 2017-2017 The Exercise Group, AMS, China.|
+|                              |                                                       |
+\*------------------------------------------------------------------------------------*/
+FoamFile
+{
+    version     0.1;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default         Euler;
+}
+
+gradSchemes
+{
+    default         Gauss linear;
+    grad(p)         Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+    div(phi,U)      Gauss linear;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear orthogonal;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         orthogonal;
+}
+
+fluxRequired
+{
+    default         no;
+    p               ;
+}
+
+// ************************************************************************* //

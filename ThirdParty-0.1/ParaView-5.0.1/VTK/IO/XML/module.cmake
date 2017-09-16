@@ -1,0 +1,24 @@
+vtk_module(vtkIOXML
+  GROUPS
+    StandAlone
+  DEPENDS
+    vtkIOXMLParser
+    vtkIOGeometry
+  PRIVATE_DEPENDS
+    vtksys
+  TEST_DEPENDS
+    vtkFiltersAMR
+    vtkFiltersCore
+    vtkFiltersHyperTree
+    vtkFiltersSources
+    vtkImagingSources
+    vtkInfovisCore
+    vtkIOLegacy
+    vtkRendering${VTK_RENDERING_BACKEND}
+    vtkTestingCore
+    vtkTestingRendering
+    vtkInteractionStyle
+    vtkIOParallelXML
+  KIT
+    vtkIO
+  )

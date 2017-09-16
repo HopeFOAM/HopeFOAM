@@ -1,0 +1,143 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:54 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetSetColorFormat" "3" "September 22, 2014" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetSetColorFormat\fP,\fBicetSetDepthFormat\fP\-\- specifies the buffer formats for \fBIceT \fPto use when creating images 
+.PP
+.igmanpage:icetSetDepthFormat
+.igicetSetDepthFormat|(textbf
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+void \fBicetSetColorFormat\fP(	IceTEnum	\fIcolor_format\fP  );
+void \fBicetSetDepthFormat\fP(	IceTEnum	\fIdepth_format\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+When \fBIceT \fPcreates image objects, it uses the formats specified by 
+\fBicetSetColorFormat\fPand \fBicetSetDepthFormat\fP\&.These will be the formats 
+of images passed to drawing callbacks (specified by 
+\fBicetDrawCallback\fP
+or \fBicetGLDrawCallback\fP)
+and of images 
+returned from frame drawing functions (\fBicetDrawFrame\fP
+or 
+\fBicetGLDrawFrame\fP).
+It is also the format expected for image 
+buffers passed to \fBicetCompositeImage\fP\&.
+.PP
+The following \fIcolor_format\fPs
+are valid for use in 
+\fBicetSetColorFormat\fP\&.
+.PP
+.TP
+\fBICET_IMAGE_COLOR_RGBA_UBYTE\fP
+ Each entry is an RGBA 
+color tuple. Each component is valued in the range from 0 to 255 
+and is stored as an 8\-bit integer. The buffer will always be allocated 
+on memory boundaries such that each color value can be treated as a 
+single 32\-bit integer. 
+.TP
+\fBICET_IMAGE_COLOR_RGBA_FLOAT\fP
+ Each entry is an RGBA 
+color tuple. Each component is in the range from 0.0 to 1.0 and is 
+stored as a 32\-bit float. 
+.TP
+\fBICET_IMAGE_COLOR_NONE\fP
+ No color values are stored in the 
+image. 
+.PP
+The following \fIdepth_format\fPs
+are valid for use in 
+\fBicetSetDepthFormat\fP\&.
+.PP
+.TP
+\fBICET_IMAGE_DEPTH_FLOAT\fP
+ Each entry is in the range from 
+0.0 (near plane) to 1.0 (far plane) and is stored as a 32\-bit 
+float. 
+.TP
+\fBICET_IMAGE_DEPTH_NONE\fP
+ No depth values are stored in the 
+image. 
+.PP
+The color and depth formats are stored in the \fBICET_COLOR_FORMAT\fP
+and \fBICET_DEPTH_FORMAT\fP
+state variables, respectively. 
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_OPERATION\fP
+ \fBicetSetColorFormat\fPor 
+\fBicetSetDepthFormat\fPwas called while \fBIceT \fPwas drawing a frame. This 
+probably means that you called icetSetColorFormat in a drawing 
+callback. You cannot do that. Call this function before starting the 
+draw operation. 
+.TP
+\fBICET_INVALID_ENUM\fP
+ The \fIcolor_format\fP
+or \fIdepth_format\fP
+given is invalid. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Notes
+
+.PP
+Calling either \fBicetSetColorFormat\fPor \fBicetSetDepthFormat\fPdoes \fInot\fP
+change the format of any existing images. It only changes any 
+subsequently created images. 
+.PP
+The color format must be set before calling \fBicetDrawFrame\fP,
+\fBicetGLDrawFrame\fP,
+or \fBicetCompositeImage\fP\&.
+Doing otherwise 
+would create inconsistencies in the images created and composited 
+together. 
+.PP
+.SH Copyright
+
+Copyright (C)2010 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetImageGetColorFormat\fP(3),
+\fIicetImageGetDepthFormat\fP(3)
+.PP
+.igicetSetDepthFormat|)textbf
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

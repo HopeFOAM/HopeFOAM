@@ -1,0 +1,33 @@
+/*------------------------------------------------------------------------------------*\
+|     __  ______  ____  ______ |                                                       |
+|    / / / / __ \/ __ \/ ____/ | HopeFOAM: High Order Parallel Extensible CFD Software |
+|   / /_/ / / / / /_/ / __/    |                                                       |
+|  / __  / /_/ / ____/ /___    |                                                       |
+| /_/ /_/\____/_/   /_____/    | Copyright(c) 2017-2017 The Exercise Group, AMS, China.|
+|                              |                                                       |
+\*------------------------------------------------------------------------------------*/
+FoamFile
+{
+    version 0.1;
+    format ascii;
+	
+    root    "ROOT";
+    case    "CASE";
+    instance "system";
+    local    "";
+	
+    class dictionary;
+	
+    object decompositionDict;
+}
+
+numberOfSubdomains 12;
+
+method simple;
+
+simpleCoeffs
+{
+    n        (3 4 1);
+    delta    0.001;
+}
+// ************************************************************************* //

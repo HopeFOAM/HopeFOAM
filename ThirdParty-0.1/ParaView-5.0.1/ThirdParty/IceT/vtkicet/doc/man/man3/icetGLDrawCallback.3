@@ -1,0 +1,160 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:53 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetGLDrawCallback" "3" "August  9, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetGLDrawCallback \-\- set a callback for drawing with \fbOpenGL \fP\&.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceTGL.h>
+.PP
+typedef void (*
+\fBIceTGLDrawCallbackType\fP)( void );
+.PP
+.TS H
+l l l .
+void \fBicetGLDrawCallback\fP(	\fBIceTGLDrawCallbackType\fP	\fIcallback\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+The \fBicetGLDrawCallback\fP
+function sets a callback that is used to 
+draw the geometry from a given viewpoint. It will be implicitly called 
+from within \fBicetGLDrawFrame\fP\&.
+.PP
+\fIcallback\fP
+should be a function that issues appropriate \fbOpenGL \fP
+calls to draw geometry in the current \fbOpenGL \fPcontext. After 
+\fIcallback\fP
+is called, the image left in the frame buffer specified 
+by \fBicetGLSetReadBuffer\fP
+will be read back for compositing. 
+.PP
+\fIcallback\fP
+should \fInot\fP
+modify the 
+\fBGL_PROJECTION_MATRIX\fP
+as this would cause \fBIceT \fPto place image 
+data in the wrong location in the tiled display and improperly cull 
+geometry. It is acceptable to add transformations to 
+\fBGL_MODELVIEW_MATRIX\fP,
+but the bounding vertices given with 
+\fBicetBoundingVertices\fP
+or \fBicetBoundingBox\fP
+are assumed to 
+already be transformed by any such changes to the modelview matrix. 
+Also, \fBGL_MODELVIEW_MATRIX\fP
+must be restored before the draw 
+function returns. Therefore, any changes to 
+\fBGL_MODELVIEW_MATRIX\fP
+are to be done with care and should be 
+surrounded by a pair of glPushMatrix and glPopMatrix functions. 
+.PP
+It is also important that \fIcallback\fP
+\fInot\fP
+attempt the change the 
+clear color. In some composting modes, \fBIceT \fPneeds to read, modify, and 
+change the background color. These operations will be lost if 
+\fIcallback\fP
+changes the background color, and severe color blending 
+artifacts may result. 
+.PP
+\fBIceT \fPmay call \fIcallback\fP
+several times from within a call to 
+\fBicetGLDrawFrame\fP
+or not at all if the current bounds lie outside 
+the current viewpoint. This can have a subtle but important impact on 
+the behavior of \fIcallback\fP\&.
+For example, counting frames by 
+incrementing a frame counter in \fIcallback\fP
+is obviously wrong 
+(although you could count how many times a render occurs). 
+\fIcallback\fP
+should also leave \fbOpenGL \fPin a state such that it will be 
+correct for a subsequent run of \fIcallback\fP\&.
+Any matrices or 
+attributes pushed in \fIcallback\fP
+should be popped before 
+\fIcallback\fP
+returns, and any state that is assumed to be true on 
+entrance to \fIcallback\fP
+should also be true on return. 
+.PP
+The \fIcallback\fP
+function pointer is placed in the 
+\fBICET_GL_DRAW_FUNCTION\fP
+state variable. 
+.PP
+\fBicetGLDrawCallback\fP
+is similar to \fBicetDrawCallback\fP\&.
+The 
+difference is that the callback set by \fBicetGLDrawCallback\fP
+is used 
+by \fBicetGLDrawFrame\fP
+and the callback set by 
+\fBicetDrawCallback\fP
+is used by \fBicetDrawFrame\fP\&.
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_OPERATION\fP
+ Raised if the \fBicetGLInitialize\fP
+has not been called. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Notes
+
+.PP
+\fIcallback\fP
+is tightly coupled with the bounds set with 
+\fBicetBoundingVertices\fP
+or \fBicetBoundingBox\fP\&.
+If the geometry 
+drawn by \fIcallback\fP
+is dynamic (changes from frame to frame), then the 
+bounds may need to be changed as well. Incorrect bounds may cause the 
+geometry to be culled in surprising ways. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetBoundingBox\fP(3),
+\fIicetBoundingVertices\fP(3),
+\fIicetDrawCallback\fP(3),
+\fIicetGLDrawFrame\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

@@ -1,0 +1,204 @@
+'\" t
+.\" Manual page created with latex2man on Fri Sep 26 14:31:02 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetEnable" "3" "September 26, 2014" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetEnable\fP,\fBicetDisable\fP\-\- enable/disable an \fBIceT \fPfeature. 
+.PP
+.igmanpage:icetDisable
+.igicetDisable|(textbf
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l l .
+void \fBicetEnable\fP	(	IceTEnum	\fIpname\fP  );
+void \fBicetDisable\fP	(	IceTEnum	\fIpname\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+The \fBicetEnable\fPand \fBicetDisable\fPfunctions turn various \fBIceT \fPfeatures on 
+and off. \fIpname\fP
+is a symbolic constant representing the feature to 
+be turned on or off. Valid values for \fIpname\fP
+are: 
+.PP
+.TP
+\fBICET_COLLECT_IMAGES\fP
+ When this option is on (the default) 
+images partitions are always collected to display processes. When this 
+option is turned off, the strategy has the option of leaving images 
+partitioned among processes. Each process containing part of a tile\&'s 
+image will return the entire buffer from \fBicetDrawFrame\fP,
+\fBicetGLDrawFrame\fP,
+or \fBicetCompositeImage\fP
+in an 
+\fBIceTImage\fP
+object. However, only certain pixels will be valid. 
+The state variables \fBICET_VALID_PIXELS_TILE\fP,
+\fBICET_VALID_PIXELS_OFFSET\fP,
+and 
+\fBICET_VALID_PIXELS_NUM\fP
+give which tile the pixels belong to 
+and what range of pixels are valid. 
+.TP
+\fBICET_COMPOSITE_ONE_BUFFER\fP
+ Turn this option on when 
+performing z\-buffer compositing of a color image and the only result 
+you need is the color image itself (not the depth buffer). This is 
+common if you are just creating an image and are not interested in 
+doing depth queries. This option is on by default. 
+.TP
+\fBICET_CORRECT_COLORED_BACKGROUND\fP
+ Colored backgrounds are 
+problematic when performing color blended compositing in that the 
+background color will be additively blended from each image. Enabling 
+this flag will internally cause the color to be reset to black and then 
+cause the color to be blended back into the resulting images. This 
+flag is disabled by default. 
+.TP
+\fBICET_FLOATING_VIEWPORT\fP
+ .igfloating viewport
+If 
+enabled, the projection will be shifted such that the geometry will be 
+rendered in one shot whenever possible, even if the geometry straddles 
+up to four tiles. This flag is enabled by default. 
+.TP
+\fBICET_INTERLACE_IMAGES\fP
+ If enabled, pixels in images 
+(might be) shuffled to better load balance the compositing work. This 
+flag is enabled by default. 
+.TP
+\fBICET_ORDERED_COMPOSITE\fP
+ If enabled, the image composition 
+will be performed in the order specified by the last call to 
+\fBicetCompositeOrder\fP,
+assuming the current strategy (specified by 
+a call to \fBicetStrategy\fP)
+supports ordered composition. 
+Generally, you want to enable ordered compositing if doing color 
+blending and disable if you are doing z\-buffer comparisons. If 
+enabled, you should call \fBicetCompositeOrder\fP
+between each frame 
+to update the image order as camera angles change. This flag is 
+disabled by default. 
+.TP
+\fBICET_RENDER_EMPTY_IMAGES\fP
+ If disabled, \fBIceT \fPwill never 
+invoke the drawing callback.igdrawing callback
+if all geometry is 
+outside the clipping planes of the current projection. If enabled, 
+\fBIceT \fPwill still invoke the drawing callback \fIif\fP
+the compositing 
+strategy has requested the tile. However, most compositing strategies 
+do not request images for all tiles. The floating viewport can also 
+consolidate up to four renderings into one. To ensure that the drawing 
+callback is invoked for all tiles on all processes, enable 
+\fBICET_RENDER_EMPTY_IMAGES\fP,
+disable 
+\fBICET_FLOATING_VIEWPORT\fP,
+and set the strategy (using 
+\fBicetStrategy\fP)
+to \fBICET_STRATEGY_SEQUENTIAL\fP\&.
+This flag 
+is disabled by default. 
+.PP
+In addition, if you are using the \fbOpenGL \fPlayer (i.e., have called 
+\fBicetGLInitialize\fP),
+these options, defined in IceTGL.h,
+are also available. 
+.PP
+.TP
+\fBICET_GL_DISPLAY\fP
+ If enabled, the final, composited image 
+for each tile is written back to the frame buffer before the return of 
+\fBicetGLDrawFrame\fP\&.
+This flag is enabled by default. 
+.TP
+\fBICET_GL_DISPLAY_COLORED_BACKGROUND\fP
+ If this and 
+\fBICET_GL_DISPLAY\fP
+are enabled, \fBIceT \fPuses \fbOpenGL \fPblending to 
+ensure that all background is set to the correct color. This flag is 
+disabled by default. This option does not affect the images returned 
+from \fBicetGLDrawFrame\fP;
+it only affects the image in the \fbOpenGL \fP
+color buffer. 
+.TP
+\fBICET_GL_DISPLAY_INFLATE\fP
+ If this and 
+\fBICET_GL_DISPLAY\fP
+are enabled and the renderable window is 
+larger than the displayed tile (as determined by the current \fbOpenGL \fP
+viewport), then resample the image to fit within the renderable window 
+before writing back to frame buffer. This flag is disabled by default. 
+This option does not affect the images returned from 
+\fBicetGLDrawFrame\fP;
+it only affects the image in the \fbOpenGL \fPcolor 
+buffer. If this option is not enabled, then images are written at 
+their natural size in the lower left corner of the window. 
+.TP
+\fBICET_GL_DISPLAY_INFLATE_WITH_HARDWARE\fP
+ This option 
+determines how images are inflated. When enabled (the default), images 
+are inflated by creating a texture and allowing the hardware to inflate 
+the image. When disabled, images are inflated on the CPU. This option 
+has no effect unless both \fBICET_GL_DISPLAY\fP
+and 
+\fBICET_GL_DISPLAY_INFLATE\fP
+are also enabled. 
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_VALUE\fP
+ If \fIpname\fP
+is not a feature 
+to be enabled or disabled. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+The check for a valid \fIpname\fP
+is not thorough, and thus the 
+\fBICET_INVALID_VALUE\fP
+error may not always be raised. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetIsEnabled\fP(3)
+.PP
+.igicetDisable|)textbf
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

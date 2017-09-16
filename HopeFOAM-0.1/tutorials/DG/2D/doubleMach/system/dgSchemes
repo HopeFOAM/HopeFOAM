@@ -1,0 +1,76 @@
+/*------------------------------------------------------------------------------------*\
+|     __  ______  ____  ______ |                                                       |
+|    / / / / __ \/ __ \/ ____/ | HopeFOAM: High Order Parallel Extensible CFD Software |
+|   / /_/ / / / / /_/ / __/    |                                                       |
+|  / __  / /_/ / ____/ /___    |                                                       |
+| /_/ /_/\____/_/   /_____/    | Copyright(c) 2017-2017 The Exercise Group, AMS, China.|
+|                              |                                                       |
+\*------------------------------------------------------------------------------------*/
+FoamFile
+{
+    version     0.1;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default         Euler;
+}
+
+gradSchemes
+{
+    default         default none;
+    grad(p)         default none;
+    grad(gther_p)   default none;
+}
+
+godunovScheme
+{
+    fluxScheme      Roe;
+    limiteScheme    Triangle;
+
+}
+
+divSchemes
+{
+    default            none;
+    div(U,p)           default linear;
+    div(gther_U,rho1)  default none;
+    div(gther_U,rhoU1) default none;
+    div(gther_U,Ener1) default none;
+    div(gther_U,rho2)  default none;
+    div(gther_U,rhoU2) default none;
+    div(gther_U,Ener2) default none;
+    div(gther_U,rho3)  default none;
+    div(gther_U,rhoU3) default none;
+    div(gther_U,Ener3) default none;
+    div(gther_U,gther_p) default none;
+    div(gther_U)       default none;
+}
+
+laplacianSchemes
+{
+    default         default linear orthogonal;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         orthogonal;
+}
+
+fluxRequired
+{
+    default         no;
+    p               ;
+}
+
+// ************************************************************************* //

@@ -1,0 +1,57 @@
+/*------------------------------------------------------------------------------------*\
+|     __  ______  ____  ______ |                                                       |
+|    / / / / __ \/ __ \/ ____/ | HopeFOAM: High Order Parallel Extensible CFD Software |
+|   / /_/ / / / / /_/ / __/    |                                                       |
+|  / __  / /_/ / ____/ /___    |                                                       |
+| /_/ /_/\____/_/   /_____/    | Copyright(c) 2017-2017 The Exercise Group, AMS, China.|
+|                              |                                                       |
+\*------------------------------------------------------------------------------------*/
+FoamFile
+{
+    version     0.1;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     dgEulerFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         0.2;
+
+deltaT          1e-5;
+
+//writeControl    adjustableRunTime;
+writeControl  timeStep;
+
+writeInterval   1000;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  16;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+adjustTimeStep  no;
+
+maxCo           1;
+
+maxDeltaT       1;
+
+
+// ************************************************************************* //

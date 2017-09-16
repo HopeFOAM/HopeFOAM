@@ -1,0 +1,83 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      dynamicMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dynamicFvMesh       dynamicMotionSolverFvMesh;
+
+motionSolverLibs   ("librigidBodyMeshMotion.so");
+
+solver             rigidBodyMotion;
+
+rigidBodyMotionCoeffs
+{
+    report          on;
+
+    solver
+    {
+        type Newmark;
+    }
+
+    accelerationRelaxation 0.4;
+
+    bodies
+    {
+        hull
+        {
+            type            rigidBody;
+            parent          root;
+
+            centreOfMass    (0 0 0);
+            mass            412.73;
+            inertia         (40 0 0 921 0 921);
+            transform       (1 0 0 0 1 0 0 0 1) (2.929541 0 0.2);
+
+            joint
+            {
+                type    composite;
+                joints
+                (
+                    {
+                        type Pz;
+                    }
+                    {
+                        type Ry;
+                    }
+                );
+            }
+
+            restraints
+            {
+                translationDamper
+                {
+                    type    linearDamper;
+                    coeff   8596;
+                }
+
+                rotationDamper
+                {
+                    type    sphericalAngularDamper;
+                    coeff   11586;
+                }
+            }
+
+            patches         (hull);
+            innerDistance   0.3;
+            outerDistance   1;
+        }
+    }
+}
+
+
+// ************************************************************************* //

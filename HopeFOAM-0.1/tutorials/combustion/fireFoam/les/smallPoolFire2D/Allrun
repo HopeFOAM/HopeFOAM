@@ -1,0 +1,17 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+runApplication blockMesh
+runApplication topoSet
+runApplication createPatch -overwrite
+
+cp 0/ph_rgh.orig 0/ph_rgh
+
+# Run
+runApplication `getApplication`
+
+#------------------------------------------------------------------------------

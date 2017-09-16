@@ -1,0 +1,9 @@
+
+set(SOURCES
+  avtGTCFileFormat.C
+  )
+ADD_VISIT_READER(VisItGTCReader "1.0"
+  VISIT_READER_TYPE "STMD"
+  VISIT_READER_NAME "avtGTCFileFormat"    
+  SERVER_SOURCES ${SOURCES}
+  )

@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/QtWidgets" >
+        <file>Icons/pqCollapsedGroup22.png</file>
+        <file>Icons/pqDelete16.png</file>
+        <file>Icons/pqDelete24.png</file>
+        <file>Icons/pqDelete32.png</file>
+        <file>Icons/pqPlus16.png</file>
+        <file>Icons/pqMinus16.png</file>
+    </qresource>
+</RCC>

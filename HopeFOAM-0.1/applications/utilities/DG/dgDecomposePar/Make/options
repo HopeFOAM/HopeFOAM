@@ -1,0 +1,21 @@
+EXE_INC = \
+    -I$(LIB_SRC)/parallel/decompose/decompose/lnInclude \
+    -I$(LIB_SRC)/parallel/decompose/decompositionMethods/lnInclude \
+	-I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(LIB_SRC)/regionModels/regionModel/lnInclude \
+    -I$(LIB_SRC)/DG/lnInclude \
+    -I$(PETSC_DIR)/include \
+    -I$(SLEPC_DIR)/include \
+    -I$(MPI_ARCH_PATH)/include
+
+EXE_LIBS = \
+    -lfiniteVolume \
+    -ldecompose \
+    -lgenericPatchFields \
+    -ldecompositionMethods -L$(FOAM_LIBBIN)/dummy -lmetisDecomp -lscotchDecomp \
+    -lmeshTools \
+    -lregionModels \
+    -lDG \
+    -L$(PETSC_DIR)/lib -lpetsc \
+    -L$(SLEPC_DIR)/lib -lslepc 

@@ -1,0 +1,20 @@
+EXE_INC = \
+    -IdgToVTK/lnInclude \
+    -I$(LIB_SRC)/lagrangian/basic/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude  \
+    -I$(LIB_SRC)/DG/lnInclude \
+    -I$(PETSC_DIR)/include \
+    -I$(SLEPC_DIR)/include \
+    -I$(MPI_ARCH_PATH)/include
+
+EXE_LIBS = \
+    -ldgToVTK \
+    -lfiniteVolume \
+    -ldynamicMesh \
+    -llagrangian \
+    -lgenericPatchFields \
+    -lDG \
+    -L$(PETSC_DIR)/lib -lpetsc \
+    -L$(SLEPC_DIR)/lib -lslepc 

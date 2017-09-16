@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cd ${0%/*} || exit 1
+set -x
+
+wclean libso DPMTurbulenceModels
+wclean
+wclean MPPICFoam

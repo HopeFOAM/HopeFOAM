@@ -1,0 +1,91 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-07;
+        relTol          0.01;
+    }
+
+    pFinal
+    {
+        $p;
+        tolerance       1e-07;
+        relTol          0;
+    }
+
+    "(rho|U|h|k|epsilon|omega)"
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-06;
+        relTol          0.1;
+    }
+
+    "(rho|U|h|k|epsilon|omega)Final"
+    {
+        $U;
+        tolerance       1e-06;
+        relTol          0;
+    }
+}
+
+PIMPLE
+{
+    momentumPredictor   yes;
+    transonic           no;
+    nOuterCorrectors    50;
+    nCorrectors         1;
+    nNonOrthogonalCorrectors 0;
+    consistent          yes;
+
+    rhoMin          0.4;
+    rhoMax          2.0;
+
+    residualControl
+    {
+        "(U|k|epsilon)"
+        {
+            relTol          0;
+            tolerance       0.0001;
+        }
+    }
+
+    turbOnFinalIterOnly no;
+}
+
+relaxationFactors
+{
+    fields
+    {
+        "p.*"           0.9;
+        "rho.*"         1;
+    }
+    equations
+    {
+        "U.*"           0.9;
+        "h.*"           0.7;
+        "(k|epsilon|omega).*" 0.8;
+    }
+}
+
+
+// ************************************************************************* //

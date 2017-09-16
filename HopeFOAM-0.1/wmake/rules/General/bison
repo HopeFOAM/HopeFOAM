@@ -1,0 +1,7 @@
+SUFFIXES += .y .Y
+
+ytoo = bison -v -d -y $< ; mv y.tab.c $(@D)/$(<F).c ; mv y.tab.h $(@D)/$(<F).h ; \
+     $(cc) $(cFLAGS) -c  $(@D)/$(<F).c -o $@
+
+Ytoo = bison -v -d -y $< ; mv y.tab.c $(@D)/$(<F).C ; mv y.tab.h $(@D)/$(<F).H ; \
+     $(CC) $(c++FLAGS) -c  $(@D)/$(<F).C -o $@

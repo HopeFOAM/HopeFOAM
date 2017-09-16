@@ -1,0 +1,8 @@
+#include <@LOCATION_MAP_I@>
+int main ()
+{
+ @NAMESPACE_I@::@CLASSNAME_MAP_I@<int, int> const m;
+ m.find(1);
+ return 0;
+}
+

@@ -1,0 +1,16 @@
+vtk_module(vtkIOAMR
+  GROUPS
+    StandAlone
+  DEPENDS
+    vtkParallelCore
+    vtkFiltersAMR
+  PRIVATE_DEPENDS
+    vtkhdf5
+    vtksys
+  TEST_DEPENDS
+    vtkIOXML
+    vtkTestingCore
+    vtkTestingRendering
+  KIT
+    vtkParallel
+  )

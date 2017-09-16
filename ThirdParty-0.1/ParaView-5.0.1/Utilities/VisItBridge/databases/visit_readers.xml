@@ -1,0 +1,2584 @@
+<ServerManagerConfiguration>
+  <ProxyGroup name="internal_readers">
+
+    <!-- ================================================================= -->
+
+    <SourceProxy class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 name="VisItSeriesReaderBase"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <StringVectorProperty command="GetCurrentFileName" information_only="1" name="FileNameInfo"/>
+      <StringVectorProperty animateable="0"
+                            clean_command="RemoveAllFileNames"
+                            command="AddFileName"
+                            information_property="FileNameInfo"
+                            name="FileName"
+                            number_of_elements="1"
+                            panel_visibility="never"
+                            repeat_command="1">
+         <FileListDomain name="files" />
+         <Documentation>The list of files to be read by the reader.</Documentation>
+      </StringVectorProperty>
+      <DoubleVectorProperty information_only="1"
+                            name="TimestepValues"
+                            repeatable="1">
+        <TimeStepsInformationHelper />
+        <Documentation>Available timestep values.</Documentation>
+      </DoubleVectorProperty>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <Proxy name="VisItReaderBase">
+      <StringVectorProperty
+        name="FileName"
+        command="SetFileName"
+        number_of_elements="1"
+        panel_visibility="never">
+        <FileListDomain name="files"/>
+        <Documentation>
+        This property specifies the file name for the reader
+        </Documentation>
+
+      </StringVectorProperty>
+
+     <StringVectorProperty
+        name="MeshInfo"
+        information_only="1">
+        <ArraySelectionInformationHelper attribute_name="Mesh"/>
+     </StringVectorProperty>
+
+     <StringVectorProperty
+        name="MeshStatus"
+        label="Meshes"
+        command="SetMeshArrayStatus"
+        number_of_elements="2"
+        repeat_command="1"
+        number_of_elements_per_command="2"
+        element_types="2 0"
+        information_property="MeshInfo">
+       <ArraySelectionDomain name="array_list">
+          <RequiredProperties>
+             <Property name="MeshInfo" function="ArrayList"/>
+          </RequiredProperties>
+       </ArraySelectionDomain>
+       <Documentation>
+         Select the meshes to be loaded from the dataset, if any.
+       </Documentation>
+     </StringVectorProperty>
+
+     <StringVectorProperty
+        name="MaterialInfo"
+        information_only="1">
+        <ArraySelectionInformationHelper attribute_name="Material"/>
+     </StringVectorProperty>
+
+     <StringVectorProperty
+        name="MaterialStatus"
+        label="Materials"
+        command="SetMaterialArrayStatus"
+        number_of_elements="2"
+        repeat_command="1"
+        number_of_elements_per_command="2"
+        element_types="2 0"
+        information_property="MaterialInfo">
+       <ArraySelectionDomain name="array_list">
+          <RequiredProperties>
+             <Property name="MaterialInfo" function="ArrayList"/>
+          </RequiredProperties>
+       </ArraySelectionDomain>
+       <Documentation>
+         Select the materials to be loaded from the dataset, if any.
+       </Documentation>
+     </StringVectorProperty>
+
+    <StringVectorProperty
+        name="CellArrayInfo"
+        information_only="1">
+        <ArraySelectionInformationHelper attribute_name="Cell"/>
+     </StringVectorProperty>
+
+     <StringVectorProperty
+        name="CellArrayStatus"
+        command="SetCellArrayStatus"
+        number_of_elements="0"
+        repeat_command="1"
+        number_of_elements_per_command="2"
+        element_types="2 0"
+        information_property="CellArrayInfo"
+        label="Cell Arrays">
+       <ArraySelectionDomain name="array_list">
+          <RequiredProperties>
+             <Property name="CellArrayInfo" function="ArrayList"/>
+          </RequiredProperties>
+       </ArraySelectionDomain>
+       <Documentation>
+         This property lists which cell-centered arrays to read.
+       </Documentation>
+     </StringVectorProperty>
+
+     <StringVectorProperty
+        name="PointArrayInfo"
+        information_only="1">
+        <ArraySelectionInformationHelper attribute_name="Point"/>
+     </StringVectorProperty>
+
+     <StringVectorProperty
+        name="PointArrayStatus"
+        command="SetPointArrayStatus"
+        number_of_elements="0"
+        repeat_command="1"
+        number_of_elements_per_command="2"
+        element_types="2 0"
+        information_property="PointArrayInfo"
+        label="Point Arrays">
+       <ArraySelectionDomain name="array_list">
+          <RequiredProperties>
+             <Property name="PointArrayInfo" function="ArrayList"/>
+          </RequiredProperties>
+       </ArraySelectionDomain>
+       <Documentation>
+         This property lists which point-centered arrays to read.
+       </Documentation>
+     </StringVectorProperty>
+
+     <!-- The following two properties magically send time information -->
+     <!-- to the animation panel. -->
+     <DoubleVectorProperty
+         name="TimestepValues"
+         repeatable="1"
+         information_only="1">
+       <TimeStepsInformationHelper/>
+     </DoubleVectorProperty>
+     <DoubleVectorProperty name="TimeRange" information_only="1">
+       <TimeRangeInformationHelper/>
+     </DoubleVectorProperty>
+
+     <Hints>
+        <DefaultFileNameProperty name="FileName" />
+     </Hints>
+    </Proxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItNetCDFADAPTReaderCore" class="vtkVisItADAPTReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Reads NetCDF ADAPT files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd"
+                      file_description="ADAPT Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItANSYSReaderCore" class="vtkVisItANSYSReader"
+    base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="ASCII file format used for input to the ANSYS suite">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .inp.
+    </Documentation>
+      <Hints>
+        <ReaderFactory extensions="inp"
+          file_description="ANSYS Files" />
+      </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItAUXFileReaderCore" class="vtkVisItAuxFileReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .aux.
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="aux"
+                      file_description="AUXFile Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItBOVReaderCore" class="vtkVisItBOVReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="BOV (Brick of Values) generates a rectilinear grid of values">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .bov.
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="bov"
+                      file_description="BOV Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItNetCDFCCSM_STSDReaderCore" class="vtkVisItCCSM_STSD_Reader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads CCSM climate data files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd"
+                      file_description="CCSM STSD Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItCEAucdReaderCore" class="vtkVisItCEAucdReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions .ucd, and .inp
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="ucd inp"
+                      file_description="CEAucd Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItCMATReaderCore" class="vtkVisItCMATReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="ASCII output of CMAT Fortran simulation.">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .cmat
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="cmat"
+                      file_description="CMAT Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItCTRLReaderCore" class="vtkVisItCTRLReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Reads control files for TB-LMTO">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .ctrl
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="ctrl"
+                      file_description="CTRL Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItChomboReaderCore" class="vtkVisItChomboReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads files from the Chombo package.
+       Loads block-structured adaptively refined rectangular grids">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .h5 and .hdf5.
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="hdf5 h5"
+                      file_description="Chombo Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItCurve2DReaderCore" class="vtkVisItCurve2DReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads ASCII 2D Curve Format. Which is a single x,y values per line to generate a 2D curve">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .curve, .ultra ,.ult, and .u
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="curve ultra ult u"
+                      file_description="Curve2D Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItDDCMDReaderCore" class="vtkVisItDDCMDReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads ddcMD particle and atom files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .ddcmd
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="ddcmd"
+                      file_description="DDCMD Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItDyna3DReaderCore" class="vtkVisItDyna3DReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Reads Dyna3D finite element files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .dyn
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="dyn"
+                      file_description="Dyna3D Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItExtrudedVolReaderCore" class="vtkVisItExtrudedVolReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .exvol.
+     </Documentation>
+     <Hints>
+       <ReaderFactory extensions="exvol"
+                      file_description="ExtrudedVol Files" />
+     </Hints>
+     </SourceProxy>
+
+    <SourceProxy name="VisItFLASHReaderCore" class="vtkVisItFLASHReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="ASC / Alliances Center for Astrophysical Thermonuclear Flash Reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .flash, and .f5
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="flash f5"
+                      file_description="FLASH Files (VisIt)" />
+     </Hints>
+     </SourceProxy>
+
+    <SourceProxy name="VisItNetCDFFVCOM_STSDReaderCore" class="vtkVisItFVCOM_STSDReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads FVCOM  primitive equations ocean models">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd"
+                      file_description="FVCOM STSD Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItFluentReaderCore" class="vtkVisItFluentReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation
+       long_help="Fluent CFD simulation result reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .cas
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="cas"
+                      file_description="Fluent Files (VisIt)" />
+     </Hints>
+     </SourceProxy>
+
+    <SourceProxy name="VisItGTCReaderCore" class="vtkVisItGTCReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .h5.
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="h5"
+                      file_description="GTC Files" />
+     </Hints>
+     </SourceProxy>
+
+    <SourceProxy name="VisItGadgetReaderCore" class="vtkVisItGadgetReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation
+       long_help="Gadget 2 cosmological N-body/SPH simulation code reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .gadget
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="gadget"
+                      file_description="Gadget Files" />
+     </Hints>
+     </SourceProxy>
+
+   <SourceProxy name="VisItImageReaderCore" class="vtkVisItImageReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation
+       long_help="Multiple Image format reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .pnm, .ppm, .sdt, .spr and .imgvol
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="pnm ppm sdt spr imgvol"
+                      file_description="Image Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItLinesReaderCore" class="vtkVisItLinesReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .lines.
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="lines"
+                      file_description="Lines Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItNASTRANReaderCore" class="vtkVisItNASTRANReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Reads NASTRAN Bulk ASCII unstructured meshes">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nas, and .f06
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nas f06"
+                      file_description="NASTRAN Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItOVERFLOWReaderCore" class="vtkVisItOVERFLOWReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+      long_help="Reads Binary Fortran output files containing overlayed curvilinear meshes files.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .dat, and .save
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="dat save"
+                      file_description="OVERFLOW Files (VisIt)" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItPATRANReaderCore" class="vtkVisItPATRANReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads PATRAN neutral files, which are ASCII format files that contain unstructured geometry and simulation results">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .neu
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="neu"
+                      file_description="PATRAN Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItPLOT2DReaderCore" class="vtkVisItPLOT2DReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads structured simulation data from Plot2D.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .p2d
+      </Documentation>
+
+     <Hints>
+       <ReaderFactory extensions="p2d"
+                      file_description="PLOT2D Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItPLOT3DReaderCore" class="vtkVisItPLOT3DReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads structured simulation data from Plot3D.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .q, .x, and .vp3d
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="vp3d"
+                      file_description="VisIt MetaPLOT3D Files (VisIt)" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItVASPPOSCARReaderCore" class="vtkVisItPOSCARReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads VASP simulation result files.">
+        VAMP/VASP is a package for performing ab-initio quantum-mechanical molecular dynamics (MD) using pseudopotentials and a plane wave basis set.
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is POS*
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="POS*"
+                      file_description="VASP POSCAR Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItParaDisReaderCore" class="vtkVisItParaDISReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Reads Parallel Dislocation Simulator (ParaDiS) files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .prds, .data, .dat
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="prds data dat"
+                      file_description="ParaDIS Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItParaDisTecplotReaderCore" class="vtkVisItParaDISTecplotReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads Parallel Dislocation Simulator (ParaDiS) tecplot like files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .fld, .field, .cyl, .cylinder, .dat
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="fld field cyl cylinder dat"
+                      file_description="ParaDIS Tecplot Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItPoint3DReaderCore" class="vtkVisItPoint3DReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation
+        long_help="Reads an ASCII file containing X,Y,Z, and data value columns.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .3D
+     </Documentation>
+     <Hints>
+       <ReaderFactory extensions="3D"
+                      file_description="POINT3D Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItProteinDataBankReaderCore" class="vtkVisItProteinDataBankReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads Protein Databank files contain molecular data.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .ent, and .pdb
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="ent pdb"
+                      file_description="Protein Data Bank Files (VisIt)" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItRAWReaderCore" class="vtkVisItRAWReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads RAW mesh geometry format.">
+        Allows mesh geometry to be shared with CAD programs such as Blender and POVRAY
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .raw
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="raw"
+                      file_description="RAW Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItSARReaderCore" class="vtkVisItSARReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads Specific Absorption Rate image volume files.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .sar
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="SAR sar"
+                      file_description="SAR Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItSpheralReaderCore" class="vtkVisItSpheralReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads ASCII coupled hydrodynamical and gravitational simulations">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .spheral, and .sv
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="spheral sv"
+                      file_description="Spheral Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItTFTReaderCore" class="vtkVisItTFTReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads ASCII TFT Fortran simulation results.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .dat, and .tft
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="dat tft"
+                      file_description="TFT Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItTSurfReaderCore" class="vtkVisItTSurfReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .ts_deg83.
+     </Documentation>
+     <Hints>
+       <ReaderFactory extensions="ts_deg83"
+                      file_description="TSurf Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItTecplotBinaryReaderCore" class="vtkVisItTecplotBinaryReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads a subset of the Tecplot binary file format">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .plt
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="plt"
+                      file_description="Tecplot Binary Files (VisIt)" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItTecplotReaderCore" class="vtkVisItTecplotReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads a subset of the ASCII Tecplot file format">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .tp, .dat and .tec
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="tec TEC Tec tp TP dat"
+                      file_description="Tecplot Files (VisIt)" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItUNICReaderCore" class="vtkVisItUNICReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads UNIC neutronics code result files.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .h5
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="h5"
+                      file_description="UNIC Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItVelodyneReaderCore" class="vtkVisItVelodyneReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads Velodyne structural mechainces simulation result files.">
+      Velodyne as an advanced structural mechanics code written by Corvid Technologies.
+      Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+      The default file extensions are .vld, and .rst
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="vld rst"
+                      file_description="Velodyne Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItVsReaderCore" class="vtkVisItVsReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads VizSchema hdf5 files.">
+      VizSchema is a specification for markup added to hdf5 files to describe the data contained within. VizSchema also allows users to specify run information and other miscellaneous data in a standardized manner.
+      Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+      The default file extensions are .h5, and .vsh5
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="h5 vsh5"
+                      file_description="VizSchema Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItXmdvReaderCore" class="vtkVisItXmdvReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads XmdvTool ASCII files.">
+      XmdvTool is a public-domain software package for the interactive visual exploration of multivariate data sets.
+      Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+      The default file extension is .okc
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="okc"
+                      file_description="Xmdv Files" />
+     </Hints>
+    </SourceProxy>
+
+#ifdef VISIT_BUILD_READER_Silo
+    <SourceProxy name="VisItSiloReaderCore" class="vtkVisItSiloReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads Silo rectilinear, curvilinear, unstructured, or point meshes">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .silo
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="silo pdb"
+                      file_description="Silo Files" />
+     </Hints>
+    </SourceProxy>
+#endif
+
+  </ProxyGroup>
+
+    <!-- ================================================================= -->
+    <!-- ================================================================= -->
+    <!-- ================================================================= -->
+
+  <ProxyGroup name="sources">
+
+#ifdef VISIT_BUILD_READER_CGNS
+    <SourceProxy name="VisItCGNSReader" class="vtkVisItCGNSReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Reads CFD General Notation System Files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .cgns.
+     </Documentation>
+     <Hints>
+       <ReaderFactory extensions="cgns"
+                      file_description="CGNS Files" />
+     </Hints>
+    </SourceProxy>
+#endif
+
+#ifndef WIN32
+    <SourceProxy name="VisItClawReader" class="vtkVisItClawReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="A material-ordered format very similar to IOUT=1.">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .claw
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="claw"
+                      file_description="Claw Files" />
+     </Hints>
+    </SourceProxy>
+#endif
+
+    <SourceProxy name="VisItEnzoReader" class="vtkVisItEnzoReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Reads enzo cosmological simulation AMR files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .boundary, and .hierarchy
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="hierarchy boundary"
+                      file_description="Enzo Files (VisIt)" />
+     </Hints>
+     </SourceProxy>
+
+    <SourceProxy name="VisItGGCMReader" class="vtkVisItGGCMReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation
+       long_help="Reads Geospace General Circulation Model files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .3df, and .mer
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="3df mer"
+                      file_description="GGCM Files" />
+     </Hints>
+     </SourceProxy>
+
+    <SourceProxy name="VisItGULPReader" class="vtkVisItGULPReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation
+       long_help="GULP trajectory file reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .trg
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="trg"
+                      file_description="GULP Files" />
+     </Hints>
+     </SourceProxy>
+
+    <SourceProxy name="VisItH5NimrodReader" class="vtkVisItH5NimrodReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation
+       long_help="NIMROD HDF5 data model reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .h5nimrod
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="h5nimrod"
+                      file_description="H5Nimrod Files" />
+     </Hints>
+     </SourceProxy>
+
+    <SourceProxy name="VisItLAMMPSStructureReader" class="vtkVisItLAMMPSStructureReader"
+    base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="LAMMPS Molecular Dynamics Simulator reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .eam, .meam, .rigid, and .lammps
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="eam meam rigid lammps"
+                      file_description="LAMMPSStructure Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItLAMMPSDumpReader" class="vtkVisItLAMMPSDumpReader"
+    base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="LAMMPS Molecular Dynamics Simulator dump reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .dump
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="dump"
+                      file_description="LAMMPS Dump Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItM3DReader" class="vtkVisItM3DReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="M3D fusion code reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .m3d
+    </Documentation>
+
+     <Hints>
+       <ReaderFactory extensions="m3d h5"
+                      file_description="Multilevel 3D Plasma Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItM3DC1Reader" class="vtkVisItM3DC1Reader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="M3DC1 fusion code reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .h5
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="h5"
+                      file_description="M3DC1 Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItMFIXReader" class="vtkVisItMFIXReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Multiphase Flow with Interphase eXchanges(MFiX) reader for result files.">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .RES
+      </Documentation>
+
+     <Hints>
+       <ReaderFactory extensions="RES"
+                      file_description="MFiX Res Files (VisIt)" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItMFIXCDFReader" class="vtkVisItMFIXCDFReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Multiphase Flow with Interphase eXchanges(MFiX) reader for new netcdf based format.">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc
+      </Documentation>
+
+     <Hints>
+       <ReaderFactory extensions="nc"
+                      file_description="MFiX netcdf Files" />
+     </Hints>
+    </SourceProxy>
+
+#ifdef VISIT_BUILD_READER_Mili
+    <SourceProxy name="VisItMiliReader" class="vtkVisItMiliReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="LLNL engineering format reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .m, and .mili
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="m mili"
+                      file_description="Mili Files" />
+     </Hints>
+    </SourceProxy>
+#endif
+
+    <SourceProxy name="VisItMirandaReader" class="vtkVisItMirandaReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Readers the raw output format of LLNL's Miranda simulation.">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .mir, and .raw
+      </Documentation>
+
+     <Hints>
+       <ReaderFactory extensions="mir raw"
+                      file_description="Miranda Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItMM5Reader" class="vtkVisItMM5Reader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Reads PSU/NCAR mesoscale model simulation files.">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is mm5
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="mm5"
+                      file_description="MM5 Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItNetCDFLODIReader" class="vtkVisItLODIReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads NetCDF LODI files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd"
+                      file_description="LODI Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItNetCDFLODIParticleReader" class="vtkVisItLODIParticleReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads NetCDF LODI particle files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd"
+                      file_description="LODI Particle Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItNetCDFFVCOM_MTMDReader" class="vtkVisItFVCOM_MTMDReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads FVCOM  primitive equations ocean models">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd"
+                      file_description="FVCOM MTMD Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItNetCDFFVCOM_MTSDReader" class="vtkVisItFVCOM_MTSDReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads FVCOM  primitive equations ocean models">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd"
+                      file_description="FVCOM MTSD Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItNetCDFFVCOMParticleReader" class="vtkVisItFVCOMParticleReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads FVCOM primitive equations ocean model particle files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd"
+                      file_description="FVCOM Particle Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItNetCDFCCSM_MTSDReader" class="vtkVisItCCSM_MTSD_Reader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+    <Documentation
+       long_help="Reads CCSM climate data files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd"
+                      file_description="CCSM MTSD Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItNek5000Reader" class="vtkVisItNek5000Reader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Reads simulation results from Nek5000 which is a DNS/LES computational fluid dynamics solver">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nek3, .nek2d, .nek5d, .nek5000, .nek
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nek3d nek2d nek5d nek5000 nek"
+                      file_description="Nek5000 Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItOpenFOAMReader" class="vtkVisItOpenFOAMReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+       long_help="Reads simulation results from OpenFOAM (Open Field Operation and Manipulation) CFD Toolbox">
+         Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+         The default file extension is .controlDict
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="controlDict"
+                      file_description="OpenFOAM Files (VisIt)" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItPFLOTRANReader" class="vtkVisItPFLOTRANReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .h5.
+     </Documentation>
+     <Hints>
+       <ReaderFactory extensions="h5"
+                      file_description="PFLOTRAN Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItPixieReader" class="vtkVisItPixieReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads 2D and 3D simulation data saved in Pixie HDF5 format.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .h5
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="h5"
+                      file_description="Pixie Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItPLOT2DReader" class="vtkVisItPLOT2DReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads structured simulation data from Plot2D.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .p2d
+      </Documentation>
+
+     <Hints>
+       <ReaderFactory extensions="p2d"
+                      file_description="PLOT2D Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItSAMRAIReader" class="vtkVisItSAMRAIReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads Structured AMR data stored in HDF5 file formats.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .samrai
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="samrai"
+                      file_description="SAMRAI Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItSASReader" class="vtkVisItSASReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads SAS files.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .sas, sasgeom, and .sasdata
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="sasgeom sas sasdata"
+                      file_description="SAS Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItTetradReader" class="vtkVisItTetradReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads tetrahedral meshes and variables stored in HDF5 file format.">
+        The default file extensions are .hdf5, and .h5
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="hdf5 h5"
+                      file_description="Tetrad Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItVASPOUTCARReader" class="vtkVisItOUTCARReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads VASP simulation result files.">
+        VAMP/VASP is a package for performing ab-initio quantum-mechanical molecular dynamics (MD) using pseudopotentials and a plane wave basis set.
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is out*
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="OUT*"
+                      file_description="VASP OUT Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItVASPCHGCARReader" class="vtkVisItCHGCARReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+      <Documentation
+        long_help="Reads VASP simulation result files.">
+        VAMP/VASP is a package for performing ab-initio quantum-mechanical molecular dynamics (MD) using pseudopotentials and a plane wave basis set.
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is CHG*
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="CHG*"
+                      file_description="VASP CHGCA Files" />
+     </Hints>
+    </SourceProxy>
+
+    <SourceProxy name="VisItXYZReader" class="vtkVisItXYZReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .xyz.
+     </Documentation>
+     <Hints>
+       <ReaderFactory extensions="xyz"
+                      file_description="XYZ Files" />
+     </Hints>
+    </SourceProxy>
+
+#ifdef VISIT_BUILD_READER_GMV
+    <SourceProxy name="VisItGMVReader" class="vtkVisItGMVReader"
+      base_proxygroup="internal_readers" base_proxyname="VisItReaderBase">
+     <Documentation
+       long_help="Reads GMV files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions is .gmv
+    </Documentation>
+     <Hints>
+       <ReaderFactory extensions="gmv"
+                      file_description="GMV Files" />
+     </Hints>
+     </SourceProxy>
+#endif
+
+    <!-- ================================================================= -->
+    <!-- ===================     File Series Readers     ================= -->
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItNetCDFADAPTReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Reads NetCDF ADAPT files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+      </Documentation>
+     <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd"
+                      file_description="ADAPT Files" />
+     </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItNetCDFADAPTReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItANSYSReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation long_help="ASCII file format used for input to the ANSYS suite">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .inp.
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="inp" file_description="ANSYS Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItANSYSReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItAUXFileReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+     <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .aux.
+     </Documentation>
+     <Hints>
+       <ReaderFactory extensions="aux" file_description="AUXFile Files" />
+     </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItAUXFileReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItBOVReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation long_help="BOV (Brick of Values) generates a rectilinear grid of values">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .bov.
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="bov" file_description="BOV Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItBOVReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItNetCDFCCSM_STSDReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation long_help="Reads CCSM climate data files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+      </Documentation>
+      <Hints>
+       <ReaderFactory extensions="nc cdf elev ncd" file_description="CCSM STSD Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItNetCDFCCSM_STSDReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItCEAucdReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions .ucd, and .inp
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="ucd inp" file_description="CEAucd Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItCEAucdReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItCMATReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation long_help="ASCII output of CMAT Fortran simulation.">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .cmat
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="cmat" file_description="CMAT Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItCMATReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItCTRLReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation long_help="Reads control files for TB-LMTO">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .ctrl
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="ctrl" file_description="CTRL Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItCTRLReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItChomboReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Reads files from the Chombo package.
+       Loads block-structured adaptively refined rectangular grids">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .h5 and .hdf5.
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="hdf5 h5" file_description="Chombo Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItChomboReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItCurve2DReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Reads ASCII 2D Curve Format. Which is a single x,y values per line to generate a 2D curve">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .curve, .ultra ,.ult, and .u
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="curve ultra ult u"
+                       file_description="Curve2D Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItCurve2DReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItDDCMDReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Reads ddcMD particle and atom files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .ddcmd
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="ddcmd"
+                       file_description="DDCMD Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItDDCMDReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItDyna3DReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Reads Dyna3D finite element files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .dyn
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="dyn"
+                       file_description="Dyna3D Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItDyna3DReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItExtrudedVolReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .exvol.
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="exvol"
+                       file_description="ExtrudedVol Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItExtrudedVolReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItFLASHReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="ASC / Alliances Center for Astrophysical Thermonuclear Flash Reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .flash, and .f5
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="flash f5"
+                       file_description="FLASH Files (VisIt)" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItFLASHReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItNetCDFFVCOM_STSDReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Reads FVCOM  primitive equations ocean models">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nc, .cdf, .elev, and .ncd
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="nc cdf elev ncd"
+                       file_description="FVCOM STSD Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItNetCDFFVCOM_STSDReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItFluentReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Fluent CFD simulation result reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .cas
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="cas"
+                       file_description="Fluent Files (VisIt)" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItFluentReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItGTCReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .h5.
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="h5"
+                       file_description="GTC Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItGTCReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItGadgetReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Gadget 2 cosmological N-body/SPH simulation code reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .gadget
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="gadget"
+                       file_description="Gadget Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItGadgetReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItImageReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Multiple Image format reader">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .pnm, .ppm, .sdt, .spr and .imgvol
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="pnm ppm sdt spr imgvol"
+                       file_description="Image Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItImageReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItLinesReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .lines.
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="lines"
+                       file_description="Lines Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItLinesReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItNASTRANReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Reads NASTRAN Bulk ASCII unstructured meshes">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .nas, and .f06
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="nas f06"
+                       file_description="NASTRAN Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItNASTRANReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItOVERFLOWReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads Binary Fortran output files containing overlayed curvilinear meshes files.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .dat, and .save
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="dat save"
+                       file_description="OVERFLOW Files (VisIt)" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItOVERFLOWReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItPATRANReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads PATRAN neutral files, which are ASCII format files that contain unstructured geometry and simulation results">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .neu
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="neu"
+                       file_description="PATRAN Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItPATRANReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItPLOT2DReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads structured simulation data from Plot2D.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .p2d
+      </Documentation>
+
+      <Hints>
+        <ReaderFactory extensions="p2d"
+                       file_description="PLOT2D Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItPLOT2DReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItPLOT3DReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads structured simulation data from Plot3D.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .q, .x, and .vp3d
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="vp3d"
+                       file_description="VisIt MetaPLOT3D Files (VisIt)" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItPLOT3DReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItVASPPOSCARReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads VASP simulation result files.">
+        VAMP/VASP is a package for performing ab-initio quantum-mechanical molecular dynamics (MD) using pseudopotentials and a plane wave basis set.
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is POS*
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="POS*"
+                       file_description="VASP POSCAR Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItVASPPOSCARReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItParaDisReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Reads Parallel Dislocation Simulator (ParaDiS) files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .prds, .data, .dat
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="prds data dat"
+                       file_description="ParaDIS Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItParaDisReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItParaDisTecplotReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+       long_help="Reads Parallel Dislocation Simulator (ParaDiS) tecplot like files">
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extensions are .fld, .field, .cyl, .cylinder, .dat
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="fld field cyl cylinder dat"
+                       file_description="ParaDIS Tecplot Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItParaDisTecplotReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItPoint3DReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads an ASCII file containing X,Y,Z, and data value columns.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .3D
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="3D"
+                       file_description="POINT3D Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItPoint3DReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItProteinDataBankReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads Protein Databank files contain molecular data.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .ent, and .pdb
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="ent pdb"
+                       file_description="Protein Data Bank Files (VisIt)" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItProteinDataBankReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItRAWReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads RAW mesh geometry format.">
+        Allows mesh geometry to be shared with CAD programs such as Blender and POVRAY
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .raw
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="raw"
+                       file_description="RAW Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItRAWReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItSARReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads Specific Absorption Rate image volume files.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .sar
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="SAR sar"
+                       file_description="SAR Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItSARReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItSpheralReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads ASCII coupled hydrodynamical and gravitational simulations">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .spheral, and .sv
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="spheral sv"
+                       file_description="Spheral Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItSpheralReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItTFTReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads ASCII TFT Fortran simulation results.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .dat, and .tft
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="dat tft"
+                       file_description="TFT Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItTFTReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItTSurfReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation>
+       Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+       The default file extension is .ts_deg83.
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="ts_deg83"
+                       file_description="TSurf Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItTSurfReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItTecplotBinaryReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads a subset of the Tecplot binary file format">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .plt
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="plt"
+                       file_description="Tecplot Binary Files (VisIt)" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItTecplotBinaryReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItTecplotReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads a subset of the ASCII Tecplot file format">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .tp, and .tec
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="tec TEC Tec tp TP"
+                       file_description="Tecplot Files (VisIt)" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItTecplotReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItUNICReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads UNIC neutronics code result files.">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .h5
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="h5"
+                       file_description="UNIC Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItUNICReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItVelodyneReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads Velodyne structural mechainces simulation result files.">
+        Velodyne as an advanced structural mechanics code written by Corvid Technologies.
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .vld, and .rst
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="vld rst"
+                       file_description="Velodyne Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItVelodyneReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItVsReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads VizSchema hdf5 files.">
+        VizSchema is a specification for markup added to hdf5 files to describe the data contained within. VizSchema also allows users to specify run information and other miscellaneous data in a standardized manner.
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extensions are .h5, and .vsh5
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="h5 vsh5"
+                       file_description="VizSchema Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItVsReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+    <SourceProxy name="VisItXmdvReader"
+                 base_proxygroup="internal_readers"
+                 base_proxyname="VisItSeriesReaderBase"
+                 class="vtkFileSeriesReader"
+                 file_name_method="SetFileName"
+                 si_class="vtkSIMetaReaderProxy">
+
+      <Documentation
+        long_help="Reads XmdvTool ASCII files.">
+        XmdvTool is a public-domain software package for the interactive visual exploration of multivariate data sets.
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .okc
+      </Documentation>
+      <Hints>
+        <ReaderFactory extensions="okc"
+                       file_description="Xmdv Files" />
+      </Hints>
+
+      <SubProxy>
+        <Proxy proxyname="VisItXmdvReaderCore" name="Reader" proxygroup="internal_readers"/>
+        <ExposedProperties>
+          <Property name="MeshInfo" />
+          <Property name="MeshStatus" />
+          <Property name="MaterialInfo" />
+          <Property name="MaterialStatus" />
+          <Property name="CellArrayInfo" />
+          <Property name="CellArrayStatus" />
+          <Property name="PointArrayInfo" />
+          <Property name="PointArrayStatus" />
+        </ExposedProperties>
+      </SubProxy>
+    </SourceProxy>
+
+    <!-- ================================================================= -->
+
+#ifdef VISIT_BUILD_READER_Silo
+<SourceProxy name="VisItSiloReader"
+             base_proxygroup="internal_readers"
+             base_proxyname="VisItSeriesReaderBase"
+             class="vtkFileSeriesReader"
+             file_name_method="SetFileName"
+             si_class="vtkSIMetaReaderProxy">
+
+  <Documentation
+        long_help="Reads Silo rectilinear, curvilinear, unstructured, or point meshes">
+        Note this reader is automatically generated from wrapping a third party reader. For more information on the reader see https://wci.llnl.gov/codes/visit
+        The default file extension is .silo
+  </Documentation>
+  <Hints>
+       <ReaderFactory extensions="silo pdb"
+                      file_description="Silo Files" />
+  </Hints>
+
+  <SubProxy>
+    <Proxy proxyname="VisItSiloReaderCore" name="Reader" proxygroup="internal_readers"/>
+    <ExposedProperties>
+      <Property name="MeshInfo" />
+      <Property name="MeshStatus" />
+      <Property name="MaterialInfo" />
+      <Property name="MaterialStatus" />
+      <Property name="CellArrayInfo" />
+      <Property name="CellArrayStatus" />
+      <Property name="PointArrayInfo" />
+      <Property name="PointArrayStatus" />
+    </ExposedProperties>
+  </SubProxy>
+</SourceProxy>
+#endif
+
+  </ProxyGroup>
+</ServerManagerConfiguration>

@@ -1,0 +1,62 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM.
+#
+#     OpenFOAM is free software: you can redistribute it and/or modify it
+#     under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+#     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+#     for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Script
+#     AllClean
+#
+# Description
+#     Clean script for third-party applications and libraries
+#
+#------------------------------------------------------------------------------
+# run from third-party directory only
+cd ${0%/*} || exit 1
+wmakeCheckPwd "$WM_THIRD_PARTY_DIR" || {
+    echo "Error: Current directory is not \$WM_THIRD_PARTY_DIR"
+    echo "    The environment variables are inconsistent with the installation."
+    echo "    Check the OpenFOAM entries in your dot-files and source them."
+    exit 1
+}
+# . etc/tools/ThirdPartyFunctions
+#------------------------------------------------------------------------------
+
+
+# clean various packages via 'distclean'
+for i in openmpi-*
+do
+    [ -d "$i" ] && ( set -x; cd $i && make distclean )
+done
+
+
+# clean various packages via 'realclean'
+for i in scotch*/src
+do
+    [ -d "$i" ] && ( set -x; cd $i && make realclean )
+done
+
+
+# clean out-of-source build directories
+[ -d platforms ] && ( set -x; rm -rf platforms/* )
+
+
+#------------------------------------------------------------------------------

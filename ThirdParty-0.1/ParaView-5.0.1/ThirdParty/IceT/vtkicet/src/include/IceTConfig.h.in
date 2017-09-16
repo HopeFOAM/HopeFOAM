@@ -1,0 +1,131 @@
+/* -*- c -*- *******************************************************/
+/*
+ * Copyright (C) 2003 Sandia Corporation
+ * Under the terms of Contract DE-AC04-94AL85000 with Sandia Corporation,
+ * the U.S. Government retains certain rights in this software.
+ *
+ * This source code is released under the New BSD License.
+ */
+
+#ifndef __IceTConfig_h
+#define __IceTConfig_h
+
+#ifndef WIN32
+#cmakedefine WIN32
+#endif
+
+#cmakedefine ICET_BUILD_SHARED_LIBS
+
+#ifdef WIN32
+#include <windows.h>
+#endif
+
+#if defined(WIN32) && defined(ICET_BUILD_SHARED_LIBS)
+#  ifdef IceTCore_EXPORTS
+#    define ICET_EXPORT __declspec( dllexport )
+#    define ICET_STRATEGY_EXPORT __declspec( dllexport )
+#  else
+#    define ICET_EXPORT __declspec( dllimport )
+#    define ICET_STRATEGY_EXPORT __declspec( dllimport )
+#  endif
+#  ifdef IceTGL_EXPORTS
+#    define ICET_GL_EXPORT __declspec( dllexport )
+#  else
+#    define ICET_GL_EXPORT __declspec( dllimport )
+#  endif
+#  ifdef IceTMPI_EXPORTS
+#    define ICET_MPI_EXPORT __declspec( dllexport )
+#  else
+#    define ICET_MPI_EXPORT __declspec( dllimport )
+#  endif
+#else /* WIN32 && SHARED_LIBS */
+#  define ICET_EXPORT
+#  define ICET_GL_EXPORT
+#  define ICET_STRATEGY_EXPORT
+#  define ICET_MPI_EXPORT
+#endif /* WIN32 && SHARED_LIBS */
+
+#define ICET_MAJOR_VERSION      @ICET_MAJOR_VERSION@
+#define ICET_MINOR_VERSION      @ICET_MINOR_VERSION@
+#define ICET_PATCH_VERSION      @ICET_PATCH_VERSION@
+#define ICET_VERSION            "@ICET_VERSION@"
+
+#cmakedefine ICET_SIZEOF_CHAR           @ICET_SIZEOF_CHAR@
+#cmakedefine ICET_SIZEOF_SHORT          @ICET_SIZEOF_SHORT@
+#cmakedefine ICET_SIZEOF_INT            @ICET_SIZEOF_INT@
+#cmakedefine ICET_SIZEOF_LONG           @ICET_SIZEOF_LONG@
+#cmakedefine ICET_SIZEOF_LONG_LONG      @ICET_SIZEOF_LONG_LONG@
+#cmakedefine ICET_SIZEOF___INT64        @ICET_SIZEOF___INT64@
+#cmakedefine ICET_SIZEOF_FLOAT          @ICET_SIZEOF_FLOAT@
+#cmakedefine ICET_SIZEOF_DOUBLE         @ICET_SIZEOF_DOUBLE@
+#cmakedefine ICET_SIZEOF_VOID_P         @ICET_SIZEOF_VOID_P@
+
+#if ICET_SIZEOF_CHAR == 1
+typedef char IceTInt8;
+typedef unsigned char IceTUnsignedInt8;
+#else
+#error "No valid data type for 8 bit integers found."
+#endif
+
+#if ICET_SIZEOF_SHORT == 2
+typedef short IceTInt16;
+typedef unsigned short IceTUnsignedInt16;
+#else
+#error "No valid data type for 16 bit integers founds."
+#endif
+
+#if ICET_SIZEOF_INT == 4
+typedef int IceTInt32;
+typedef unsigned int IceTUnsignedInt32;
+#elif ICET_SIZEOF_LONG == 4
+typedef long IceTInt32;
+typedef unsigned long IceTUnsignedInt32;
+#elif ICET_SIZEOF_SHORT == 4
+typedef short IceTInt32;
+typedef unsigned short IceTUnsignedInt32;
+#else
+#error "No valid data type for 32 bit integers found."
+#endif
+
+#if ICET_SIZEOF_INT == 8
+typedef int IceTInt64;
+typedef unsigned int IceTUnsignedInt64;
+#elif ICET_SIZEOF_LONG == 8
+typedef long IceTInt64;
+typedef unsigned long IceTUnsignedInt64;
+#elif defined(ICET_SIZEOF_LONG_LONG) && (ICET_SIZEOF_LONG_LONG == 8)
+typedef long long IceTInt64;
+typedef unsigned long long IceTUnsignedInt64;
+#elif defined(ICET_SIZEOF___INT64) && (ICET_SIZEOF___INT64 == 8)
+typedef __int64 IceTInt64;
+typedef unsigned __int64 IceTUnsignedInt64;
+#else
+#error "No valid data type for 64 bit integers found."
+#endif
+
+#if ICET_SIZEOF_FLOAT == 4
+typedef float IceTFloat32;
+#else
+#error "No valid data type for 32 bit floating point found."
+#endif
+
+#if ICET_SIZEOF_DOUBLE == 8
+typedef double IceTFloat64;
+#else
+#error "No valid data type for 64 bit floating point found."
+#endif
+
+#if ICET_SIZEOF_VOID_P == 4
+typedef IceTInt32 IceTPointerArithmetic;
+#elif ICET_SIZEOF_VOID_P == 8
+typedef IceTInt64 IceTPointerArithmetic;
+#else
+#error "Unexpected pointer size."
+#endif
+
+#define ICET_MAGIC_K_DEFAULT            @ICET_MAGIC_K@
+#define ICET_MAX_IMAGE_SPLIT_DEFAULT    @ICET_MAX_IMAGE_SPLIT@
+
+#cmakedefine ICET_USE_MPE
+
+#endif /*__IceTConfig_h*/

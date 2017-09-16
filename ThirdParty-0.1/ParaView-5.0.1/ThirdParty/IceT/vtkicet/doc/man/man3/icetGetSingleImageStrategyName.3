@@ -1,0 +1,83 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:53 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetGetSingleImageStrategyName" "3" "August 23, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetGetSingleImageStrategyName \-\- retrieve single image sub\-strategy name.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+const char *\fBicetGetSingleImageStrategyName\fP(	void	);
+.TE
+.PP
+.SH Description
+
+.PP
+\fBicetGetSingleImageStrategyName\fP
+retrieves a human\-readable name 
+for the current single image sub\-strategy. 
+.PP
+.SH Return Value
+
+.PP
+Returns a short, null terminated string identifying the single image 
+strategy currently in effect. Helpful for printing out debugging or 
+diagnostic statements. 
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Notes
+
+.PP
+The string returned does \fInot\fP
+contain the identifier used in a C 
+program. For example, if the current single image strategy is 
+\fBICET_SINGLE_IMAGE_STRATEGY_BSWAP\fP,
+\fBicetGetSingleImageStrategyName\fP
+returns ``Binary Swap,\&'' not 
+``ICET_SINGLE_IMAGE_STRATEGY_BSWAP.\&'' 
+.PP
+.SH Copyright
+
+Copyright (C)2010 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetGetStrategyName\fP(3),
+\fIicetSingleImageStrategy\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

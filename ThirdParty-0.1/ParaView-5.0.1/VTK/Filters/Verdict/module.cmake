@@ -1,0 +1,12 @@
+vtk_module(vtkFiltersVerdict
+  GROUPS
+    StandAlone
+  DEPENDS
+    vtkCommonExecutionModel
+    vtkverdict
+  TEST_DEPENDS
+    vtkIOLegacy
+    vtkTestingCore
+  KIT
+    vtkFilters
+  )

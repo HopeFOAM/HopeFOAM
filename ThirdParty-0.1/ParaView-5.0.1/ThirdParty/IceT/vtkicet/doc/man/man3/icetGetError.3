@@ -1,0 +1,99 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:53 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetGetError" "3" "August  9, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetGetError \-\- return the last error condition.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+GLenum \fBicetGetError\fP(	void	);
+.TE
+.PP
+.SH Description
+
+.PP
+Retrieves the first error or warning condition that occurred since the 
+last call to \fBicetGetError\fP
+or since program startup, whichever 
+happened last. 
+.PP
+Once an error condition has been retrieved with \fBicetGetError\fP,
+the 
+error condition is reset to no error and cannot be retrieved again. 
+.PP
+.SH Return Value
+
+.PP
+One of the following flags will be returned: 
+.TP
+\fBICET_INVALID_VALUE\fP
+ An inappropriate value has been 
+passed to a function. 
+.TP
+\fBICET_INVALID_OPERATION\fP
+ An inappropriate function has 
+been called. 
+.TP
+\fBICET_OUT_OF_MEMORY\fP
+ \fBIceT \fPhas ran out of memory for 
+buffer space. 
+.TP
+\fBICET_BAD_CAST\fP
+ A function has been passed a value of the 
+wrong type. 
+.TP
+\fBICET_INVALID_ENUM\fP
+ A function has been passed an invalid 
+constant. 
+.TP
+\fBICET_SANITY_CHECK_FAIL\fP
+ An internal error (or warning) 
+has occurred. 
+.TP
+\fBICET_NO_ERROR\fP
+ No error has been raised since the last 
+call to \fBicetGetError\fP\&.
+.PP
+.SH Bugs
+
+.PP
+It is not possible to tell if the returned value was caused by an error 
+or a warning. 
+.PP
+.SH Notes
+
+.PP
+The error value is \fInot\fP
+context dependent. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetDiagnostics\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

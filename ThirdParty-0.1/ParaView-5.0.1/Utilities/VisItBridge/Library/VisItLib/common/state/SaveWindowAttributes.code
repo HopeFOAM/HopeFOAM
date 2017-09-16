@@ -1,0 +1,66 @@
+Initialization: outputToCurrentDirectory
+#if defined(_WIN32)
+    outputToCurrentDirectory = false;
+#else
+    outputToCurrentDirectory = true;
+#endif
+
+Initialization: outputDirectory
+#if defined(_WIN32)
+    const char *visitHome = getenv("VISITUSERHOME");
+    if(visitHome != 0)
+    {
+        outputDirectory = std::string(visitHome) + "\\My images";
+    }
+    else
+    {
+        visitHome = getenv("VISITHOME");
+        if(visitHome != 0)
+        {
+            outputDirectory = std::string(visitHome) + "\\My images";
+        }
+        else
+        {
+            outputDirectory = ".";
+        }
+    }
+#else
+    outputDirectory = ".";
+#endif
+
+Function: CurrentFormatIsImageFormat
+Declaration: bool CurrentFormatIsImageFormat(void);
+Definition:
+// ****************************************************************************
+//  Method: CurrentFormatIsImageFormat
+//
+//  Purpose:
+//      Determines if the current file format is image-based.
+//
+//  Programmer: Hank Childs
+//  Creation:   October 15, 2003
+//
+// ****************************************************************************
+
+bool
+SaveWindowAttributes::CurrentFormatIsImageFormat(void)
+{
+    FileFormat ff = GetFormat();
+    if (ff == BMP)
+        return true;
+    if (ff == JPEG)
+        return true;
+    if (ff == PNG)
+        return true;
+    if (ff == POSTSCRIPT)
+        return true;
+    if (ff == PPM)
+        return true;
+    if (ff == RGB)
+        return true;
+    if (ff == TIFF)
+        return true;
+
+    return false;
+}
+

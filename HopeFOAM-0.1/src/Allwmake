@@ -1,0 +1,85 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Parse arguments for library compilation
+targetType=libso
+. $WM_PROJECT_DIR/wmake/scripts/AllwmakeParseArguments
+
+wmakeCheckPwd "$WM_PROJECT_DIR/src" || {
+    echo "Allwmake error: Current directory is not \$WM_PROJECT_DIR/src"
+    echo "    The environment variables are inconsistent with the installation."
+    echo "    Check the OpenFOAM entries in your dot-files and source them."
+    exit 1
+}
+
+[ -n "$FOAM_EXT_LIBBIN" ] || {
+    echo "Allwmake error: FOAM_EXT_LIBBIN not set"
+    echo "    Check the OpenFOAM entries in your dot-files and source them."
+    exit 1
+}
+
+set -x
+
+# Update OpenFOAM version strings if required
+wmakePrintBuild -check || wrmo OpenFOAM/global/global.o 2>/dev/null
+
+wmakeLnInclude OpenFOAM
+wmakeLnInclude OSspecific/${WM_OSTYPE:-POSIX}
+Pstream/Allwmake $targetType $*
+
+OSspecific/${WM_OSTYPE:-POSIX}/Allwmake $*
+wmake $targetType OpenFOAM
+
+wmake $targetType fileFormats
+wmake $targetType surfMesh
+wmake $targetType triSurface
+wmake $targetType meshTools
+wmake $targetType edgeMesh
+
+# Decomposition methods needed by dummyThirdParty
+# (dummy metisDecomp, scotchDecomp etc) needed by e.g. meshTools
+parallel/decompose/AllwmakeLnInclude
+dummyThirdParty/Allwmake $targetType $*
+
+wmakeLnInclude fvOptions
+
+wmake $targetType finiteVolume
+wmake $targetType lagrangian/basic
+wmake $targetType lagrangian/distributionModels
+wmake $targetType genericPatchFields
+
+wmake $targetType conversion
+wmake $targetType mesh/extrudeModel
+wmake $targetType dynamicMesh
+wmake $targetType sampling
+wmake $targetType dynamicFvMesh
+wmake $targetType topoChangerFvMesh
+
+# Compile scotchDecomp, metisDecomp etc.
+parallel/Allwmake $targetType $*
+
+wmake $targetType ODE
+wmake $targetType randomProcesses
+
+transportModels/Allwmake $targetType $*
+thermophysicalModels/Allwmake $targetType $*
+TurbulenceModels/Allwmake $targetType $*
+wmake $targetType combustionModels
+regionModels/Allwmake $targetType $*
+lagrangian/Allwmake $targetType $*
+mesh/Allwmake $targetType $*
+renumber/Allwmake $targetType $*
+fvAgglomerationMethods/Allwmake $targetType $*
+
+wmake $targetType fvMotionSolver
+wmake $targetType engine
+wmake $targetType fvOptions
+wmake $targetType regionCoupled
+
+functionObjects/Allwmake $targetType $*
+
+wmake $targetType sixDoFRigidBodyMotion
+wmake $targetType rigidBodyDynamics
+wmake $targetType rigidBodyMeshMotion
+
+#------------------------------------------------------------------------------

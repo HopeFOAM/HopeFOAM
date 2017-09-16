@@ -1,0 +1,285 @@
+/*--------------------------------------------------------------------------------------
+|     __  ______  ____  ______ |                                                       |
+|    / / / / __ \/ __ \/ ____/ | HopeFOAM: High Order Parallel Extensible CFD Software |
+|   / /_/ / / / / /_/ / __/    |                                                       |
+|  / __  / /_/ / ____/ /___    |                                                       |
+| /_/ /_/\____/_/   /_____/    | Copyright(c) 2017-2017 The Exercise Group, AMS, China.|
+|                              |                                                       |
+----------------------------------------------------------------------------------------
+
+License
+    This file is part of HopeFOAM, which is developed by Exercise Group, Innovation 
+    Institute for Defence Science and Technology, the Academy of Military Science (AMS), China.
+
+    HopeFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation, either version 3 of the License, or (at your
+    option) any later version.
+
+    HopeFOAM is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HopeFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Description
+    This is a guidebook for installing HopeFOAM which is based on OpenFOAM-4.0.
+    Compared with OpenFOAM installation, it is basically the same.
+
+\*---------------------------------------------------------------------------*/
+
+1.Pre-requisites
+    Compiler: GCC >= 4.8.0
+			  gfortran
+
+2.The first step is the same as the OpenFOAM-4.0 installation. Actually, this part is
+  used to install OpenFOAM-4.0 on the computer. There is some advice shown as below.
+  If there are still errors in the process of HopeFOAM installation, the website
+  <http://openfoamwiki.net/index.php/Installation> can give you a more detailed
+  installation process of OpenFOAM-4.0. 
+
+	(1) MPI, cmake, boost-1.55.0 and CGAL-4.8 are needed:
+		a. Install cmake and one type of mpi on the computer, and set the mpi type $WM_MPLIB and its
+		   installation path;
+		   
+		   Edit file HopeFOAM-0.1/etc/config.sh/mpi, modify $MPI_ARCH_PATH according to mpi type
+		   ------------------------------------------------------------------------
+		   $MPI_ARCH_PATH=<Installation path of mpi>
+		   ------------------------------------------------------------------------
+		   
+		   Edit file HopeFOAM-0.1/etc/bashrc. Then source it;
+		   ------------------------------------------------------------------------
+		   export WM_MPLIB=<MPI on computer>
+		   ------------------------------------------------------------------------
+		
+		b. According to your operating system type and compiler, modify the compiling
+		   option in directory of HopeFOAM-0.1/etc/wmake.
+		
+		c. Download boost-1.55.0 and CGAL-4.8 source code, unzip them to HopeFOAM/ThirdParty-0.1.
+		   Edit line 69 of Allwmake and make it the same as the path of libmpi.so: 
+		   ------------------------------------------------------------------------
+		   $MPI_ARCH_PATH/lib${WM_COMPILER_LIB_ARCH}/libmpi.so
+		   ------------------------------------------------------------------------
+		
+		d. Execute the command as below:
+		   --------------------------------------------------------------------------------------------
+		   cd $HOME/HopeFOAM
+		   sed -i -e 's/\(boost_version=\)boost-system/\1boost-1.55.0/' HopeFOAM-0.1/etc/config.sh/CGAL
+		   sed -i -e 's/\(cgal_version=\)cgal-system/\1CGAL-0.1/' HopeFOAM-0.1/etc/config.sh/CGAL
+		   sed -i -e 's=\-lmpfr=-lmpfr -lboost_thread=' HopeFOAM-0.1/wmake/rules/General/CGAL
+		   --------------------------------------------------------------------------------------------
+
+		e. Rename the source code folder of boost to "boost-1.55.0";
+		
+		f. Jump to /HoepFOAM/ThirdParty-0.1, and execute command ./Allwmake.
+	
+		Note：After these steps, the installation path of CGAL-4.8 and boost-1.55.0 is $CGAL_ARCH_PATH
+			  and $BOOST_ARCH_PATH. 
+			  
+			  Of course, you can manually install CGAL-4.8 and boost-1.55.0, and it is easy to find
+			  install guide from the Internet. "--with-libraries=thread --with-libraries=system" needs
+			  to be added as below, when you install boost-1.55.0.
+			  -----------------------------------------------------------------------------------------
+			  ./bootstrap.sh --with-libraries=thread --with-libraries=system
+			  -----------------------------------------------------------------------------------------
+			  
+			  After you install CGAL-4.8 and boost-1.55.0 in another directory, please
+			  set their path in /HopeFOAM/HopeFOAM-0.1/etc/config.sh/CGAL.
+			  
+			  
+	(2) Source HopeFOAM-0.1/etc/basrc to update environment variables of HoepFOAM.
+	
+    (3) Modify the type of MPI, Compiler, etc. Update configuration with source command.
+		
+        #Edit file $WM_PROJECT_DIR/etc/bashrc to modify some keywords.
+        -----------------------------------------------------------------------
+            WM_COMPILER_TYPE: set the compiler;
+        -----------------------------------------------------------------------
+			  
+	(4)Jump to the directory of $WM_PROJECT_DIR and install HopeFOAM.
+		
+	    ./AllwmakeOpenFOAM
+		
+3.After step 2, external packages are needed by HopeFOAM, and we need to install them to
+  install the rest part of HopeFOAM. First, Download PETSc-3.7.6 and SLEPC-3.7.4 source
+  code from
+  http://www.mcs.anl.gov/petsc/download/index.html
+  http://slepc.upv.es/download/download.htm
+
+
+3.Then, install PETSc-3.7.6 and SLEPC-3.7.4 on computer and make sure they run
+  normally. Installation guide of PETSc-3.7.6 and SLEPC-3.7.4 are shown as
+  Appendix 1 and 2 respectively.
+
+
+4.Next, add $PETSC_DIR and $SLEPC_DIR into $HOME/.bashrc, which are the installation
+  paths of PETSc and SLEPc, and add them to $LD_LIBRARY_DIR.(Note: Not the paths
+  of source code)
+
+    vi $HOME/.bashrc
+    #Add content below into $HOME/.bashrc
+    --------------------------------------------------------------------------
+        export PETSC_DIR=<Installation directory of PETSc-3.7.6>
+        export SLEPC_DIR=<Installation directory of SLEPc-3.7.4>
+		export LD_LIBRARY_PATH=<Installation directory of PETSc-3.7.6>/lib:$LD_LIBRARY_PATH
+		export LD_LIBRARY_PATH=<Installation directory of SLEPc-3.7.4>/lib:$LD_LIBRARY_PATH
+    --------------------------------------------------------------------------
+    source $HOME/.bashrc
+
+
+5.Finally, install the part of DG on your system.
+
+    ./AllwmakeDG
+	
+\**************************************************************************************/
+
+                   # # # # # # # # # # # # # # # # # # #
+                   #								   #
+                   #			Appendix 1			   #
+                   #								   #
+                   #	 PETSc-3.7.6  Installation     #
+				   #                                   #
+				   # # # # # # # # # # # # # # # # # # #
+/**************************************************************************************\
+
+1.Download the source code of PETSc-3.7.6.
+
+
+2.To install PETSc-3.7.6, lapack is needed. If your system does not install it, the
+  steps below are the lapack installation guide, which can also be found in its official
+  website<http://www.netlib.org/lapack/#_users_guide>.
+  
+  (1) Download lapack-3.5.0 source code from <http://www.netlib.org/lapack/#_lapack_version_3_5_0>.
+      Decompress source code package, and copy the file make.inc.example
+
+        tar -zxvf <source_code>.tgz
+		cd lapack-3.5.0
+		cp make.inc.example make.inc
+  
+  (2) Edit make.inc to suit your operating system and change the name of BLAS library
+      in make.inc.
+
+		------------------------------------------
+		BLASLIB      = ../../libblas.a
+		------------------------------------------
+  
+  (3) If your operating system has installed Blas, this step can be ignored.
+	  Change content of "Makefile" as shown below:
+
+        ------------------------------------------
+        lib: lapacklib tmglib
+        #lib: blaslib variants lapacklib tmglib
+        ------------------------------------------
+                        ||
+                       _||_ 
+                       \  /	
+					    \/
+        ------------------------------------------
+        #lib: lapacklib tmglib
+        lib: blaslib variants lapacklib tmglib
+        ------------------------------------------
+
+  (4) After these step, execute 'make' to finish lapack-3.5.0 installation:
+
+        make
+
+
+3.Then PETSc-3.7.6 installation can start. Decompress PETSc source code .tar.gz with
+  command:
+
+    tar -zxvf <source_code>.tar.gz
+
+
+4.To set some paths, compile source code in its directory with command:
+
+    ./configure --prefix=<Installation path of PETSC-3.7.6> --download-hypre 
+				--with-debugging=0 COPTFLAGS=-O3 CXXOPTFLAGS=-O3 --with-blas-lapack-dir=<lapack installation path>
+
+  Note: --prefix=<path>: used for setting installation path.
+            Installation path of PETSC-3.7.6 is different from the directory of source
+			code. You can choose the path by yourself as the installation directory.
+		--download-hypre: used for installing hypre(PETSc external package), which is
+            needed by HopeFOAM. If your operating system does not connect to the Internet,
+			you need to download the hypre external package by yourself and set the path
+			of hypre package:
+               --download-hypre=<Path of Hypre External Package>
+			The hypre package can be downloaded from its official website:
+			<https://computation.llnl.gov/projects/hypre-scalable-linear-solvers-multigrid-methods/software>
+		
+        --with-debugging=0 COPTFLAGS=-O3 CXXOPTFLAGS=-O3: used to set PETSc as be opt
+            version. If delete this option, PETSc will be debug version.
+
+        --with-mpi-dir=<MPI Path>: only used when your operating system has several
+            types of MPI. Then you need to select one of them.
+			
+		--with-blas-lapack-dir: used for setting lapack installation path.
+		
+        There are more compiling option on PETSc`s official website
+        <http://www.mcs.anl.gov/petsc/documentation/installation.html>.
+		Also, your can get help with command:
+		    ./configure --help
+	
+
+5.Finally, just follow the step given by system after each command. It will
+  be like below:
+
+    make PETSC_DIR=<source code path> PETSC_ARCH=arch-linux2-c-opt all
+	make PETSC_DIR=<source code path> PETSC_ARCH=arch-linux2-c-opt install
+	make PETSC_DIR=<installation path> PETSC_ARCH="" test
+
+    Note: After these commands, you can ignore the rest given by the system.
+          When the 3rd command finished, congratulations, you have installed
+		  PETSc-3.7.6 successfully.
+
+\**************************************************************************************/
+
+
+
+                    # # # # # # # # # # # # # # # # # # #
+					#                                   #
+					#            Appendix 2             #
+					#                                   #
+					#     SLEPc-3.7.4  Installation     #
+					#                                   #
+					# # # # # # # # # # # # # # # # # # #
+/**************************************************************************************\
+
+1. Download the source code of SLEPc-3.7.4.
+   Note: Before SLEPc installation, PETSc is necessary.
+
+
+2. Decompress SLEPc source code .tar.gz with command:
+
+    tar -zxvf <source_code>.tar.gz
+
+
+3. Go to source code directory, and check environment variables $PETSC_DIR and $PETSC_ARCH:
+
+    echo $PETSC_DIR
+
+   If $PETSC_DIR is different from your installation path of PETSc:
+
+    export PETSC_DIR=<PETSc installation path>
+
+4. Unset environment variable $PETSC_ARCH
+
+    unset PETSC_ARCH
+
+5. Set source code path as enviroment variable $SLEPC_DIR:
+
+    export SLEPC_DIR=<slepc source code path>
+
+6. Then excute commands as below:
+
+    ./configure --prefix=<installation path>
+	make
+	make install
+	export SLEPC_DIR=<installation path>
+
+    Note: Installation path is different from the source code path.
+          A video can give you more detail on its official website:
+		  http://slepc.upv.es/documentation/manual.htm
+
+\**************************************************************************************/

@@ -1,0 +1,86 @@
+'\" t
+.\" Manual page created with latex2man on Fri Sep 26 14:31:03 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetResetTiles" "3" "September 26, 2014" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetResetTiles \-\- clears out all tile definitions.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+void \fBicetResetTiles\fP(	void	);
+.TE
+.PP
+.SH Description
+
+.PP
+\fBIceT \fPdefines its display as a set of tiles. \fBicetResetTiles\fP
+will 
+empty this set. The set of tiles is filled again with calls to 
+\fBicetAddTile\fP\&.
+.PP
+As a side effect, \fBicetResetTiles\fP
+will also zero out the 
+renderable window size (specified with state variables 
+\fBICET_PHYSICAL_RENDER_WIDTH\fP
+and 
+\fBICET_PHYSICAL_RENDER_HEIGHT\fP).
+The size will be reset with 
+calls to \fBicetAddTile\fP\&.
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Notes
+
+.PP
+As a rule, a call to \fBicetResetTiles\fP
+should always be followed 
+with one or more calls to \fBicetAddTile\fP\&.
+\fBicetDrawFrame\fP,
+\fBicetCompositeImage\fP,
+and \fBicetGLDrawFrame\fP
+will not work 
+properly if no tiles are in existence. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetAddTile\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

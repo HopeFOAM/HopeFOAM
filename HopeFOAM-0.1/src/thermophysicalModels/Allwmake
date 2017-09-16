@@ -1,0 +1,27 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Parse arguments for library compilation
+targetType=libso
+. $WM_PROJECT_DIR/wmake/scripts/AllwmakeParseArguments
+set -x
+
+wmake $targetType specie
+wmake $targetType solidSpecie
+wmake $targetType thermophysicalFunctions
+./properties/Allwmake $targetType $*
+
+wmake $targetType basic
+wmake $targetType reactionThermo
+wmake $targetType laminarFlameSpeed
+wmake $targetType chemistryModel
+wmake $targetType barotropicCompressibilityModel
+wmake $targetType SLGThermo
+
+
+wmake $targetType solidThermo
+wmake $targetType solidChemistryModel
+
+wmake $targetType radiation
+
+#------------------------------------------------------------------------------

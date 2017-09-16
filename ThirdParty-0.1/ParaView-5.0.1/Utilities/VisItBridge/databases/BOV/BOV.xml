@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <Plugin name="BOV" type="database" label="BOV" version="1.0" enabled="true" mdspecificcode="false" onlyengine="false" noengine="false" dbtype="STMD" haswriter="true" hasoptions="false">
+    <LIBS>
+      ${ZLIB_LIB}
+    </LIBS>
+    <FilePatterns>
+      *.bov
+      *.npy
+    </FilePatterns>
+    <Attribute name="" purpose="" persistent="false" exportAPI="" exportInclude="">
+    </Attribute>
+  </Plugin>

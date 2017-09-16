@@ -1,0 +1,18 @@
+vtk_module(vtkIOMPIImage
+ IMPLEMENTS
+    vtkIOImage
+  GROUPS
+    MPI
+  DEPENDS
+    vtkParallelMPI
+    vtkIOImage
+  PRIVATE_DEPENDS
+    vtksys
+  TEST_DEPENDS
+    vtkTestingCore
+    vtkTestingRendering
+    vtkInteractionStyle
+    vtkRendering${VTK_RENDERING_BACKEND}
+  KIT
+    vtkParallel
+  )

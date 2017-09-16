@@ -1,0 +1,35 @@
+# Ignore editor and misc backup files - anywhere
+*~
+.*~
+*.bak
+*.bak[0-9][0-9]
+\#*\#
+
+# Ignore source packages - anywhere
+*.tar.bz2
+*.tar.gz
+*.tar
+*.tgz
+*.gtgz
+
+# Ignore build and platforms folders
+build/
+platforms/
+
+# Ignore deprecated scripts
+etc/relocateQt
+etc/tools/QtFunctions
+etc/wmakeFiles/libccmio/
+etc/wmakeFiles/tecio/
+makeQt
+
+# Ignore unpacked sources in the main directory (match pkg-ver)
+/*[-_][0-9]*
+
+# Include ParaView
+!/ParaView-5.0.1
+
+# Include scotch
+!/scotch_6.0.3
+
+# End-of-file

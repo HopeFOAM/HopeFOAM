@@ -1,0 +1,4 @@
+dgForces/dgForces.C
+dgForceCoeffs/dgForceCoeffs.C
+
+LIB = $(FOAM_LIBBIN)/libdgforces

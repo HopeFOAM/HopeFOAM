@@ -1,0 +1,386 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM.
+#
+#     OpenFOAM is free software: you can redistribute it and/or modify it
+#     under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+#     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+#     for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Script
+#     Allwmake
+#
+# Description
+#     Build script for ThirdParty
+#
+#------------------------------------------------------------------------------
+# run from third-party directory only
+cd ${0%/*} || exit 1
+wmakeCheckPwd "$WM_THIRD_PARTY_DIR" || {
+    echo "Error: Current directory is not \$WM_THIRD_PARTY_DIR"
+    echo "    The environment variables are inconsistent with the installation."
+    echo "    Check the OpenFOAM entries in your dot-files and source them."
+    exit 1
+}
+[ -n "$FOAM_EXT_LIBBIN" ] || {
+    echo "Error: FOAM_EXT_LIBBIN not set"
+    echo "    Check the OpenFOAM entries in your dot-files and source them."
+    exit 1
+}
+. etc/tools/ThirdPartyFunctions
+#------------------------------------------------------------------------------
+
+# export WM settings in a form that GNU configure recognizes
+[ -n "$WM_CC" ]         &&  export CC="$WM_CC"
+[ -n "$WM_CXX" ]        &&  export CXX="$WM_CXX"
+[ -n "$WM_CFLAGS" ]     &&  export CFLAGS="$WM_CFLAGS"
+[ -n "$WM_CXXFLAGS" ]   &&  export CXXFLAGS="$WM_CXXFLAGS"
+[ -n "$WM_LDFLAGS" ]    &&  export LDFLAGS="$WM_LDFLAGS"
+
+echo
+echo ========================================
+echo Start ThirdParty Allwmake
+echo ========================================
+echo
+
+
+echo ========================================
+echo Build MPI libraries if required
+echo
+case "$WM_MPLIB" in
+OPENMPI)
+    if [ -r $MPI_ARCH_PATH/lib${WM_COMPILER_LIB_ARCH}/libmpi.so ]
+    then
+        echo "    have $WM_MPLIB shared library ($FOAM_MPI)"
+        echo
+    elif [ -r $MPI_ARCH_PATH/lib${WM_COMPILER_LIB_ARCH}/libmpi.a ]
+    then
+        echo "    have $WM_MPLIB static library ($FOAM_MPI)"
+        echo
+    else
+    (
+        set -x
+        cd "${MPI_ARCH_PATH##*/}" || exit 1    # change to openmpi-VERSION
+
+        [ -e Makefile ] && make distclean 2>/dev/null
+        rm -rf $MPI_ARCH_PATH
+
+        # start with GridEngine support,
+        # it can be built without external libraries
+        configOpt="--with-sge"
+
+        # Infiniband support
+        # if [ -d /usr/local/ofed -a -d /usr/local/ofed/lib64 ]
+        # then
+        #     configOpt="$configOpt --with-openib=/usr/local/ofed"
+        #     configOpt="$configOpt --with-openib-libdir=/usr/local/ofed/lib64"
+        # fi
+
+        ./configure \
+            --prefix=$MPI_ARCH_PATH \
+            --disable-orterun-prefix-by-default \
+            --enable-shared --disable-static \
+            --libdir=$MPI_ARCH_PATH/lib${WM_COMPILER_LIB_ARCH} \
+            --enable-mpi-fortran=none \
+            --disable-mpi-profile \
+            $configOpt \
+            ;
+
+        make -j $WM_NCOMPPROCS && make install
+        make distclean
+    )
+    fi
+    ;;
+
+MPICH)
+    if [ -r $MPI_ARCH_PATH/lib/libmpich.so ]
+    then
+        echo "    have $WM_MPLIB shared library ($FOAM_MPI)"
+        echo
+        echo
+    elif [ -r $MPI_ARCH_PATH/lib/libmpich.a ]
+    then
+        echo "    have $WM_MPLIB static library ($FOAM_MPI)"
+        echo
+    else
+    (
+        set -x
+        cd $MPI_HOME || exit 1    # change to mpich-VERSION
+
+        [ -e Makefile ] && make distclean 2>/dev/null
+        rm -rf $MPI_ARCH_PATH
+        rm util/machines/machines.*
+
+        ./configure \
+            --prefix=$MPI_ARCH_PATH \
+            --without-mpe \
+            --disable-f77 \
+            --disable-f90 \
+            --disable-f90modules \
+            --disable-mpedbg \
+            --disable-devdebug \
+            --disable-debug \
+            --enable-sharedlib=$MPI_ARCH_PATH/lib \
+            --with-device=ch_p4 \
+            ;
+
+        # For MPICH2 below 1.5a1 uncomment this line and comment next
+        # make && make install
+
+        # For MPICH2 1.5a1 or above
+        make -j $WM_NCOMPPROCS && make install
+
+        make distclean
+
+        if [ -r $MPI_ARCH_PATH ]
+        then
+            cd $MPI_ARCH_PATH/bin
+            for file in *
+            do
+                sed s%$MPI_ARCH_PATH%'$MPI_ARCH_PATH'%g $file > temp.$$
+                mv temp.$$ $file
+                chmod 0755 $file
+            done
+
+            cd $MPI_ARCH_PATH/lib
+
+            if [ -r libmpich.so.1.0 ]
+            then
+                rm *.so
+                ln -s libmpich.so.1.0 libmpich.so
+            fi
+        fi
+    )
+    fi
+    ;;
+
+esac
+
+
+# get SCOTCH_VERSION, SCOTCH_ARCH_PATH
+if settings=`$WM_PROJECT_DIR/bin/foamEtcFile config.sh/scotch`
+then
+    . $settings
+else
+    echo
+    echo "Error: no config.sh/scotch settings"
+    echo
+fi
+
+# building scotch is still a bit of a pain
+echo ========================================
+echo "Build Scotch decomposition library $SCOTCH_VERSION"
+echo "    $SCOTCH_ARCH_PATH"
+
+# this needs generalizing
+scotchMakefile=../../etc/wmakeFiles/scotch/Makefile.inc.i686_pc_linux2.shlib-OpenFOAM-$WM_ARCH_OPTION$WM_LABEL_OPTION
+
+if [ -f $SCOTCH_ARCH_PATH/include/scotch.h \
+  -a -r $FOAM_EXT_LIBBIN/libscotch.so \
+  -a -r $FOAM_EXT_LIBBIN/libscotcherrexit.so ]
+then
+    echo "    scotch header in $SCOTCH_ARCH_PATH/include"
+    echo "    scotch libs   in $FOAM_EXT_LIBBIN"
+    echo
+else
+(
+    set -x
+    cd $SCOTCH_VERSION/src || exit 1
+
+    prefixDIR=$SCOTCH_ARCH_PATH
+    libDIR=$FOAM_EXT_LIBBIN
+
+    mkdir -p $prefixDIR 2>/dev/null
+    mkdir -p $libDIR 2>/dev/null
+
+    configOpt="prefix=$prefixDIR libdir=$libDIR"
+
+    if [ -f $scotchMakefile ]
+    then
+        rm -f Makefile.inc
+        ln -s $scotchMakefile Makefile.inc
+    fi
+
+    [ -f Makefile.inc ] || {
+        echo " Error: scotch needs an appropriate Makefile.inc"
+        exit 1
+    }
+
+    # handle non-gcc compilers
+    unset configEnv
+    [ "${WM_CC:-gcc}" != gcc ] && configEnv="CC=$WM_CC CCS=$WM_CC"
+
+    make realclean 2>/dev/null  # for safety
+
+    make -j $WM_NCOMPPROCS $configEnv scotch \
+    && make $configOpt install
+
+    # cleanup, could also remove Makefile.inc
+    make realclean 2>/dev/null
+)
+fi
+
+# verify existence of scotch include
+[ -f $SCOTCH_ARCH_PATH/include/scotch.h ] || {
+    echo
+    echo "    WARNING: required include file 'scotch.h' not found!"
+    echo
+}
+
+
+# build ptscotch if MPI (ThirdParty or system) is available
+if [ "${FOAM_MPI:-dummy}" != dummy ]
+then
+    echo ========================================
+    echo "Build PTScotch decomposition library $SCOTCH_VERSION (uses MPI)"
+    echo "    $SCOTCH_ARCH_PATH"
+    echo
+
+    if [ -f $SCOTCH_ARCH_PATH/include/$FOAM_MPI/ptscotch.h \
+      -a -r $FOAM_EXT_LIBBIN/$FOAM_MPI/libptscotch.so \
+      -a -r $FOAM_EXT_LIBBIN/$FOAM_MPI/libptscotcherrexit.so ]
+    then
+        echo "    ptscotch header in $SCOTCH_ARCH_PATH/include/$FOAM_MPI"
+        echo "    ptscotch libs   in $FOAM_EXT_LIBBIN/$FOAM_MPI"
+        echo
+    else
+    (
+        set -x
+        cd $SCOTCH_VERSION/src || exit 1
+
+        prefixDIR=$SCOTCH_ARCH_PATH
+        libDIR=$FOAM_EXT_LIBBIN/$FOAM_MPI
+        incDIR=$SCOTCH_ARCH_PATH/include/$FOAM_MPI
+
+        mkdir -p $prefixDIR 2>/dev/null
+        mkdir -p $libDIR 2>/dev/null
+
+        configOpt="prefix=$prefixDIR libdir=$libDIR includedir=$incDIR"
+
+        if [ -f $scotchMakefile ]
+        then
+            rm -f Makefile.inc
+            ln -s $scotchMakefile Makefile.inc
+        fi
+
+        [ -f Makefile.inc ] || {
+            echo " Error: scotch needs an appropriate Makefile.inc"
+            exit 1
+        }
+
+        # handle non-gcc compilers
+        unset configEnv
+        [ "${WM_CC:-gcc}" != gcc ] && configEnv="CC=$WM_CC CCS=$WM_CC"
+
+        make realclean 2>/dev/null  # for safety
+
+        make -j $WM_NCOMPPROCS $configEnv ptscotch \
+        && make $configOpt install
+
+        # cleanup, could also remove Makefile.inc
+        make realclean 2>/dev/null
+    )
+    fi
+
+    # verify existence of scotch include
+    [ -f $SCOTCH_ARCH_PATH/include/$FOAM_MPI/ptscotch.h ] || {
+        echo
+        echo "    WARNING: required include file 'ptscotch.h' not found!"
+        echo
+    }
+fi
+
+
+#------------------------------------------------------------------------------
+
+# Metis is optional
+echo ========================================
+echo Build Metis decomposition
+
+# get METIS_VERSION, METIS_ARCH_PATH
+if settings=`$WM_PROJECT_DIR/bin/foamEtcFile config.sh/metis`
+then
+    . $settings
+fi
+if [ -d "$METIS_VERSION" ]
+then
+
+    if [ -f $METIS_ARCH_PATH/include/metis.h \
+      -a -r $FOAM_EXT_LIBBIN/libmetis.so ]
+    then
+        echo "    metis header in $METIS_ARCH_PATH/include"
+        echo "    metis libs   in $FOAM_EXT_LIBBIN"
+        echo
+    else
+    (
+        set -x
+        cd $METIS_VERSION  || exit 1
+
+        if [ "$WM_PRECISION_OPTION" = "DP" ]
+        then
+            FLOAT_PRECISION=64
+        elif [ "$WM_PRECISION_OPTION" = "SP" ]
+        then
+            FLOAT_PRECISION=32
+        else
+            echo " Metis pre-configure error:"
+            echo "    WM_PRECISION_OPTION is neither DP nor SP"
+            exit 1
+        fi
+
+        # Change user settings automatically
+        sed -i -e 's=\(#define IDXTYPEWIDTH\).*=\1 '$WM_LABEL_SIZE'=' \
+               -e 's=\(#define REALTYPEWIDTH\).*=\1 '$FLOAT_PRECISION'=' \
+            include/metis.h
+
+        make config shared=1 prefix=$METIS_ARCH_PATH
+        make -j $WM_NCOMPPROCS install
+        cp $METIS_ARCH_PATH/lib/libmetis.so $FOAM_EXT_LIBBIN
+    )
+    fi
+else
+    echo "    optional component Metis was not found"
+fi
+
+
+# CGAL is optional
+echo ========================================
+echo Build CGAL
+if [ -n "$CGAL_ARCH_PATH" ]
+then
+(
+    if [ -r $CGAL_ARCH_PATH/lib/libCGAL.so ]
+    then
+        echo "    CGAL headers in $CGAL_ARCH_PATH/include"
+        echo "    CGAL libs    in $CGAL_ARCH_PATH/lib"
+    else
+        ./makeCGAL
+    fi
+)
+else
+    echo "    optional component was not found"
+fi
+
+echo
+echo ========================================
+echo Done ThirdParty Allwmake
+echo ========================================
+echo
+
+
+#------------------------------------------------------------------------------

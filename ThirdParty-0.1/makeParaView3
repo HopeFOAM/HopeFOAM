@@ -1,0 +1,331 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM.
+#
+#     OpenFOAM is free software: you can redistribute it and/or modify it
+#     under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+#     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+#     for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Script
+#     makeParaView3
+#
+# Description
+#     Make and install paraview for version 3.14.1 and higher
+#     - place the paraview source under $WM_THIRD_PARTY_DIR/ParaView-VERSION
+#       (note capitalisation)
+#
+#------------------------------------------------------------------------------
+# run from third-party directory only
+cd ${0%/*} || exit 1
+wmakeCheckPwd "$WM_THIRD_PARTY_DIR" || {
+    echo "Error: Current directory is not \$WM_THIRD_PARTY_DIR"
+    echo "    The environment variables are inconsistent with the installation."
+    echo "    Check the OpenFOAM entries in your dot-files and source them."
+    exit 1
+}
+. etc/tools/ThirdPartyFunctions
+. etc/tools/ParaView3Functions
+#------------------------------------------------------------------------------
+#
+# USER OPTIONS:
+# ~~~~~~~~~~~~~
+
+# MPI support:
+withMPI=false
+MPI_MAX_PROCS=32
+
+# Python support:
+# note: script will try to determine the appropriate python library.
+#       If it fails, specify the path using the PYTHON_LIBRARY variable
+withPYTHON=false
+PYTHON_LIBRARY=""
+# PYTHON_LIBRARY="/usr/lib64/libpython2.6.so.1.0"
+
+# MESA graphics support:
+withMESA=false
+MESA_INCLUDE="/usr/include/GL"
+MESA_LIBRARY="/usr/lib64/libOSMesa.so"
+
+# extra QT gui support (useful for some third party apps)
+withQT=true
+
+# Set the path to the Qt-4.5 (or later) qmake if the system Qt is older
+QMAKE_PATH=""
+
+# Set the path to cmake
+CMAKE_PATH=""
+
+#
+# NO FURTHER EDITING BELOW THIS LINE
+#
+#-----------------------------------------------------------------------------
+Script=${0##*/}
+
+usage() {
+    while [ "$#" -ge 1 ]; do echo "$1"; shift; done
+    cat<<USAGE
+
+usage: $Script [OPTION] [CMAKE-OPTION]
+options:
+  -rebuild          for repeated builds (-make -install) *use with caution*
+  -mesa             with mesa (if not already enabled)
+  -mpi              with mpi (if not already enabled)
+  -python           with python (if not already enabled)
+  -cmake PATH       with the cmake version corresponding to the cmake path given
+  -qmake PATH       with the Qt version corresponding to the qmake path given
+  -qt               with extra Qt gui support (if not already enabled)
+  -qt-VER           with Qt version corresponding to
+                        \$WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/qt-VER/bin/qmake
+  -gcc              force g++ instead of the value from \$WM_CXX
+  -verbose          verbose output in Makefiles
+  -version VER      specify an alternative version (current value: $ParaView_VERSION)
+  -major   VER      specify an alternative major version for special builds
+  -mesa-include DIR
+                    location of mesa headers (current value: ${MESA_INCLUDE:-none})
+  -mesa-lib PATH    path to mesa library     (current value: ${MESA_LIBRARY:-none})
+  -python-lib PATH  path to python library   (current value: ${PYTHON_LIBRARY:-none})
+  -help
+
+The -no-FEATURE option can be disable these features (if not already disabled):
+  mesa mpi python qt
+
+CMake options start with a capital letter and contain an '='.
+For example,
+    $Script BUILD_TESTING=ON PARAVIEW_GENERATE_PROXY_DOCUMENTATION=OFF
+to add tests and avoid building documentation
+
+For finer control, the build stages can be selected or deselected individually:
+  -config    -no-config
+  -make      -no-make
+  -install   -no-install
+
+
+* Make and install paraview-$ParaView_VERSION located under
+      \$WM_THIRD_PARTY_DIR/ParaView-$ParaView_VERSION
+  ->  \$WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER/paraview-$ParaView_VERSION
+
+USAGE
+    exit 1
+}
+
+#------------------------------------------------------------------------------
+
+# ensure CMake gets the correct C++ compiler
+[ -n "$WM_CXX" ] && export CXX="$WM_CXX"
+[ -n "$WM_CC" ] && export CC="$WM_CC"
+
+#
+# add options based on script name:
+#
+case "$Script" in *-mesa*)   withMESA=true;; esac
+case "$Script" in *-mpi*)    withMPI=true;; esac
+case "$Script" in *-python*) withPYTHON=true;; esac
+case "$Script" in *-qt*)     withQT=true;; esac
+
+# set ParaView_MAJOR based on current value of ParaView_VERSION
+setVersion
+
+#
+# various building stages
+#
+unset runCONFIG runMAKE runINSTALL
+runDEFAULT=true
+
+# parse options
+while [ "$#" -gt 0 ]
+do
+    case "$1" in
+    -h | -help)
+        usage
+        ;;
+    [A-Z]*=*)            # cmake variables
+        addCMakeVariable "$1"
+        shift
+        ;;
+    -gcc)
+        export CXX=g++   # use g++
+        shift
+        ;;
+    -config)             # stage 1: config only
+        runCONFIG=true
+        unset runDEFAULT
+        shift
+        ;;
+    -no-config)
+        runCONFIG=false
+        shift
+        ;;
+    -make)               # stage 2: make only
+        runMAKE=true
+        unset runDEFAULT
+        shift
+        ;;
+    -no-make)
+        runMAKE=false
+        shift
+        ;;
+    -install)            # stage 3: install only
+        runINSTALL=true
+        unset runDEFAULT
+        shift
+        ;;
+    -no-install)
+        runINSTALL=false
+        shift
+        ;;
+    -rebuild)            # shortcut for rebuilding
+        runMAKE=true
+        runINSTALL=true
+        unset runDEFAULT
+        shift
+        ;;
+    -mesa)
+        withMESA=true
+        shift
+        ;;
+    -no-mesa)
+        withMESA=false
+        shift
+        ;;
+    -mesa-include)
+        [ "$#" -ge 2 ] || usage "'$1' option requires an argument"
+        MESA_INCLUDE="$2"
+        shift 2
+        ;;
+    -mesa-lib)
+        [ "$#" -ge 2 ] || usage "'$1' option requires an argument"
+        MESA_LIBRARY="$2"
+        shift 2
+        ;;
+    -mpi)
+        withMPI=true
+        shift
+        ;;
+    -no-mpi)
+        withMPI=false
+        shift
+        ;;
+    -python)
+        withPYTHON=true
+        shift
+        ;;
+    -no-python)
+        withPYTHON=false
+        shift
+        ;;
+    -python-lib)
+        [ "$#" -ge 2 ] || usage "'$1' option requires an argument"
+        PYTHON_LIBRARY="$2"
+        shift 2
+        ;;
+    -cmake)
+        [ "$#" -ge 2 ] || usage "'$1' option requires an argument"
+        CMAKE_PATH=$2
+        shift 2
+        ;;
+    -qmake)
+        [ "$#" -ge 2 ] || usage "'$1' option requires an argument"
+        QMAKE_PATH=$2
+        shift 2
+        ;;
+    -qt)
+        withQT=true
+        shift
+        ;;
+    -no-qt)
+        withQT=false
+        shift
+        ;;
+    -qt-[1-9]*)
+        QMAKE_PATH="$installBASE/${1##-}"
+        shift
+        ;;
+    -verbose)
+        withVERBOSE=true
+        shift
+        ;;
+    -version)
+        [ "$#" -ge 2 ] || usage "'$1' option requires an argument"
+        setVersion "$2"
+        shift 2
+        ;;
+    -major)
+        [ "$#" -ge 2 ] || usage "'$1' option requires an argument"
+        export ParaView_MAJOR="$2"
+        shift 2
+        ;;
+    *)
+        usage "unknown option/argument: '$*'"
+        ;;
+    esac
+done
+
+
+if [ "$runDEFAULT" = true ]
+then
+    : ${runCONFIG:=true}
+    : ${runMAKE:=true}
+    : ${runINSTALL:=true}
+fi
+
+
+# Set configure options
+#~~~~~~~~~~~~~~~~~~~~~~
+addVerbosity        # verbose makefiles
+addMpiSupport       # set MPI-specific options
+addPythonSupport    # set Python-specific options
+addMesaSupport      # set MESA-specific options
+addQtSupport        # add extra Qt support
+
+setDirs             # where things are or should be put
+echoDateStamp       # report kitware source code date-stamp
+
+
+# Build and install
+# ~~~~~~~~~~~~~~~~~
+cat<<SUMMARY
+
+Build stages selected
+---------------------
+    -config   ${runCONFIG:-false}
+    -make     ${runMAKE:-false}
+    -install  ${runINSTALL:-false}
+---------------------
+Features selected
+    mesa      ${withMESA:-false}
+    mpi       ${withMPI:-false}
+    python    ${withPYTHON:-false}
+    qt        ${withQT:-false}
+---------------------
+Version information
+    qt        ${QtVersion:-none}
+    version   ${ParaView_VERSION:-unknown}
+    major     ${ParaView_MAJOR:-unknown}
+$(checkVersion)
+---------------------
+SUMMARY
+
+[ "$runCONFIG"  = true ] && configParaView
+[ "$runMAKE"    = true ] && makeParaView
+[ "$runINSTALL" = true ] && installParaView
+
+echo
+echo Done
+
+#------------------------------------------------------------------------------

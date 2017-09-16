@@ -1,0 +1,3 @@
+dgChorinFoam.C
+
+EXE = ../dgChorinFoamCylinder

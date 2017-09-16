@@ -1,0 +1,11 @@
+vtk_module(vtkPVServerImplementationCore
+  GROUPS
+    ParaViewCore
+  DEPENDS
+    vtkPVClientServerCoreCore
+    vtkprotobuf
+  PRIVATE_DEPENDS
+    vtksys
+  TEST_LABELS
+    PARAVIEW
+)

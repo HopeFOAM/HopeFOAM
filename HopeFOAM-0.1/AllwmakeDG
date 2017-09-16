@@ -1,0 +1,33 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+if [ -e "$PETSC_DIR" ]
+then
+    echo "PETSC_DIR=${PETSC_DIR}"
+else
+    echo "PETSC_DIR not exist. Please add it to $HOME/.bashrc"
+	exit 1
+fi
+
+if [ -e "$SLEPC_DIR" ]
+then
+    echo "SLEPC_DIR=${SLEPC_DIR}"
+else
+    echo "SLEPC_DIR not exist. Please add it to $HOME/.bashrc"
+	exit 1
+fi
+
+# Parse arguments for library compilation
+targetType=libso
+. $WM_PROJECT_DIR/wmake/scripts/AllwmakeParseArguments
+set -x
+
+wmake $targetType
+wmake $targetType $FOAM_SRC/functionObjects/dgForces
+wmake $targetType $FOAM_APP/utilities/DG/dgToVTK/dgToVTK
+wmake $FOAM_APP/utilities/DG/dgToVTK
+wmake $FOAM_APP/utilities/DG/dgDecomposePar
+wmake $FOAM_APP/utilities/DG/dgReconstructPar
+wmake $FOAM_APP/utilities/DG/applyCurveBoundary
+
+#------------------------------------------------------------------------------

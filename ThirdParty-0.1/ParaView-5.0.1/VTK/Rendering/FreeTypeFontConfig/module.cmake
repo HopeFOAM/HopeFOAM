@@ -1,0 +1,12 @@
+vtk_module(vtkRenderingFreeTypeFontConfig
+  IMPLEMENTS
+    vtkRenderingFreeType
+  TEST_DEPENDS
+    vtkChartsCore
+    vtkTestingRendering
+    vtkViewsContext2D
+    vtkRenderingContext${VTK_RENDERING_BACKEND}
+  EXCLUDE_FROM_WRAPPING
+  KIT
+    vtkRendering
+  )

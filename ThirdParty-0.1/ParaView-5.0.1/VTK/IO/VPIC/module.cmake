@@ -1,0 +1,12 @@
+vtk_module(vtkIOVPIC
+  DEPENDS
+    vtkVPIC
+    vtkCommonExecutionModel
+    vtkParallelCore
+  TEST_DEPENDS
+    vtkRendering${VTK_RENDERING_BACKEND}
+    vtkTestingRendering
+    vtkInteractionStyle
+  KIT
+    vtkParallel
+  )

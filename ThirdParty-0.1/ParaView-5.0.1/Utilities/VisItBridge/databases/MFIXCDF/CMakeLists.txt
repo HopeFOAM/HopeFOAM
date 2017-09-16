@@ -1,0 +1,20 @@
+
+
+set(SOURCES
+  avtMFIXCDFFileFormat.C
+  avtMFIXCDFFileFormat.h
+  avtMFIXCDFOptions.C
+  avtMFIXCDFFileFormat.C
+  MFIXCDFPluginInfo.C
+  MFIXCDFEnginePluginInfo.C
+  MFIXCDFCommonPluginInfo.C
+  MFIXCDFMDServerPluginInfo.C
+  )
+
+
+ADD_VISIT_READER(VisItMFIXCDFReader "1.0"
+  VISIT_READER_TYPE "STMD"
+  VISIT_READER_NAME "avtMFIXCDFFileFormat"
+  VISIT_READER_USES_OPTIONS ON
+  SERVER_SOURCES ${SOURCES}
+  )

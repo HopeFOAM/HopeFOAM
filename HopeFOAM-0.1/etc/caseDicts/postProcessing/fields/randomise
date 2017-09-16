@@ -1,0 +1,21 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Web:      www.OpenFOAM.org
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+Description
+    Adds a random component to a field, with a specified perturbation
+    magnitude.
+
+\*---------------------------------------------------------------------------*/
+
+#includeEtc "caseDicts/postProcessing/fields/randomise.cfg"
+
+field           <fieldName>;
+
+// Set the magnitude of the perturbation
+magPerturbation <scalar>;
+
+// ************************************************************************* //

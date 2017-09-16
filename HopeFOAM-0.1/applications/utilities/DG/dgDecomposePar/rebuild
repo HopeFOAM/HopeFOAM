@@ -1,0 +1,5 @@
+rm -f nohup.out
+wclean
+wcleanAll
+nohup wmake &
+

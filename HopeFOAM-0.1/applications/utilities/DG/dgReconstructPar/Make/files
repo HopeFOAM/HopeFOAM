@@ -1,0 +1,5 @@
+processorDgMeshes.C
+dgFieldReconstructor.C
+dgReconstructPar.C
+
+EXE = $(FOAM_APPBIN)/dgReconstructPar

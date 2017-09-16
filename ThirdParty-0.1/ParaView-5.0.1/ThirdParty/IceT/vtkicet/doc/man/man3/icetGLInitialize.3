@@ -1,0 +1,78 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:54 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetGLInitialize" "3" "August  9, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetGLInitialize \-\- initialize the \fBIceT \fP\fbOpenGL \fPlayer\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceTGL.h>
+.PP
+.TS H
+l l l .
+void \fBicetGLInitialize\fP(	void	);
+.TE
+.PP
+.SH Description
+
+.PP
+Initializes the \fbOpenGL \fPlayer of \fBIceT \fP\&.\fBicetGLInitialize\fP
+must be 
+called before any other function starting with icetGL
+(except 
+\fBicetGLIsInitialized\fP).
+.PP
+Management for the \fbOpenGL \fPlayer is held in the state of the current 
+\fBIceT \fPcontext. Thus, \fBicetGLInitialize\fP
+must be called once per 
+\fBIceT \fPcontext. If you are using a context for rendering with \fbOpenGL \fP,it 
+is recommended that you call \fBicetGLInitialize\fP
+immediately after 
+calling \fBicetCreateContext\fP\&.
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+.TP
+\fBICET_INVALID_OPERATION\fP
+ \fBicetGLInitialize\fP
+is called twice for the same context. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Copyright
+
+Copyright (C)2010 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetCreateContext\fP(3),
+\fIicetGLIsInitialized\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

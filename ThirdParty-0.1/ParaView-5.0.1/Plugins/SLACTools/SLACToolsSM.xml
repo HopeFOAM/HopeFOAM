@@ -1,0 +1,161 @@
+<ServerManagerConfiguration>
+  <ProxyGroup name="filters">
+
+    <SourceProxy name="SamplePlaneSource" class="vtkSamplePlaneSource"
+                 label="Sample Plane Source">
+      <Documentation long_help="Internal filter for creating planes with even samping."
+                     short_help="Plane for sampling other data.">
+        Internal for creating planes to use for probing.
+      </Documentation>
+
+      <InputProperty name="Input" command="SetInputConnection">
+        <ProxyGroupDomain name="groups">
+          <Group name="sources" />
+          <Group name="filters" />
+        </ProxyGroupDomain>
+        <DataTypeDomain name="input_type">
+          <DataType value="vtkDataSet" />
+        </DataTypeDomain>
+        <Documentation>
+          The input of this filter simply provides the bounds that will be used
+          to set the size of the plane.
+        </Documentation>
+      </InputProperty>
+
+      <DoubleVectorProperty name="Center"
+                            command="SetCenter"
+                            number_of_elements="3"
+                            default_values="0.0 0.0 0.0">
+        <Documentation>
+          The center of the geometry created.
+        </Documentation>
+        <BoundsDomain name="range" mode="normal" default_mode="mid">
+          <RequiredProperties>
+            <Property name="Input" function="Input" />
+          </RequiredProperties>
+        </BoundsDomain>
+      </DoubleVectorProperty>
+
+      <DoubleVectorProperty name="Normal"
+                            command="SetNormal"
+                            number_of_elements="3"
+                            default_values="0.0 0.0 1.0">
+        <Documentation>
+          The normal to the plane.
+        </Documentation>
+        <DoubleRangeDomain name="range" />
+      </DoubleVectorProperty>
+
+      <IntVectorProperty name="Resolution"
+                         command="SetResolution"
+                         number_of_elements="1"
+                         default_values="100">
+        <Documentation>
+          The number of probe samples to have in each direction.
+        </Documentation>
+      </IntVectorProperty>
+
+      <Hints>
+        <PropertyGroup type="Plane">
+          <Property name="Center" function="Origin" />
+          <Property name="Normal" function="Normal" />
+        </PropertyGroup>
+      </Hints>
+
+    </SourceProxy> <!-- SamplePlaneSource -->
+
+    <SourceProxy name="PlaneGlyphs" class="vtkSLACPlaneGlyphs"
+                 label="Plane Glyphs">
+      <Documentation
+        long_help="Create evenly spaced glyphs on the plane."
+        short_help="Create evenly spaced glyphs on the plane.">
+        This filter probes a volume with regularly spaced samples on a
+        plane and generates oriented glyphs.  It also supports some special
+        scaling of the glyphs to look nice on electric field data.
+      </Documentation>
+
+      <InputProperty name="Input" command="SetInputConnection">
+        <ProxyGroupDomain name="groups">
+          <Group name="sources" />
+          <Group name="filters" />
+        </ProxyGroupDomain>
+        <DataTypeDomain name="input_type">
+          <DataType value="vtkDataSet" />
+        </DataTypeDomain>
+        <Documentation>
+          The input of this filter simply provides the bounds that will be used
+          to set the size of the plane.
+        </Documentation>
+      </InputProperty>
+
+      <DoubleVectorProperty name="Center"
+                            command="SetCenter"
+                            number_of_elements="3"
+                            default_values="0.0 0.0 0.0">
+        <Documentation>
+          The center of the geometry created.
+        </Documentation>
+        <BoundsDomain name="range" mode="normal" default_mode="mid">
+          <RequiredProperties>
+            <Property name="Input" function="Input" />
+          </RequiredProperties>
+        </BoundsDomain>
+      </DoubleVectorProperty>
+
+      <DoubleVectorProperty name="Normal"
+                            command="SetNormal"
+                            number_of_elements="3"
+                            default_values="0.0 0.0 1.0">
+        <Documentation>
+          The normal to the plane.
+        </Documentation>
+        <DoubleRangeDomain name="range" />
+      </DoubleVectorProperty>
+
+      <IntVectorProperty name="Resolution"
+                         command="SetResolution"
+                         number_of_elements="1"
+                         default_values="10">
+        <Documentation>
+          The number of probe samples to have in each direction.
+        </Documentation>
+      </IntVectorProperty>
+
+      <Hints>
+        <PropertyGroup type="Plane">
+          <Property name="Center" function="Origin" />
+          <Property name="Normal" function="Normal" />
+        </PropertyGroup>
+      </Hints>
+
+    </SourceProxy> <!-- PlaneGlyphs -->
+
+    <SourceProxy name="TemporalRanges" class="vtkPTemporalRanges"
+                 label="Temporal Ranges">
+      <Documentation long_help="Internal filter for finding information about ranges over time."
+                     short_help="Find ranges for all time.">
+        Internal filter for computing the ranges of fields over all time steps.
+      </Documentation>
+
+      <InputProperty name="Input" command="SetInputConnection">
+        <ProxyGroupDomain name="groups">
+          <Group name="sources" />
+          <Group name="filters" />
+        </ProxyGroupDomain>
+        <DataTypeDomain name="input_type">
+          <DataType value="vtkDataSet" />
+        </DataTypeDomain>
+        <Documentation>
+          The input, which should be defined over time to make things
+          interesting.
+        </Documentation>
+      </InputProperty>
+
+      <Hints>
+        <View type="SpreadSheetView" />
+      </Hints>
+
+    </SourceProxy> <!-- TemporalRanges -->
+
+  </ProxyGroup> <!-- filters -->
+</ServerManagerConfiguration>

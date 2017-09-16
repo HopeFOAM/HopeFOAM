@@ -1,0 +1,10 @@
+vtk_module(vtkFiltersTexture
+  GROUPS
+    StandAlone
+  DEPENDS
+    vtkFiltersGeneral
+  TEST_DEPENDS
+    vtkRendering${VTK_RENDERING_BACKEND}
+  KIT
+    vtkFilters
+  )

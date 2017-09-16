@@ -1,0 +1,12 @@
+vtk_module(vtkIOGeoJSON
+  DEPENDS
+    vtkCommonDataModel
+    vtkFiltersCore
+    vtkIOCore
+  PRIVATE_DEPENDS
+    vtkjsoncpp
+  TEST_DEPENDS
+    vtkTestingCore
+  KIT
+    vtkIO
+  )

@@ -1,0 +1,89 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:54 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetPhysicalRenderSize" "3" "August  9, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetPhysicalRenderSize \-\- set the size of images that are rendered\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+void \fBicetPhysicalRenderSize\fP(	IceTInt	\fIwidth\fP,
+	IceTInt	\fIheight\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+Specify the size of images that are rendered with 
+\fBicetPhysicalRenderSize\fP\&.
+This is the size of image that is 
+expected to be rendered by the draw callback (specified with 
+\fBicetDrawCallback\fP).
+The width and height are captured in the 
+\fBICET_PHYSICAL_RENDER_WIDTH\fP
+and 
+\fBICET_PHYSICAL_RENDER_HEIGHT\fP
+state variables. 
+.PP
+The size of images that are rendered do not have to be the same size as 
+the tile they are rendering so long as they are not smaller in any 
+dimension. In fact, when rendering multiple tiles it can often save time 
+to render larger images. Nevertheless, by default the physical render 
+size is set to the size of the tiles in \fBicetAddTile\fP
+because this 
+is the most common use case. 
+.PP
+When using the \fbOpenGL \fPrendering layer, the physical rendering size is 
+overridden to the size of the \fbOpenGL \fPviewport in each call to 
+\fBicetGLDrawFrame\fP\&.
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+.TP
+\fBICET_INVALID_VALUE\fP
+ The \fIwidth\fP
+or \fIheight\fP
+specified is smaller than that for 
+the largest tile. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Copyright
+
+Copyright (C)2010 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetAddTile\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

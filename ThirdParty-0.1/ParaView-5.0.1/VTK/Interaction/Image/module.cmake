@@ -1,0 +1,13 @@
+vtk_module(vtkInteractionImage
+  GROUPS
+    Imaging
+    Rendering
+  DEPENDS
+    vtkRenderingCore
+    vtkRenderingFreeType
+    vtkImagingColor
+    vtkInteractionStyle
+    vtkInteractionWidgets
+  KIT
+    vtkInteraction
+  )

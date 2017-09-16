@@ -1,0 +1,75 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:53 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetGetContext" "3" "August  9, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetGetContext \-\- retrieves the current context\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+\fBIceTContext\fP \fBicetGetContext\fP(	void	);
+.TE
+.PP
+.SH Description
+
+.PP
+The \fBicetGetContext\fP
+function retrieves the handle for the current 
+context. This handle may be stored and set for later use with 
+\fBicetSetContext\fP
+(assuming the context has not been since 
+destroyed). 
+.PP
+.SH Return Value
+
+.PP
+A handle for the current context. 
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetSetContext\fP(3),
+\fIicetCreateContext\fP(3),
+\fIicetDestroyContext\fP(3),
+\fIicetCopyState\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

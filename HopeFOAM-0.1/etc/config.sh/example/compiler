@@ -1,0 +1,67 @@
+#----------------------------------*-sh-*--------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM.
+#
+#     OpenFOAM is free software: you can redistribute it and/or modify it
+#     under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+#     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+#     for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+#
+# File
+#     config.sh/example/compiler
+#
+# Description
+#     Example of fine tuning compiler versions and settings for OpenFOAM
+#     Sourced from OpenFOAM-<VERSION>/etc/config.sh/settings
+#
+#------------------------------------------------------------------------------
+
+# First load the standard versions, if necessary
+foamFile=$($WM_PROJECT_DIR/bin/foamEtcFile -mode o config.sh/compiler \
+               2>/dev/null)
+[ $? -eq 0 ] && _foamSource $foamFile
+unset foamFile
+
+
+# Override compiler settings
+case "$WM_COMPILER" in
+Gcc46 | Gcc46++0x)
+    gcc_version=gcc-4.6.0
+    gmp_version=gmp-5.0.1
+    mpfr_version=mpfr-2.4.2
+    mpc_version=mpc-0.8.1
+    ;;
+Gcc45 | Gcc45++0x)
+    gcc_version=gcc-4.5.2
+    gmp_version=gmp-5.0.1
+    mpfr_version=mpfr-2.4.2
+    mpc_version=mpc-0.8.1
+    ;;
+Gcc48u)
+    # Example of using the system GCC 4.8 in Ubuntu 15.10. Keep in mind you
+    # will also need to create respective directory in "wmake/rules"
+    export WM_CC='gcc-4.8'
+    export WM_CXX='g++-4.8'
+    ;;
+Icc)
+    # Example for ensuring that 3rd software uses the Icc compilers
+    export WM_CC='icc'
+    export WM_CXX='icpc'
+    ;;
+esac
+
+#------------------------------------------------------------------------------

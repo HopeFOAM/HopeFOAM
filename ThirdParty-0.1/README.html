@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>OpenFOAM-dev Third-Party packages</title>
+<!-- 2016-05-31 Tue 09:15 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">OpenFOAM-dev Third-Party packages</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Description</a></li>
+<li><a href="#sec-2">2. Order of execution:</a>
+<ul>
+<li><a href="#sec-2-1">2.1. Optional</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. Versions and locations to download the third party packages</a>
+<ul>
+<li><a href="#sec-3-1">3.1. Gcc C++ Compiler</a></li>
+<li><a href="#sec-3-2">3.2. Parallel Processing</a>
+<ul>
+<li><a href="#sec-3-2-1">3.2.1. Scotch</a></li>
+<li><a href="#sec-3-2-2">3.2.2. OpenMPI</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-3">3.3. ParaView</a></li>
+<li><a href="#sec-3-4">3.4. CGAL</a></li>
+<li><a href="#sec-3-5">3.5. Miscellaneous</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. Notes</a>
+<ul>
+<li><a href="#sec-4-1">4.1. Building ParaView-4.3.1/4.4.0/5.0.0/5.0.1</a></li>
+<li><a href="#sec-4-2">4.2. Building ParaView-5.0.1 with gcc-6.1.0</a>
+<ul>
+<li><a href="#sec-4-2-1">4.2.1. Add support for gcc-6.?.?</a></li>
+<li><a href="#sec-4-2-2">4.2.2. SciberQuestToolKit</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-3">4.3. Building ParaView-4.1.0</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Description</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Scripts for building third-party packages.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Order of execution:</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>makeGcc   (recommended if the system gcc is &lt; 4.7)
+</li>
+<li>Allwmake  (Builds OpenMPI, Scotch etc.)
+</li>
+<li>makeCmake (if the system cmake version is &lt; 2.8.8)
+</li>
+<li>makeParaView
+</li>
+</ul>
+</div>
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Optional</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>AllwmakeLibccmio (Only required for conversion of STAR-CCM+ meshes)
+</li>
+<li>Allclean (Only required to save disk space)
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Versions and locations to download the third party packages</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Gcc C++ Compiler</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+The minimum version of gcc required is 4.5.0
+</p>
+<ul class="org-ul">
+<li>gcc   <a href="http://gcc.gnu.org/releases.html">http://gcc.gnu.org/releases.html</a>
+</li>
+<li>gmp   <a href="http://gmplib.org/">http://gmplib.org/</a>
+            <a href="ftp://ftp.gnu.org/gnu/gmp/gmp-5.1.2.tar.bz2">ftp://ftp.gnu.org/gnu/gmp/gmp-5.1.2.tar.bz2</a>
+</li>
+<li>mpfr  <a href="http://www.mpfr.org/">http://www.mpfr.org/</a>
+            <a href="ftp://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2">ftp://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2</a>
+</li>
+<li>mpc   <a href="http://www.multiprecision.org/">http://www.multiprecision.org/</a>
+            <a href="http://www.multiprecision.org/mpc/download/mpc-1.0.1.tar.gz">http://www.multiprecision.org/mpc/download/mpc-1.0.1.tar.gz</a>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Parallel Processing</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-sec-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1"><span class="section-number-4">3.2.1</span> Scotch</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+Scotch-6.0.3 is provided with ThirdParty-dev or the original source pack
+may be obtained from:
+</p>
+<ul class="org-ul">
+<li>Scotch/PtScotch: <a href="https://gforge.inria.fr/frs/download.php/file/34099/scotch_6.0.3.tar.gz">https://gforge.inria.fr/frs/download.php/file/34099/scotch_6.0.3.tar.gz</a>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-3-2-2" class="outline-4">
+<h4 id="sec-3-2-2"><span class="section-number-4">3.2.2</span> OpenMPI</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<ul class="org-ul">
+<li>OpenMPI: <a href="http://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.2.tar.bz2">http://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.2.tar.bz2</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> ParaView</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+ParaView-5.0.1 patched to compile and install correctly is provided with
+ThirdParty-dev but older versions can be downloaded from <i>www.paraview.org</i>:
+</p>
+<ul class="org-ul">
+<li>cmake          <a href="http://www.cmake.org/files/v3.2/cmake-3.2.1.tar.gz">http://www.cmake.org/files/v3.2/cmake-3.2.1.tar.gz</a>
+</li>
+<li>ParaView-4.4.0 <a href="http://www.paraview.org/files/v4.4/ParaView-v4.4.0-source.tar.gz">http://www.paraview.org/files/v4.4/ParaView-v4.4.0-source.tar.gz</a>
+</li>
+<li>ParaView-5.0.1 <a href="http://www.paraview.org/files/v5.0/ParaView-v5.0.1-source.tar.gz">http://www.paraview.org/files/v5.0/ParaView-v5.0.1-source.tar.gz</a>
+</li>
+</ul>
+<p>
+but may need patching to compile (See <a href="#sec-4">4</a>).
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="section-number-3">3.4</span> CGAL</h3>
+<div class="outline-text-3" id="text-3-4">
+<ul class="org-ul">
+<li>CGAL        <a href="https://github.com/CGAL/cgal/releases/download/releases/CGAL-4.8/CGAL-4.8.tar.xz">https://github.com/CGAL/cgal/releases/download/releases/CGAL-4.8/CGAL-4.8.tar.xz</a>
+</li>
+<li>boost       <a href="http://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.bz2/download">http://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.bz2/download</a>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-3-5" class="outline-3">
+<h3 id="sec-3-5"><span class="section-number-3">3.5</span> Miscellaneous</h3>
+<div class="outline-text-3" id="text-3-5">
+<ul class="org-ul">
+<li>libccmio    <a href="http://portal.nersc.gov/svn/visit/trunk/third_party/libccmio-2.6.1.tar.gz">http://portal.nersc.gov/svn/visit/trunk/third_party/libccmio-2.6.1.tar.gz</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Notes</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Building ParaView-4.3.1/4.4.0/5.0.0/5.0.1</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+The ParaView-4.3.1/4.4.0/5.0.0 source-pack provided by KitWare will not
+build and install correctly without a minor correction: lines 653-656
+(650-653 in ParaView-5.0.0, 659-662 in ParaView-5.0.1) must be removed or
+commented from file
+<i>ThirdParty-dev/ParaView-<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup>.?.?/Qt/Components/CMakeLists.txt</i> after
+unpacking and renaming the ParaView-<sup><a id="fnr.1.100" name="fnr.1.100" class="footref" href="#fn.1">1</a></sup>.?.? directory.  This is because the
+file ui_pqExportStateWizard.h referred to in
+</p>
+<div class="org-src-container">
+
+<pre class="src src-C"><span style="color: #0000cd; font-weight: bold;">if</span>(PARAVIEW_INSTALL_DEVELOPMENT_FILES)
+  install(FILES <span style="color: #008b00;">"${CMAKE_CURRENT_BINARY_DIR}/ui_pqExportStateWizard.h"</span>
+          DESTINATION <span style="color: #008b00;">"${VTK_INSTALL_INCLUDE_DIR}"</span>)
+endif()
+</pre>
+</div>
+<p>
+does not exist and cannot be installed causing the build and installation to
+fail.
+</p>
+
+<p>
+Additionally for ParaView-4.4.0 there is a bug in the STL reader which can
+be patched by running the following command from within the ThirdParty-???
+directory:
+</p>
+<ul class="org-ul">
+<li>wget <a href="https://raw.githubusercontent.com/Kitware/VTK/40937e934308e5009e80769dc0c451ee4f157749/IO/Geometry/vtkSTLReader.cxx">https://raw.githubusercontent.com/Kitware/VTK/40937e934308e5009e80769dc0c451ee4f157749/IO/Geometry/vtkSTLReader.cxx</a> -O ParaView-4.4.0/VTK/IO/Geometry/vtkSTLReader.cxx
+</li>
+</ul>
+<p>
+See also <a href="http://www.openfoam.org/mantisbt/view.php?id=1887">http://www.openfoam.org/mantisbt/view.php?id=1887</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Building ParaView-5.0.1 with gcc-6.1.0</h3>
+<div class="outline-text-3" id="text-4-2">
+</div><div id="outline-container-sec-4-2-1" class="outline-4">
+<h4 id="sec-4-2-1"><span class="section-number-4">4.2.1</span> Add support for gcc-6.?.?</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<p>
+The following cmake files
+</p>
+<ul class="org-ul">
+<li>ParaView-5.0.1/VTK/CMake/vtkCompilerExtras.cmake
+</li>
+<li>ParaView-5.0.1/VTK/CMake/GenerateExportHeader.cmake
+</li>
+</ul>
+<p>
+specifically limit the gcc versions supported.  To add support gcc-6.?.?
+replace '<sup><a id="fnr.2" name="fnr.2" class="footref" href="#fn.2">2</a></sup>' with '<sup><a id="fnr.3" name="fnr.3" class="footref" href="#fn.3">3</a></sup>'
+</p>
+</div>
+</div>
+<div id="outline-container-sec-4-2-2" class="outline-4">
+<h4 id="sec-4-2-2"><span class="section-number-4">4.2.2</span> SciberQuestToolKit</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<p>
+The SciberQuestToolKit plugin fails to compile with gcc-6.1.0 and causes
+the compilation of ParaView to halt.  The easiest solution is to delete
+the ParaView-5.0.1/Plugins/SciberQuestToolKit directory.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Building ParaView-4.1.0</h3>
+<div class="outline-text-3" id="text-4-3">
+<p>
+On Ubuntu 14.10 and higher, OpenSuSE 13.2 and probably other recent
+GNU/Linux distributions there is an issue in the GL libraries requiring a
+change to the vtkXOpenGLRenderWindow.cxx file in ParaView: Uncomment line 30
+</p>
+
+<p>
+#define GLX_GLXEXT_LEGACY
+</p>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup> <p>DEFINITION NOT FOUND.</p></div>
+
+<div class="footdef"><sup><a id="fn.2" name="fn.2" class="footnum" href="#fnr.2">2</a></sup> <p>DEFINITION NOT FOUND.</p></div>
+
+<div class="footdef"><sup><a id="fn.3" name="fn.3" class="footnum" href="#fnr.3">3</a></sup> <p>DEFINITION NOT FOUND.</p></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="date">Date: 31th May 2016</p>
+<p class="date">Created: 2016-05-31 Tue 09:15</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

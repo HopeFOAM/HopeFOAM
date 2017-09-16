@@ -1,0 +1,84 @@
+/*------------------------------------------------------------------------------------*\
+|     __  ______  ____  ______ |                                                       |
+|    / / / / __ \/ __ \/ ____/ | HopeFOAM: High Order Parallel Extensible CFD Software |
+|   / /_/ / / / / /_/ / __/    |                                                       |
+|  / __  / /_/ / ____/ /___    |                                                       |
+| /_/ /_/\____/_/   /_____/    | Copyright(c) 2017-2017 The Exercise Group, AMS, China.|
+|                              |                                                       |
+\*------------------------------------------------------------------------------------*/
+FoamFile
+{
+    version     0.1;
+    format      ascii;
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+6
+(
+    channel
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          128;
+        startFace       2666;
+    }
+    outlet
+    {
+        type            patch;
+        inGroups        1(wall);
+        nFaces          12;
+        startFace       2794;
+    }
+    inlet
+    {
+        type            patch;
+        inGroups        1(wall);
+        nFaces          16;
+        startFace       2806;
+    }
+    upcylinder
+    {
+        type            arc;
+        inGroups        1(wall);
+        nFaces          16;
+        startFace       2822;
+	name			codeup;
+	u_Range			(-0.5 0.5);
+	v_Range			(0 0);
+	code
+	#{
+		0.05*Foam::sin(Foam::constant::mathematical::pi*u),
+		0.05*Foam::cos(Foam::constant::mathematical::pi*u),
+		v
+	#};
+    }
+    downcylinder
+    {
+        type            arc;
+        inGroups        1(wall);
+        nFaces          16;
+        startFace       2838;
+	name            codedown;
+	u_Range         (-0.5 0.5);
+	v_Range         (0 0);
+	code
+	#{
+		0.05*Foam::sin(Foam::constant::mathematical::pi*u),
+               -0.05*Foam::cos(Foam::constant::mathematical::pi*u),
+	        v
+	#};
+    }
+
+    frontAndBackPlanes
+    {
+        type            empty;
+        inGroups        1(empty);
+        nFaces          3680;
+        startFace       2854;
+    }
+)
+
+// ************************************************************************* //

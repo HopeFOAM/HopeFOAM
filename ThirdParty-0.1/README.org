@@ -1,0 +1,90 @@
+#                            -*- mode: org; -*-
+#
+#+TITLE:              OpenFOAM-dev Third-Party packages
+#+AUTHOR:                  The OpenFOAM Foundation
+#+DATE:                       31th May 2016
+#+LINK:                     http://www.openfoam.org
+#+OPTIONS: author:nil ^:{}
+# Copyright (c) 2014-2016 OpenFOAM Foundation.
+
+* Description
+  Scripts for building third-party packages.
+* Order of execution:
+  + makeGcc   (recommended if the system gcc is < 4.7)
+  + Allwmake  (Builds OpenMPI, Scotch etc.)
+  + makeCmake (if the system cmake version is < 2.8.8)
+  + makeParaView
+*** Optional
+    + AllwmakeLibccmio (Only required for conversion of STAR-CCM+ meshes)
+    + Allclean (Only required to save disk space)
+* Versions and locations to download the third party packages
+*** Gcc C++ Compiler
+    The minimum version of gcc required is 4.5.0
+    + gcc   http://gcc.gnu.org/releases.html
+    + gmp   http://gmplib.org/
+            ftp://ftp.gnu.org/gnu/gmp/gmp-5.1.2.tar.bz2
+    + mpfr  http://www.mpfr.org/
+            ftp://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2
+    + mpc   http://www.multiprecision.org/
+            http://www.multiprecision.org/mpc/download/mpc-1.0.1.tar.gz
+*** Parallel Processing
+***** Scotch
+      Scotch-6.0.3 is provided with ThirdParty-dev or the original source pack
+      may be obtained from:
+      + Scotch/PtScotch: https://gforge.inria.fr/frs/download.php/file/34099/scotch_6.0.3.tar.gz
+***** OpenMPI
+      + OpenMPI: http://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.2.tar.bz2
+*** ParaView
+    ParaView-5.0.1 patched to compile and install correctly is provided with
+    ThirdParty-dev but older versions can be downloaded from [[www.paraview.org]]:
+    + cmake          http://www.cmake.org/files/v3.2/cmake-3.2.1.tar.gz
+    + ParaView-4.4.0 http://www.paraview.org/files/v4.4/ParaView-v4.4.0-source.tar.gz
+    + ParaView-5.0.1 http://www.paraview.org/files/v5.0/ParaView-v5.0.1-source.tar.gz
+    but may need patching to compile (See [[Notes]]).
+*** CGAL
+    + CGAL        https://github.com/CGAL/cgal/releases/download/releases%2FCGAL-4.8/CGAL-4.8.tar.xz
+    + boost       http://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.bz2/download
+*** Miscellaneous
+    + libccmio    http://portal.nersc.gov/svn/visit/trunk/third_party/libccmio-2.6.1.tar.gz
+* Notes
+*** Building ParaView-4.3.1/4.4.0/5.0.0/5.0.1
+    The ParaView-4.3.1/4.4.0/5.0.0 source-pack provided by KitWare will not
+    build and install correctly without a minor correction: lines 653-656
+    (650-653 in ParaView-5.0.0, 659-662 in ParaView-5.0.1) must be removed or
+    commented from file
+    /ThirdParty-dev/ParaView-[45].?.?/Qt/Components/CMakeLists.txt/ after
+    unpacking and renaming the ParaView-[45].?.? directory.  This is because the
+    file ui_pqExportStateWizard.h referred to in
+    #+begin_src C
+    if(PARAVIEW_INSTALL_DEVELOPMENT_FILES)
+      install(FILES "${CMAKE_CURRENT_BINARY_DIR}/ui_pqExportStateWizard.h"
+              DESTINATION "${VTK_INSTALL_INCLUDE_DIR}")
+    endif()
+    #+end_src
+    does not exist and cannot be installed causing the build and installation to
+    fail.
+
+    Additionally for ParaView-4.4.0 there is a bug in the STL reader which can
+    be patched by running the following command from within the ThirdParty-???
+    directory:
+    + wget https://raw.githubusercontent.com/Kitware/VTK/40937e934308e5009e80769dc0c451ee4f157749/IO/Geometry/vtkSTLReader.cxx -O ParaView-4.4.0/VTK/IO/Geometry/vtkSTLReader.cxx
+    See also http://www.openfoam.org/mantisbt/view.php?id=1887
+*** Building ParaView-5.0.1 with gcc-6.1.0
+***** Add support for gcc-6.?.?
+      The following cmake files
+      + ParaView-5.0.1/VTK/CMake/vtkCompilerExtras.cmake
+      + ParaView-5.0.1/VTK/CMake/GenerateExportHeader.cmake
+      specifically limit the gcc versions supported.  To add support gcc-6.?.?
+      replace '[345]' with '[3456]'
+***** SciberQuestToolKit
+      The SciberQuestToolKit plugin fails to compile with gcc-6.1.0 and causes
+      the compilation of ParaView to halt.  The easiest solution is to delete
+      the ParaView-5.0.1/Plugins/SciberQuestToolKit directory.
+*** Building ParaView-4.1.0
+    On Ubuntu 14.10 and higher, OpenSuSE 13.2 and probably other recent
+    GNU/Linux distributions there is an issue in the GL libraries requiring a
+    change to the vtkXOpenGLRenderWindow.cxx file in ParaView: Uncomment line 30
+
+    #define GLX_GLXEXT_LEGACY
+
+# --------------------------------------------------------------------------

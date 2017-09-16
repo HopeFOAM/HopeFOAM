@@ -1,0 +1,68 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+airToporous
+{
+    type            constantHeatTransfer;
+    active          yes;
+
+    constantHeatTransferCoeffs
+    {
+        interpolationMethod cellVolumeWeight;
+        nbrRegionName   porous;
+        master          false;
+
+        nbrModel        porousToair;
+        fields          (h);
+        semiImplicit    no;
+    }
+}
+
+porosityBlockage
+{
+    type            interRegionExplicitPorositySource;
+    active          yes;
+
+    interRegionExplicitPorositySourceCoeffs
+    {
+        interpolationMethod cellVolumeWeight;
+        nbrRegionName   porous;
+
+        type            DarcyForchheimer;
+
+        DarcyForchheimerCoeffs
+        {
+            d   (-1000 -1000 1e4);
+            f   (0 0 0);
+
+            coordinateSystem
+            {
+                type    cartesian;
+                origin  (0 0 0);
+                coordinateRotation
+                {
+                    type    axesRotation;
+                    e1      (0 1 0);
+                    e2      (0 0 1);
+                }
+            }
+        }
+    }
+}
+
+
+// ************************************************************************* //

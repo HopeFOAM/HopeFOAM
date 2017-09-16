@@ -1,0 +1,299 @@
+{
+  "edition": "Extras",
+  "requires": [
+    "Essentials"
+  ],
+  "after": [
+    "Enable-Python"
+  ],
+  "cmake":{
+    "cache":[
+      { "name":"Module_vtkPVVTKExtensionsRendering",
+        "type":"BOOL",
+        "value":"ON"
+      },
+      { "name":"Module_vtkIOParallel",
+        "type":"BOOL",
+        "value":"ON"
+      },
+      { "name":"Module_vtkIOLegacy",
+        "type":"BOOL",
+        "value":"ON"
+      },
+      { "name":"Module_vtkIOXML",
+        "type":"BOOL",
+        "value":"ON"
+      },
+      { "name":"Module_vtkIOParallelXML",
+        "type":"BOOL",
+        "value":"ON"
+      },
+      { "name":"Module_vtkFiltersGeometry",
+        "type":"BOOL",
+        "value":"ON"
+      },
+      { "name":"Module_vtkFiltersSources",
+        "type":"BOOL",
+        "value":"ON"
+      }
+    ]
+  },
+  "modules":[
+    { "name":"vtkPVClientServerCoreCore",
+      "path":"ParaViewCore/ClientServerCore/Core",
+      "include":[
+        { "class":"vtkPVExtractSelection" }
+      ],
+      "patches":[
+        { "path": "ClientServerCore-restore-extraction.patch",
+          "if-edition": "Enable-Python" },
+        { "path": "ClientServerCore-Core-CMake.patch" }
+      ],
+      "cswrap":true,
+      "pythonwrap":true
+    },
+    { "name":"vtkFiltersExtraction",
+      "path":"VTK/Filters/Extraction",
+      "include":[
+        { "class":"vtkConvertSelection" },
+        { "class":"vtkExtractCells" },
+        { "class":"vtkExtractSelectedBlock" },
+        { "class":"vtkExtractSelectedIds" },
+        { "class":"vtkExtractSelectedFrustum" },
+        { "class":"vtkExtractSelectedLocations" },
+        { "class":"vtkExtractSelectedThresholds" },
+        { "class":"vtkExtractSelectedRows" },
+        { "class":"vtkExtractSelection" },
+        { "class":"vtkExtractSelectionBase" },
+        { "class":"vtkProbeSelectedLocations" }
+      ],
+      "cswrap":true,
+      "pythonwrap":true
+    },
+    { "name":"vtkFiltersGeometry",
+      "path":"VTK/Filters/Geometry",
+      "include":[
+        { "path":"module.cmake" },
+        { "class":"vtkDataSetSurfaceFilter" },
+        { "class":"vtkStructuredGridGeometryFilter" },
+        { "class":"vtkUnstructuredGridGeometryFilter" }
+      ],
+      "replace":[
+        { "path":"VTK/Filters/Geometry/CMakeLists.txt" }
+      ],
+      "cswrap":true,
+      "pythonwrap":true
+    },
+    { "name":"vtkFiltersSources",
+      "path":"VTK/Filters/Sources",
+      "include":[
+        { "class":"vtkArrowSource" },
+        { "class":"vtkConeSource" },
+        { "class":"vtkCubeSource" },
+        { "class":"vtkCylinderSource" },
+        { "class":"vtkGlyphSource2D" },
+        { "class":"vtkLineSource" },
+        { "class":"vtkSphereSource" }
+      ],
+      "replace":[
+        { "path":"VTK/Filters/Sources/module.cmake" },
+        { "path":"VTK/Filters/Sources/CMakeLists.txt" }
+      ],
+      "cswrap":true,
+      "pythonwrap":true
+    },
+    { "name":"vtkFiltersGeneral",
+      "path":"VTK/Filters/General",
+      "include":[
+        { "class":"vtkImageDataToPointSet" },
+        { "class":"vtkRectilinearGridToPointSet" },
+        { "class":"vtkTransformFilter" },
+        { "class":"vtkWarpScalar" },
+        { "class":"vtkWarpVector" }
+      ],
+      "cswrap":true,
+      "pythonwrap":true
+    },
+    { "name":"vtkPVVTKExtensionsDefault",
+      "path":"ParaViewCore/VTKExtensions/Default",
+      "include":[
+        { "class":"vtkAttributeDataReductionFilter" },
+        { "class":"vtkExtractHistogram" },
+        { "class":"vtkFileSeriesWriter" },
+        { "class":"vtkIntegrateAttributes" },
+        { "class":"vtkParallelSerialWriter" },
+        { "class":"vtkPExtractHistogram" },
+        { "class":"vtkPVNullSource" },
+        { "class":"vtkPVTransform" }
+      ],
+      "cswrap":true,
+      "pythonwrap":true
+    },
+    { "name": "vtkIOLegacy",
+      "path": "VTK/IO/Legacy",
+      "include": [
+        { "class": "vtkCompositeDataReader" },
+        { "class": "vtkCompositeDataWriter" },
+        { "class": "vtkDataReader" },
+        { "class": "vtkDataWriter" },
+        { "class": "vtkDataSetReader" },
+        { "class": "vtkDataSetWriter" },
+        { "class": "vtkGenericDataObjectReader" },
+        { "class": "vtkGenericDataObjectWriter" },
+        { "class": "vtkGraphReader" },
+        { "class": "vtkGraphWriter" },
+        { "class": "vtkPolyDataReader" },
+        { "class": "vtkPolyDataWriter" },
+        { "class": "vtkRectilinearGridReader" },
+        { "class": "vtkRectilinearGridWriter" },
+        { "class": "vtkStructuredGridReader" },
+        { "class": "vtkStructuredGridWriter" },
+        { "class": "vtkStructuredPointsReader" },
+        { "class": "vtkStructuredPointsWriter" },
+        { "class": "vtkTableReader" },
+        { "class": "vtkTableWriter" },
+        { "class": "vtkTreeReader" },
+        { "class": "vtkTreeWriter" },
+        { "class": "vtkUnstructuredGridReader" },
+        { "class": "vtkUnstructuredGridWriter" }
+      ],
+      "replace": [
+        { "path": "VTK/IO/Legacy/module.cmake" },
+        { "path": "VTK/IO/Legacy/CMakeLists.txt" }
+      ],
+      "cswrap": true,
+      "pythonwrap": true
+    },
+    { "name": "vtkIOParallel",
+      "path": "VTK/IO/Parallel",
+      "include": [
+        { "class": "vtkPDataSetWriter" }
+      ],
+      "replace": [
+        { "path": "VTK/IO/Parallel/module.cmake" },
+        { "path": "VTK/IO/Parallel/CMakeLists.txt" }
+      ],
+      "cswrap": true,
+      "pythonwrap": true
+    },
+    { "name": "vtkIOXML",
+      "path": "VTK/IO/XML",
+      "include": [
+        { "path": "vtkXMLOffsetsManager.h" },
+        { "path": "vtkXMLReaderVersion.h" },
+        { "class": "vtkXMLCompositeDataWriter" },
+        { "class": "vtkXMLImageDataWriter" },
+        { "class": "vtkXMLMultiBlockDataWriter" },
+        { "class": "vtkXMLPolyDataWriter" },
+        { "class": "vtkXMLRectilinearGridWriter" },
+        { "class": "vtkXMLStructuredDataWriter" },
+        { "class": "vtkXMLStructuredGridWriter" },
+        { "class": "vtkXMLUnstructuredDataWriter" },
+        { "class": "vtkXMLUnstructuredGridWriter" },
+        { "class": "vtkXMLWriter" }
+      ],
+      "replace": [
+        { "path": "VTK/IO/XML/module.cmake" },
+        { "path": "VTK/IO/XML/CMakeLists.txt" }
+      ],
+      "cswrap": true,
+      "pythonwrap": true
+    },
+    { "name": "vtkIOParallelXML",
+      "path": "VTK/IO/ParallelXML",
+      "include": [
+        { "path": "module.cmake" },
+        { "class": "vtkXMLPDataWriter" },
+        { "class": "vtkXMLPImageDataWriter" },
+        { "class": "vtkXMLPMultiBlockDataWriter" },
+        { "class": "vtkXMLPPolyDataWriter" },
+        { "class": "vtkXMLPRectilinearGridWriter" },
+        { "class": "vtkXMLPStructuredGridWriter" },
+        { "class": "vtkXMLPStructuredDataWriter" },
+        { "class": "vtkXMLPUnstructuredDataWriter" },
+        { "class": "vtkXMLPUnstructuredGridWriter" }
+      ],
+      "replace": [
+        { "path": "VTK/IO/ParallelXML/CMakeLists.txt" }
+      ],
+      "cswrap": true,
+      "pythonwrap": true
+    },
+    { "name":"vtkPVVTKExtensionsRendering",
+      "path":"ParaViewCore/VTKExtensions/Rendering",
+      "include":[
+        { "path":"module.cmake" },
+        { "class":"vtkPVArrowSource" },
+        { "class":"vtkReductionFilter" },
+        { "class":"vtkSelectionSerializer" }
+      ],
+      "replace":[
+        { "path":"ParaViewCore/VTKExtensions/Rendering/CMakeLists.txt" },
+        { "path":"ParaViewCore/VTKExtensions/Rendering/module.cmake" }
+      ],
+      "cswrap":true,
+      "pythonwrap":true
+    }
+  ],
+  "proxies":[
+    { "path":"ParaViewCore/ServerManager/SMApplication/Resources/filters.xml",
+      "proxies":[
+        "PVExtractSelection",
+        "ExtractHistogram",
+        "Glyph",
+        "WarpScalar",
+        "WarpVector",
+        "IntegrateAttributes",
+        "DataSetSurfaceFilter"
+      ]
+    },
+    { "path":"ParaViewCore/ServerManager/SMApplication/Resources/utilities.xml",
+      "proxies":[
+        "Transform2",
+        "XMLPImageDataWriter",
+        "XMLPRectilinearGridWriter",
+        "XMLPStructuredGridWriter",
+        "XMLPPolyDataWriter",
+        "XMLPUnstructuredGridWriter",
+        "XMLMultiBlockDataWriter",
+        "XMLHierarchicalBoxDataWriter"
+      ]
+    },
+    { "path":"ParaViewCore/ServerManager/SMApplication/Resources/sources.xml",
+      "proxies":[
+        "ArrowSource",
+        "ConeSource",
+        "CubeSource",
+        "CylinderSource",
+        "GlyphSource2D",
+        "LineSource",
+        "SphereSource"
+      ]
+    },
+    { "path":"ParaViewCore/ServerManager/SMApplication/Resources/writers.xml",
+      "proxies":[
+        "XMLDataSetWriter",
+        "XMLMultiBlockDataWriter",
+        "XMLPImageDataWriter",
+        "XMLPPolyDataWriter",
+        "XMLPRectilinearGridWriter",
+        "XMLPStructuredGridWriter",
+        "XMLPUnstructuredGridWriter"
+      ]
+    },
+    { "path":"ParaViewCore/ServerManager/SMApplication/Resources/internal_writers.xml",
+      "proxies":[
+        "FileSeriesWriter",
+        "ParallelFileSeriesWriter",
+        "XMLDataSetWriterCore",
+        "XMLPDataSetWriterCore",
+        "XMLPImageDataWriterCore",
+        "XMLPMultiBlockDataWriterCore",
+        "XMLPPolyDataWriterCore",
+        "XMLPRectilinearGridWriterCore",
+        "XMLPStructuredGridWriterCore",
+        "XMLPUnstructuredGridWriterCore"
+      ]
+    }
+  ]
+}

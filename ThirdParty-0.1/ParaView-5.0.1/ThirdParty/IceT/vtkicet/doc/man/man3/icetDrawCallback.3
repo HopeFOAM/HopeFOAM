@@ -1,0 +1,180 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:53 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetDrawCallback" "3" "August 23, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetDrawCallback \-\- set a callback for drawing.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+typedef void (*\fBIceTDrawCallbackType\fP)(
+	const IceTDouble *	\fIprojection_matrix\fP,
+	const IceTDouble *	\fImodelview_matrix\fP,
+	const IceTFloat *	\fIbackground_color\fP,
+	const IceTInt *	\fIreadback_viewport\fP,
+	\fBIceTImage\fP	\fIresult\fP  )
+.TE
+.PP
+.TS H
+l l l .
+void \fBicetDrawCallback\fP(	\fBIceTDrawCallbackType\fP	\fIcallback\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+The \fBicetDrawCallback\fP
+function sets a callback that is used to 
+draw the geometry from a given viewpoint. If you are using \fbOpenGL \fP,you 
+should probably use the \fBicetGLDrawCallback\fP
+function and 
+associated \fBicetGLDrawFrame\fP\&.
+These alternative functions 
+automatically set up the \fbOpenGL \fPstate and retreive \fbOpenGL \fPbuffers. 
+.PP
+\fIcallback\fP
+should be a function that renders an image of the local 
+geometry based on the provided transformation matrices and background 
+color. \fBIceT \fPwill call \fIcallback\fP
+during a call to 
+\fBicetDrawFrame\fP
+to create the images for compositing. 
+\fIcallback\fP
+will be called a minimum amount of times. It may be 
+called once. If none of the geometry projects on the display, it may not 
+be called at all. If rendering to a tiled display and the geometry 
+projects on multiple tiles, it may be called many times. The code in 
+\fIcallback\fP
+should be prepared to be called an unpredictable amount 
+of times. For example, it should not attept to increment a frame counter 
+and it should leave the rendering system\&'s state such that another view 
+to the geometry may be rendered. 
+.PP
+\fIcallback\fP
+takes two projection matrices: \fIprojection_matrix\fP
+and \fImodelview_matrix\fP\&.
+Each of these arguments is a 16\-value 
+array that represents a $4 *4$ transformation of homogeneous 
+coordinates. The arrays store the matrices in 
+.igcolumn\-major ordercolumn\-major
+order. 
+.PP
+Note that the \fIprojection_matrix\fP
+passed to \fIcallback\fP
+is 
+liable to be different than that passed to \fBicetDrawFrame\fP\&.
+Make 
+certain that \fIcallback\fP
+uses the modified \fIprojection_matrix\fP
+passed to it. \fImodelview_matrix\fP
+is the same as that passed to 
+\fBicetDrawFrame\fP,
+but also passed along for convienient reference. 
+.PP
+Any pixel that does not have geometry rendered to it should be set to the 
+\fIbackground_color\fP
+passed to \fIcallback\fP\&.
+Likewise, any 
+transparent geometry should be blended against the 
+\fIbackground_color\fP\&.
+Note that the \fIbackground_color\fP
+passed 
+to \fIcallback\fP
+is liable to be different than that passed to 
+\fBicetDrawFrame\fP\&.
+.PP
+\fIcallback\fP
+is given \fIresult\fP,
+an image object allocated to the 
+size of the physical render size (see \fBicetPhysicalRenderSize\fP).
+The dimensions of the image can be queried with \fBicetImageGetWidth\fP
+and \fBicetImageGetHeight\fP\&.
+Pixels can be put in \fIresult\fP
+by 
+getting the color and/or depth buffers using the 
+\fBicetImageGetColor\fP
+and \fBicetImageGetDepth\fP
+functions. 
+Anything written to these buffers is captured in the image object. 
+.PP
+\fBIceT \fPpasses \fIcallback\fP
+an image sized to the physical render space 
+to make indexing into it clearer and safer and to possibly render 
+directly into the image buffers. That said, \fBIceT \fPmight only be 
+interested in a subregion of the data. To make your callback more 
+efficient, \fBIceT \fPprovides \fIreadback_viewport\fP
+to specify the region 
+of the image it will read. \fIreadback_viewport\fP
+has four values. 
+The first two values specify the x and y pixel location of the lower left 
+corner of the region of interest. The last two values specify the width 
+and height of the region of interest. The callback only has to write 
+valid pixels for this region of the image. It is not an error to write 
+values outside this region, but they will be completely ignored. 
+.PP
+The \fIcallback\fP
+function pointer is placed in the 
+\fBICET_DRAW_FUNCTION\fP
+state variable. 
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Notes
+
+.PP
+\fIcallback\fP
+is tightly coupled with the bounds set with 
+\fBicetBoundingVertices\fP
+or \fBicetBoundingBox\fP\&.
+If the geometry 
+drawn by \fIcallback\fP
+is dynamic (changes from frame to frame), then the 
+bounds may need to be changed as well. Incorrect bounds may cause the 
+geometry to be culled in surprising ways. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetBoundingBox\fP(3),
+\fIicetBoundingVertices\fP(3),
+\fIicetDrawFrame\fP(3),
+\fIicetPhysicalRenderSize\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

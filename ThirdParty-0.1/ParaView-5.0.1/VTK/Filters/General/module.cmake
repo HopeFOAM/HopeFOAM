@@ -1,0 +1,19 @@
+vtk_module(vtkFiltersGeneral
+  GROUPS
+    StandAlone
+  DEPENDS
+    vtkCommonComputationalGeometry
+    vtkFiltersCore
+  TEST_DEPENDS
+    vtkFiltersFlowPaths
+    vtkIOLegacy
+    vtkIOXML
+    vtkImagingMath
+    vtkInteractionStyle
+    vtkRendering${VTK_RENDERING_BACKEND}
+    vtkRenderingAnnotation
+    vtkRenderingLabel
+    vtkTestingRendering
+  KIT
+    vtkFilters
+  )

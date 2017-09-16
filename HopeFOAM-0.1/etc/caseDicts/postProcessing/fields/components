@@ -1,0 +1,21 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Web:      www.OpenFOAM.org
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+Description
+    Writes the component scalar fields (e.g. Ux, Uy, Uz) of a field (e.g. U).
+
+\*---------------------------------------------------------------------------*/
+
+type            components;
+libs            ("libfieldFunctionObjects.so");
+
+field           <fieldName>;
+
+executeControl  writeTime;
+writeControl    writeTime;
+
+// ************************************************************************* //

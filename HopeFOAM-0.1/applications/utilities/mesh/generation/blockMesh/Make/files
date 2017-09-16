@@ -1,0 +1,3 @@
+blockMesh.C
+
+EXE = $(FOAM_APPBIN)/blockMesh

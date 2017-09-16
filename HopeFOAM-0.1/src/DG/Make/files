@@ -1,0 +1,132 @@
+ddtSchemes = DG/ddtSchemes
+$(ddtSchemes)/ddtScheme/ddtSchemes.C
+$(ddtSchemes)/EulerDdtScheme/EulerDdtSchemes.C
+
+divSchemes = DG/divSchemes
+$(divSchemes)/divScheme/divSchemes.C
+$(divSchemes)/defaultDivScheme/defaultDivSchemes.C
+
+gradSchemes = DG/gradSchemes
+$(gradSchemes)/gradScheme/gradSchemes.C
+$(gradSchemes)/defaultGrad/defaultGrads.C
+
+ convectionSchemes = DG/convectionSchemes
+$(convectionSchemes)/convectionScheme/convectionSchemes.C
+$(convectionSchemes)/defaultConvectionScheme/defaultConvectionSchemes.C
+
+laplacianSchemes = DG/laplacianSchemes
+$(laplacianSchemes)/laplacianScheme/laplacianSchemes.C
+$(laplacianSchemes)/defaultLaplacianScheme/defaultLaplacianSchemes.C
+
+basePolynomial = element/polynomials
+$(basePolynomial)/Legendre/Legendre.C
+
+baseFunction = element/baseFunctions
+$(baseFunction)/baseFunction/baseFunction.C
+
+straightBaseFunction = $(baseFunction)/straightBaseFunctions
+$(straightBaseFunction)/lineBaseFunction/lineBaseFunction.C
+$(straightBaseFunction)/triangleBaseFunction/triangleBaseFunction.C
+$(straightBaseFunction)/tetrahedralBaseFunction/tetrahedralBaseFunction.C
+$(straightBaseFunction)/quadrilateralBaseFunction/quadrilateralBaseFunction.C
+
+gaussIntegration = element/gaussIntegration
+$(gaussIntegration)/gaussIntegration/gaussIntegration.C
+$(gaussIntegration)/gaussLineIntegration/gaussLineIntegration.C
+$(gaussIntegration)/gaussTriangleIntegration/gaussTriangleIntegration.C
+$(gaussIntegration)/gaussTriangleIntegration/gaussTriangleIntegrationDataTable.C
+$(gaussIntegration)/gaussTetrahedralIntegration/gaussTetrahedralIntegration.C
+$(gaussIntegration)/gaussQuadrilateralIntegration/gaussQuadrilateralIntegration.C
+
+element/stdElement/stdElement.C
+element/stdElementSets/stdElementSets.C
+
+element/physicalElementData/physicalElementData.C
+element/physicalElementData/physicalCellElement.C
+element/physicalElementData/physicalFaceElement.C
+
+
+dgMesh/dgPolyMesh.C
+dgMesh/dgMesh.C
+dgMesh/dgBoundaryMesh/dgBoundaryMesh.C
+
+
+dgTree = dgMesh/dgTree
+$(dgTree)/dgPolyFace.C
+$(dgTree)/dgPolyCell.C
+
+dgPatches = dgMesh/dgPatches
+$(dgPatches)/dgPatch/dgPatch.C
+$(dgPatches)/dgPatch/dgPatchNew.C
+
+polyPatchs = dgMesh/polyPatchs
+$(polyPatchs)/constraint/arc/arcPolyPatch.C
+
+basicDgPatches = $(dgPatches)/basic
+$(basicDgPatches)/generic/genericDgPatch.C
+$(basicDgPatches)/coupled/coupledDgPatch.C
+
+constraintDgPatches = $(dgPatches)/constraint
+$(constraintDgPatches)/empty/emptyDgPatch.C
+$(constraintDgPatches)/arc/arcDgPatch.C
+$(constraintDgPatches)/processor/processorDgPatch.C
+
+derivedDgPatches = $(dgPatches)/derived
+$(derivedDgPatches)/wall/wallDgPatch.C
+
+
+fields/dgFields/dgFields.C
+
+dgPatchFields = fields/dgPatchFields
+$(dgPatchFields)/dgPatchField/dgPatchFields.C
+
+basicDgPatchFields = $(dgPatchFields)/basic
+$(basicDgPatchFields)/calculated/calculatedDgPatchFields.C
+$(basicDgPatchFields)/fixedValue/fixedValueDgPatchFields.C
+$(basicDgPatchFields)/fixedGradient/fixedGradientDgPatchFields.C
+$(basicDgPatchFields)/zeroGradient/zeroGradientDgPatchFields.C
+$(basicDgPatchFields)/reflective/reflectiveDgPatchFields.C
+$(basicDgPatchFields)/coupled/coupledDgPatchFields.C
+
+constraintDgPatchFields = $(dgPatchFields)/constraint
+$(constraintDgPatchFields)/empty/emptyDgPatchFields.C
+$(constraintDgPatchFields)/processor/processorDgPatchFields.C
+$(constraintDgPatchFields)/processor/processorDgPatchScalarField.C
+
+
+dgMatrices/dgMatrices.C
+dgMatrices/dgScalarMatrix/dgScalarMatrix.C
+
+DG/dg/dg.C
+DG/dgSchemes/dgSchemes.C
+
+fluxCalcScheme = DG/simpleFlux
+$(fluxCalcScheme)/fluxCalcScheme/fluxCalcSchemes.C
+schemes = $(fluxCalcScheme)/schemes
+$(schemes)/averageFlux/averageFluxs.C
+$(schemes)/LFFlux/LFFluxs.C
+$(schemes)/noneFlux/noneFluxs.C
+
+godunovFlux = DG/godunovFlux
+$(godunovFlux)/godunovScheme.C
+
+fluxSchemes = $(godunovFlux)/fluxSchemes
+$(fluxSchemes)/fluxSchemes.C
+$(fluxSchemes)/fluxScheme.C
+
+fluxscheme = $(fluxSchemes)/scheme
+$(fluxscheme)/RoeFlux/RoeFluxs.C
+$(fluxscheme)/RoeFlux/RoeFlux.C
+
+limiteSchemes = $(godunovFlux)/limiteSchemes
+$(limiteSchemes)/limiteSchemes.C
+$(limiteSchemes)/limiteScheme.C
+
+limitescheme = $(limiteSchemes)/scheme
+$(limitescheme)/Trianglelimite/Trianglelimite.C
+$(limitescheme)/Trianglelimite/Trianglelimites.C
+
+
+general = cfdtools/general
+
+LIB = $(FOAM_LIBBIN)/libDG

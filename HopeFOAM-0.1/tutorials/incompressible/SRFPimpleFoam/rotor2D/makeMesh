@@ -1,0 +1,9 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+set -x
+
+m4 < system/blockMeshDict.m4 > system/blockMeshDict
+blockMesh > log.blockMesh 2>&1
+
+#------------------------------------------------------------------------------

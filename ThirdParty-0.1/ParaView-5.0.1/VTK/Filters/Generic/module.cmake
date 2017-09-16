@@ -1,0 +1,18 @@
+vtk_module(vtkFiltersGeneric
+  GROUPS
+    StandAlone
+  DEPENDS
+    vtkFiltersCore
+    vtkFiltersSources
+  TEST_DEPENDS
+    vtkIOXML
+    vtkIOLegacy
+    vtkRendering${VTK_RENDERING_BACKEND}
+    vtkFiltersModeling
+    vtkRenderingLabel
+    vtkTestingRendering
+    vtkInteractionStyle
+    vtkTestingGenericBridge
+  KIT
+    vtkFilters
+  )

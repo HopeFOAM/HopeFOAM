@@ -1,0 +1,31 @@
+/*------------------------------------------------------------------------------------*\
+|     __  ______  ____  ______ |                                                       |
+|    / / / / __ \/ __ \/ ____/ | HopeFOAM: High Order Parallel Extensible CFD Software |
+|   / /_/ / / / / /_/ / __/    |                                                       |
+|  / __  / /_/ / ____/ /___    |                                                       |
+| /_/ /_/\____/_/   /_____/    | Copyright(c) 2017-2017 The Exercise Group, AMS, China.|
+|                              |                                                       |
+\*------------------------------------------------------------------------------------*/
+
+forceCoeffs
+{
+    type dgForceCoeffs;
+    functionObjectLibs ("libdgforces.so");
+    patches (upcylinder downcylinder);
+    log true;
+    pName p;
+    Uname U;
+    rho rhoInf;
+    rhoInf 1;
+    magUInf 1;
+    liftDir (0 1 0);  
+    dragDir (1 0 0);  
+    pitchAxis (0 0 -1); 
+    CofR (0 0 0);
+    Aref 0.1; //2D example default height of the grid is 1
+    lRef 1;
+    outputControl   timeStep;
+    outputInterval 1;
+}
+
+// ************************************************************************* //

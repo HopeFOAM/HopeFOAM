@@ -1,0 +1,15 @@
+EXE_INC = \
+    -I../phaseModel/lnInclude \
+    -I../interfacialModels/lnInclude \
+    -IalphaContactAngle \
+    -I$(LIB_SRC)/transportModels \
+    -I$(LIB_SRC)/transportModels/incompressible/lnInclude \
+    -I$(LIB_SRC)/transportModels/interfaceProperties/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude
+
+LIB_LIBS = \
+    -linterfaceProperties \
+    -lincompressibleTransportModels \
+    -lfiniteVolume \
+    -lmeshTools

@@ -1,0 +1,8 @@
+dgDecomposePar.C
+domainDecomposition.C
+domainDecompositionMesh.C
+domainDecompositionDistribute.C
+dgFieldDecomposer.C
+arc/arcFvPatch.C
+
+EXE = $(FOAM_APPBIN)/dgDecomposePar

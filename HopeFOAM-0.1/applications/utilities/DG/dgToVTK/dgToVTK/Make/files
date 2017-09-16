@@ -1,0 +1,8 @@
+patchWriter.C
+internalWriter.C
+writeFuns.C
+vtkMesh.C
+vtkTopo.C
+
+
+LIB = $(FOAM_LIBBIN)/libdgToVTK

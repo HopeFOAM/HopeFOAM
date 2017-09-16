@@ -1,0 +1,6 @@
+#include <pthread.h>
+int main ()
+{
+ int attr = @PTHREAD_TEST@; return attr;
+ return 0;
+}

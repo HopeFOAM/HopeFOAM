@@ -1,0 +1,24 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Web:      www.OpenFOAM.org
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+Description
+    Calculates and writes the flowType of velocity field where:
+    -1 = rotational flow;
+     0 = simple shear flow;
+    +1 = planar extensional flow.
+
+\*---------------------------------------------------------------------------*/
+
+type            flowType;
+libs            ("libfieldFunctionObjects.so");
+
+field           U;
+
+executeControl  writeTime;
+writeControl    writeTime;
+
+// ************************************************************************* //

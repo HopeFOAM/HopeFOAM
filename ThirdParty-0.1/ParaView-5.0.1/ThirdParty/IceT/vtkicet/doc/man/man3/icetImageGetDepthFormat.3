@@ -1,0 +1,114 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:54 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetImageGetColorFormat" "3" "September 20, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetImageGetColorFormat\fP,\fBicetImageGetDepthFormat\fP\-\- get the format of image buffers 
+.PP
+.igmanpage:icetImageGetDepthFormat
+.igicetImageGetDepthFormat|(textbf
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l l l .
+IceTEnum	\fBicetImageGetColorFormat\fP(	const \fBIceTImage\fP	\fIimage\fP	);
+IceTEnum	\fBicetImageGetDepthFormat\fP(	const \fBIceTImage\fP	\fIimage\fP	);
+.TE
+.PP
+.SH Description
+
+.PP
+\fBicetImageGetColorFormat\fPand \fBicetImageGetDepthFormat\fPreturn an entry in 
+an enumeration that specifies the data format stored in the given 
+\fIimage\fP\&.
+This format determines which one of the 
+\fBicetImageGetColor\fP
+or \fBicetImageGetDepth\fP
+functions to use 
+and the form of the resulting data. 
+.PP
+.SH Return Value
+
+.PP
+\fBicetImageGetColorFormat\fPreturns one of the following values with the 
+associated meaning for the format of the stored color data. 
+.PP
+.TP
+\fBICET_IMAGE_COLOR_RGBA_UBYTE\fP
+ Each entry is an RGBA 
+color tuple. Each component is valued in the range from 0 to 255 
+and is stored as an 8\-bit integer. The buffer will always be allocated 
+on memory boundaries such that each color value can be treated as a 
+single 32\-bit integer. 
+.TP
+\fBICET_IMAGE_COLOR_RGBA_FLOAT\fP
+ Each entry is an RGBA 
+color tuple. Each component is in the range from 0.0 to 1.0 and is 
+stored as a 32\-bit float. 
+.TP
+\fBICET_IMAGE_COLOR_NONE\fP
+ No color values are stored in the 
+image. 
+.PP
+\fBicetImageGetDepthFormat\fPreturns one of the following values with the 
+associated meaning for the format of the stored depth data. 
+.PP
+.TP
+\fBICET_IMAGE_DEPTH_FLOAT\fP
+ Each entry is in the range from 
+0.0 (near plane) to 1.0 (far plane) and is stored as a 32\-bit 
+float. 
+.TP
+\fBICET_IMAGE_DEPTH_NONE\fP
+ No depth values are stored in the 
+image. 
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Copyright
+
+Copyright (C)2010 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetImageGetColor\fP(3),
+\fIicetImageGetDepth\fP(3),
+\fIicetSetColorFormat\fP(3),
+\fIicetSetDepthFormat\fP(3)
+.PP
+.igicetImageGetDepthFormat|)textbf
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

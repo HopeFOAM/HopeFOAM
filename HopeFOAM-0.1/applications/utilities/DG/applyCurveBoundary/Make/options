@@ -1,0 +1,14 @@
+EXE_INC = \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude \
+	-I$(LIB_SRC)/DG/lnInclude \
+	-I$(LIB_SRC)/meshTools/lnInclude \
+	-I$(PETSC_DIR)/include \
+    -I$(SLEPC_DIR)/include \
+    -I$(MPI_ARCH_PATH)/include
+
+EXE_LIBS = \
+    -ldynamicMesh \
+	-lDG \
+    -lmeshTools \
+    -L$(PETSC_DIR)/lib -lpetsc \
+    -L$(SLEPC_DIR)/lib -lslepc

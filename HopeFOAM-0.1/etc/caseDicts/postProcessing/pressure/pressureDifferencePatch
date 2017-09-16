@@ -1,0 +1,19 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Web:      www.OpenFOAM.org
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+Description
+    Calculates the difference between the average pressures on 2 specified
+    patches.
+
+\*---------------------------------------------------------------------------*/
+
+patch1 <patch1>;
+patch2 <patch2>;
+
+#includeEtc "caseDicts/postProcessing/pressure/pressureDifferencePatch.cfg"
+
+// ************************************************************************* //

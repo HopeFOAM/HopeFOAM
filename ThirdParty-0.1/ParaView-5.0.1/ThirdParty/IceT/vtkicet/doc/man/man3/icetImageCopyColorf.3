@@ -1,0 +1,134 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:54 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetImageCopyColor" "3" "September 20, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetImageCopyColor\fP,\fBicetImageCopyDepth\fP\-\- retrieve pixel data from image 
+.PP
+.igmanpage:icetImageCopyDepth
+.igicetImageCopyDepth|(textbf
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l l .
+void	\fBicetImageCopyColorub\fP(	const \fBIceTImage\fP	\fIimage\fP,
+		IceTUByte *	\fIcolor_buffer\fP,
+		IceTEnum	\fIcolor_format\fP  );
+.TE
+.PP
+.TS H
+l l l l .
+void	\fBicetImageCopyColorf\fP(	const \fBIceTImage\fP	\fIimage\fP,
+		IceTFloat *	\fIcolor_buffer\fP,
+		IceTEnum	\fIcolor_format\fP  );
+.TE
+.PP
+.TS H
+l l l l .
+void	\fBicetImageCopyDepthf\fP(	const \fBIceTImage\fP	\fIimage\fP,
+		IceTFloat *	\fIdepth_buffer\fP,
+		IceTEnum	\fIdepth_format\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+The \fBicetImageCopyColor\fPsuite of functions retrieve color data from images 
+and the \fBicetImageCopyDepth\fPfunctions retrieve depth data from images. 
+Each function takes a pointer to an existing buffer that must be large 
+enough to hold all pixels in the image. The data from the images is 
+copied into these buffers, performing format conversions as necessary. 
+Because data is copied into the provided buffer, subsequently changing 
+values in the buffer has no effect on the image object (as opposed to the 
+behavior of \fBicetImageGetColor\fPand \fBicetImageGetDepth\fP).
+.PP
+The pixel data is always tightly packed in horizontal major order. Color 
+data that comprises tuples such as RGBA have the components for each 
+pixel packed together in that order. The first entry in the array 
+corresponds to the pixel in the lower left corner of the image. The next 
+entry is immediately to the right of the first pixel, and so on. The 
+dimensions of the array can be retrieved with the \fBicetImageGetWidth\fPand 
+\fBicetImageGetHeight\fPfunctions. 
+.PP
+Each of these functions provides a typed version of the image data array. 
+They can only succeed if the type the request matches the type specified 
+by the \fIcolor_format\fP
+or \fIdepth_format\fP
+argument. It is an 
+error, for example, to request unsigned byte color data for a floating 
+point color format. Although specifying the format may be redundant (it 
+could be implied by the type being retrieved), \fBIceT \fPrequires it for 
+completeness and to support possible future data formats. 
+.PP
+Use \fBicetImageCopyColorub\fPto retrieve an array of 8\-bit unsigned bytes. 
+Using this function is only valid if \fIcolor_format\fP
+is 
+\fBICET_IMAGE_COLOR_RGBA_UBYTE\fP\&.
+.PP
+Use \fBicetImageCopyColorf\fPto retrieve an array of floating point color 
+values. Using this function is only valid if \fIcolor_format\fP
+is 
+\fBICET_IMAGE_COLOR_RGBA_FLOAT\fP\&.
+.PP
+Use \fBicetImageGetDepthf\fPto retrieve an array of floating point depth 
+values. Using this function is only valid if \fIdepth_format\fP
+is 
+\fBICET_IMAGE_DEPTH_FLOAT\fP\&.
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_OPERATION\fP
+ The \fIimage\fP
+object does not have a color or depth buffer from 
+which to copy data. 
+.TP
+\fBICET_INVALID_ENUM\fP
+ The requested \fIcolor_format\fP
+or \fIdepth_format\fP
+is 
+incompatible with the type of the buffer. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Copyright
+
+Copyright (C)2010 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetImageGetColor\fP(3),
+\fIicetImageGetDepth\fP(3)
+.PP
+.igicetImageCopyDepth|)textbf
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

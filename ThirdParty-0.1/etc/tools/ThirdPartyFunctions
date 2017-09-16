@@ -1,0 +1,132 @@
+#---------------------------------*- sh -*-------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM.
+#
+#     OpenFOAM is free software: you can redistribute it and/or modify it
+#     under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+#     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+#     for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+#
+# File
+#     etc/tools/ThirdPartyFunctions
+#
+# Description
+#     Functions for managing the third-party packages
+#
+#     Define the standard buildBASE and installBASE for the platform
+#     Define WM_NCOMPPROCS always.
+#------------------------------------------------------------------------------
+
+# Define the normal build and prefix directories
+buildBASE=$WM_THIRD_PARTY_DIR/build/$WM_ARCH$WM_COMPILER
+installBASE=$WM_THIRD_PARTY_DIR/platforms/$WM_ARCH$WM_COMPILER
+
+
+#
+# Mostly building without wmake
+# - disable wmakeScheduler variables
+# - restrict WM_NCOMPPROCS to local number of cores
+#
+unset WM_HOSTS WM_SCHEDULER
+export WM_NCOMPPROCS=$(egrep "^processor" /proc/cpuinfo 2>/dev/null | wc -l)
+if [ $WM_NCOMPPROCS -le 1 ]
+then
+    WM_NCOMPPROCS=1
+elif [ $WM_NCOMPPROCS -ge 8 ]
+then
+    WM_NCOMPPROCS=8
+fi
+# echo "Building on $WM_NCOMPPROCS cores"
+
+
+#
+# If WM_CONTINUE_ON_ERROR not set activate the shell option "stop on error"
+#
+if [ -z "${WM_CONTINUE_ON_ERROR}" ]
+then
+    set -e
+fi
+
+
+#
+# Download file $1 from url $2 into download/ directory
+#
+downloadFile()
+{
+    [ "$#" -eq 2 ] || {
+        echo "downloadFile called with incorrect number of arguments $@"
+        return 1
+    }
+
+    file="$1"
+    url="$2"
+
+    if [ ! -e download/$file ]
+    then
+        mkdir -p download
+        echo "downloading $tarFile from $url"
+        ( cd download && wget --no-check-certificate $url -O $file )
+    fi
+}
+
+
+#
+# Copy Make/{files,options} from wmakeFiles/PACKAGE
+#
+# $1 = PACKAGE
+# $2 (optional) TARGET DIRECTORY
+cpMakeFiles()
+{
+    set +x
+
+    [ "$#" -eq 1 -o "$#" -eq 2 ] || {
+        echo "cpMakeFiles called with incorrect number of arguments $@"
+        return 1
+    }
+
+    pkg=$1
+    dst=${2:-.}
+    echo "cpMakeFiles" $pkg $dst
+
+    wmakeFiles=$WM_THIRD_PARTY_DIR/etc/wmakeFiles/$pkg
+
+    for i in $(cd $wmakeFiles && find . -type f)
+    do
+        d=${i%/*}   # dirname
+        b=${i##*/}   # basename
+
+        mkdir -p $dst/$d/Make 2>/dev/null
+
+        # NOTE the behaviour of '-nt' can cause problems
+        #
+        # - bash, ksh, /usr/bin/test
+        #   True, if file1 exists and file2 does not
+        #
+        # - dash, zsh (and maybe others)
+        #   False, if file1 or file2 does not exist
+        #
+        if [ ! -e $dst/$d/Make/$b -o $wmakeFiles/$i -nt $dst/$d/Make/$b ]
+        then
+            cp $wmakeFiles/$i $dst/$d/Make/$b
+        fi
+    done
+
+    set -x
+}
+
+
+#------------------------------------------------------------------------------

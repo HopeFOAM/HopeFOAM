@@ -1,0 +1,12 @@
+vtk_module(vtkGUISupportQtSQL
+  GROUPS
+    Qt
+  DEPENDS
+    vtkIOSQL
+  PRIVATE_DEPENDS
+    vtksys
+  TEST_DEPENDS
+    vtkTestingCore
+    vtkGUISupportQt
+  EXCLUDE_FROM_WRAPPING
+  )

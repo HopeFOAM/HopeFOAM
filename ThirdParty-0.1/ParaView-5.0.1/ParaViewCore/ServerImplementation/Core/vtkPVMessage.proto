@@ -1,0 +1,263 @@
+// ****************************************************************************
+//                    vtkInternalDataStreamIO.proto
+// ****************************************************************************
+package paraview_protobuf;
+
+// Type of generated code : [SPEED, CODE_SIZE, LITE_RUNTIME]
+//option optimize_for = LITE_RUNTIME;
+
+// Variant type ***************************************************************
+
+message Variant {
+  enum Type
+    {
+    INT     = 0;
+    FLOAT64 = 1;
+    IDTYPE  = 2;
+    STRING  = 3;
+    PROXY   = 4; // proxy_global_id + port_number
+    INPUT   = 5; // proxy_global_id + port_number
+    BYTES   = 6;
+    MAP     = 7;
+    }
+
+  required Type    type            = 1;
+  repeated sint64  idtype          = 3;
+  repeated sint32  integer         = 4;
+  repeated double  float64         = 5;
+  repeated uint64  proxy_global_id = 6;
+  repeated int32   port_number     = 7;
+  repeated string  txt             = 8;
+  repeated bytes   binary          = 9;
+}
+
+message VariantList {
+  repeated Variant variant = 1;
+}
+
+// Generic message Collection type ********************************************
+
+message MessageCollection
+{
+  // This defines an item in the collection.
+  repeated Message item = 1;
+}
+
+// Generic message type ******************************************* [1-5 :> 10]
+
+message Message
+{
+  required uint64 global_id  = 1;
+  required uint32 location   = 2;
+  optional bool   share_only = 3 [default = false];
+  optional bool   req_def    = 4 [default = false];
+  optional uint32 client_id  = 5 [default = 0];
+
+  extensions 10 to max;
+}
+
+// Extension DefinitionHeader ***************************************** [10-11]
+
+message DefinitionHeader
+{
+  extend Message {
+    // The classname for the driver process i.e. the client, typically
+    optional string client_class = 10;
+
+    // The classname for the process where the processing occurs
+    optional string server_class = 11;
+  }
+}
+
+// Extension ProxyState *********************************************** [20-27]
+
+message ProxyState
+{
+
+  message SubProxy
+    {
+    required string name      = 1;
+    required uint32 global_id = 2;
+    }
+
+  message Annotation
+    {
+    required string key   = 1;
+    required string value = 2;
+    }
+
+  message UserData
+    {
+    required string key   = 1;
+    repeated Variant variant = 2;
+    }
+
+  message Property
+    {
+    required string  name  = 1;
+    optional Variant value = 2;
+    repeated UserData user_data = 3;
+    }
+
+  extend Message {
+    optional string     xml_group           = 20;
+    optional string     xml_name            = 21;
+    optional string     xml_sub_proxy_name  = 22;
+    repeated Property   property            = 23;
+    repeated SubProxy   subproxy            = 24;
+    repeated Annotation annotation          = 25;
+    optional bool       has_annotation      = 26 [default = false];
+    repeated UserData   user_data           = 27;
+  }
+}
+
+// Extension PXMState ************************************************* [30-32]
+
+message PXMRegistrationState
+{
+  message Entry
+    {
+    optional string group     = 1;
+    required string name      = 2;
+    required uint64 global_id = 3;
+    }
+
+  extend Message {
+    repeated Entry registered_proxy           = 30;
+    repeated Entry registered_selection_model = 31;
+    repeated Entry registered_link            = 32;
+  }
+}
+
+// Extension ProxyDefinitionState ************************************* [35-36]
+
+message ProxyDefinitionState
+{
+  message ProxyXMLDefinition
+    {
+    required string group = 1;
+    required string name  = 2;
+    required string xml   = 3;
+    }
+
+  extend Message {
+    repeated ProxyXMLDefinition xml_definition_proxy        = 35;
+    repeated ProxyXMLDefinition xml_custom_definition_proxy = 36;
+  }
+}
+
+// Extension PullRequest ************************************************* [40]
+
+message PullRequest {
+  extend Message {
+    repeated Variant arguments = 40;
+  }
+}
+
+// Extension ProxySelectionModel State ******************************** [50-53]
+
+message ProxySelectionModelState {
+
+  extend Message {
+    optional uint32 current_proxy = 52 [default =  0];
+    optional int32  current_port  = 53 [default = -1];
+
+    repeated uint32 proxy = 50;
+    repeated int32  port  = 51;
+  }
+}
+
+// Extension Link State *********************************************** [60-64]
+
+message LinkState {
+
+  message LinkDescription
+    {
+    // Need to be in sync with the enum in vtkSMLink.h
+    enum Direction
+      {
+      NONE   = 0;
+      INPUT  = 1;
+      OUTPUT = 2;
+      }
+
+    required uint32 proxy         = 1;
+    optional string property_name = 2;
+    required Direction direction  = 3;
+    }
+
+  extend Message {
+    optional bool propagate_update         = 60 [default = true];
+    optional bool enabled                  = 61 [default = true];
+    optional bool sync_interactive_renders = 62 [default = true];
+    repeated LinkDescription link          = 63;
+    repeated string exception_property     = 64;
+  }
+}
+
+// Extension MousePointer Event *************************************** [70-73]
+
+message MousePointer {
+
+  enum Ratio {
+    BOTH   = 0;
+    HEIGHT = 1;
+    WIDTH  = 2;
+  }
+
+  extend Message {
+    optional uint32 view      = 70;
+    optional double x         = 71 [default = 0];
+    optional double y         = 72 [default = 0];
+    optional bool   forceShow = 73 [default = false];
+    optional Ratio  ratioType = 74 [default = HEIGHT];
+  }
+}
+
+// Extension ChartViewBounds Event ************************************ [75-76]
+
+message ChartViewBounds {
+
+  extend Message {
+    optional uint32 view  = 75;
+    repeated double range = 76;
+  }
+}
+
+// Extension ClientsInformation State ********************************* [80-85]
+
+message ClientsInformation {
+
+  message ClientInfo {
+    required uint32 user       = 1;
+    optional string name       = 2;
+    optional bool   is_master  = 3 [default = false];
+    optional bool   follow_cam = 4 [default = false];
+  }
+
+  extend Message {
+    repeated ClientInfo user = 80;
+  }
+}
+
+message ChatMessage {
+  extend Message {
+    optional uint32 author = 84;
+    optional string txt    = 85;
+  }
+}
+
+// Extension Qt Events ************************************************ [98-99]
+
+message QtEvent {
+  enum QtEventType {
+    CHAT                = 1;
+    OTHER               = 3;
+  }
+
+  extend Message {
+    optional QtEventType type  = 98;
+  }
+}
+
+// End of Messages definitions ************************************************

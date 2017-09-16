@@ -1,0 +1,9 @@
+
+set(SOURCES
+  avtXYZFileFormat.C
+  )
+ADD_VISIT_READER(VisItXYZReader "1.0"
+  VISIT_READER_TYPE "MTSD"
+  VISIT_READER_NAME "avtXYZFileFormat"    
+  SERVER_SOURCES ${SOURCES}
+  )

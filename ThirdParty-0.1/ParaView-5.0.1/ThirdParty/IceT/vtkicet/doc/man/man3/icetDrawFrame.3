@@ -1,0 +1,169 @@
+'\" t
+.\" Manual page created with latex2man on Fri Sep 26 14:31:02 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetDrawFrame" "3" "September 22, 2014" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetDrawFrame \-\- renders and composites a frame\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+\fBIceTImage\fP \fBicetDrawFrame\fP(
+	const IceTDouble *	\fIprojection_matrix\fP,
+	const IceTDouble *	\fImodelview_matrix\fP,
+	const IceTFloat *	\fIbackground_color\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+Initiates a frame draw using the given transformation matrices (modelview 
+and projection). If you are using \fbOpenGL \fP,you should probably use the 
+\fBicetGLDrawFrame\fP
+function and associated 
+\fBicetGLDrawCallback\fP\&.
+.PP
+Before \fBIceT \fPmay render an image, the tiled display needs to be defined 
+(using \fBicetAddTile\fP),
+the drawing function needs to be set (using 
+\fBicetDrawCallback\fP),
+and composite strategy must be set (using 
+\fBicetStrategy\fP).
+The single image sub\-strategy may also optionally 
+be set (using \fBicetSingleImageStrategy\fP).
+.PP
+All processes in the current \fBIceT \fPcontext must call 
+\fBicetDrawFrame\fP
+for it to complete. 
+.PP
+During compositing, \fBIceT \fPuses the given \fIprojection_matrix\fP
+and 
+\fImodelview_matrix\fP,
+as well as the bounds given in the last call to 
+\fBicetBoundingBox\fP
+or \fBicetBoundingVertices\fP,
+to determine 
+onto which pixels the local geometry projects. If the given matrices are 
+not the same used in the rendering or the given bounds do not contain the 
+geometry, \fBIceT \fPmay clip the geometry in surprising ways. Furthermore, 
+\fBIceT \fPwill modify the \fIprojection_matrix\fP
+for the drawing callback 
+to change the projection onto (or in between) tiles. Thus, you should 
+pass the desired \fIprojection_matrix\fP
+to \fBicetDrawFrame\fP
+and 
+then use the version passed to the drawing callback. 
+.PP
+The \fIbackground_color\fP
+argument specifies the desired background 
+color for the image. It is given as an array of 4 floating point values 
+specifying, in order, the red, green, blue, and alpha channels of the 
+color in the range from 0.0 to 1.0\&. 
+.PP
+When rendering using a depth buffer, the background color is used to fill 
+in empty regions of images. When rendering using color blending, the 
+background color is changed to transparent black during rendering to 
+prevent the background from being blended multiple times from different 
+renderings. If the \fBICET_CORRECT_COLORED_BACKGROUND\fP
+feature is 
+enabled, this background color is blended back into the final composited 
+image. 
+.PP
+.SH Return Value
+
+.PP
+On each .igdisplay processdisplay
+process (as defined by 
+\fBicetAddTile\fP),
+\fBicetDrawFrame\fP
+returns the fully composited 
+image in an \fBIceTImage\fP
+object. The contents of the image are 
+undefined for any non\-display process. 
+.PP
+If the \fBICET_COMPOSITE_ONE_BUFFER\fP
+option is on and both a color 
+and depth buffer is specified with \fBicetSetColorFormat\fPand 
+\fBicetSetDepthFormat\fP,then the returned image might be missing the depth 
+buffer. The rational behind this option is that often both the color and 
+depth buffer is necessary in order to composite the color buffer, but the 
+composited depth buffer is not needed. In this case, the compositing 
+might save some time by not transferring depth information at the latter 
+stage of compositing. 
+.PP
+The returned image uses memory buffers that will be reclaimed the next 
+time \fBIceT \fPrenders or composites a frame. Do not use this image after 
+the next call to \fBicetDrawFrame\fP
+(unless you have changed the \fBIceT \fP
+context). 
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_OPERATION\fP
+ Raised if the drawing callback has not been set. Also can be raised if 
+\fBicetDrawFrame\fP
+is called recursively, probably from within the 
+drawing callback. 
+.TP
+\fBICET_OUT_OF_MEMORY\fP
+ Not enough memory left to hold intermittent frame buffers and other 
+temporary data. 
+.PP
+\fBicetDrawFrame\fP
+may also indirectly raise an error if there is an 
+issue with the strategy or callback. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+If compositing with color blending on, the image returned may have a 
+black background instead of the \fIbackground_color\fP
+requested. This 
+can be corrected by blending the returned image over the desired 
+background. This will be done for you if the 
+\fBICET_CORRECT_COLORED_BACKGROUND\fP
+feature is enabled. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetAddTile\fP(3),
+\fIicetBoundingBox\fP(3),
+\fIicetBoundingVertices\fP(3),
+\fIicetCompositeImage\fP(3),
+\fIicetDrawCallback\fP(3),
+\fIicetGLDrawFrame\fP(3),
+\fIicetSingleImageStrategy\fP(3),
+\fIicetStrategy\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

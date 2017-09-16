@@ -1,0 +1,10 @@
+
+set(SOURCES
+  avtMM5FileFormat.C
+  MM5.C
+  )
+ADD_VISIT_READER(VisItMM5Reader "1.0"
+  VISIT_READER_TYPE "MTSD"
+  VISIT_READER_NAME "avtMM5FileFormat"    
+  SERVER_SOURCES ${SOURCES}
+  )

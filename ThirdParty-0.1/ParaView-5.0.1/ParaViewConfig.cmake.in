@@ -1,0 +1,78 @@
+#-----------------------------------------------------------------------------
+#
+# ParaViewConfig.cmake - ParaView CMake configuration file for external projects.
+#
+# This file is configured by ParaView and used by the UseParaView.cmake module
+# to load ParaView's settings for an external project.
+set (__pv_install_tree @PARAVIEW_CONFIG_INSTALLED@)
+if (__pv_install_tree)
+  get_filename_component(location "${CMAKE_CURRENT_LIST_FILE}" PATH)
+  set (VTK_CONFIG_FILE "${location}/VTKConfig.cmake")
+  set (ParaView_CMAKE_DIR "${location}")
+  set (PARAVIEW_CONFIG_TARGETS_FILE "${location}/ParaViewTargets.cmake")
+else()
+  # The ParaView is in the build-location.
+  set (VTK_CONFIG_FILE "@ParaView_BINARY_DIR@/VTK/VTKConfig.cmake")
+  set (ParaView_CMAKE_DIR "@ParaView_CMAKE_DIR@")
+  set (PARAVIEW_CONFIG_TARGETS_FILE "@ParaView_BINARY_DIR@/ParaViewTargets.cmake")
+endif()
+
+#------------------------------------------------------------------------------
+# Version information for ParaView
+SET(PARAVIEW_VERSION_MAJOR "@PARAVIEW_VERSION_MAJOR@")
+SET(PARAVIEW_VERSION_MINOR "@PARAVIEW_VERSION_MINOR@")
+SET(PARAVIEW_VERSION_PATCH "@PARAVIEW_VERSION_PATCH@")
+SET(PARAVIEW_VERSION_FULL  "@PARAVIEW_VERSION_FULL@")
+
+# The location of the UseParaView.cmake file
+# FIXME: I don't like this mixing of case, we need to fix that to be consistent.
+set (ParaView_USE_FILE "${ParaView_CMAKE_DIR}/UseParaView.cmake")
+
+set (PARAVIEW_USE_FILE ${ParaView_USE_FILE})
+set (PARAVIEW_CMAKE_DIR ${ParaView_CMAKE_DIR})
+
+# Import ParaView targets.
+if(NOT TARGET vtkPVCommon)
+  include("${PARAVIEW_CONFIG_TARGETS_FILE}")
+endif()
+
+# load VTK config. This will bring in information about all modules (including
+# ParaView's modules).
+set (paraview_build_qt_gui "@PARAVIEW_BUILD_QT_GUI@")
+if (paraview_build_qt_gui)
+  set (VTK_FIND_COMPONENTS pqApplicationComponents)
+else()
+  set (VTK_FIND_COMPONENTS vtkPVServerManagerApplication)
+endif()
+
+set (VTK_FIND_COMPONENTS ${VTK_FIND_COMPONENTS} ${ParaView_FIND_COMPONENTS})
+include("${VTK_CONFIG_FILE}")
+
+if (__pv_install_tree)
+  set (PARAVIEW_WWW_DIR "${VTK_INSTALL_PREFIX}/lib/paraview-@PARAVIEW_VERSION_MAJOR@.@PARAVIEW_VERSION_MINOR@/www")
+else()
+  list(APPEND VTK_INCLUDE_DIRS "@ParaView_BINARY_DIR@")
+  set (PARAVIEW_WWW_DIR "@ParaView_BINARY_DIR@/www")
+endif()
+
+# unless using external vtk (when we start supporting it, that is)
+# PARAVIEW_INCLUDE_DIRS is same as VTK_INCLUDE_DIRS, but to make it easier for
+# ParaView users.
+set (PARAVIEW_INCLUDE_DIRS ${VTK_INCLUDE_DIRS})
+
+#------------------------------------------------------------------------------
+# ParaView global configuration options.
+
+set (PARAVIEW_BUILD_SHARED_LIBS "@BUILD_SHARED_LIBS@")
+set (PARAVIEW_BUILD_QT_GUI "@PARAVIEW_BUILD_QT_GUI@")
+set (PARAVIEW_QT_VERSION "@PARAVIEW_QT_VERSION@")
+set (PARAVIEW_USE_MPI "@PARAVIEW_USE_MPI@")
+set (PARAVIEW_ENABLE_PYTHON "@PARAVIEW_ENABLE_PYTHON@")
+set (PARAVIEW_ENABLE_QT_SUPPORT "@PARAVIEW_ENABLE_QT_SUPPORT@")
+set (PARAVIEW_QT_QMAKE_EXECUTABLE "@QT_QMAKE_EXECUTABLE@")
+set (PARAVIEW_USE_VISITBRIDGE "@PARAVIEW_USE_VISITBRIDGE@")
+set (PARAVIEW_ENABLE_COPROCESSING "@PARAVIEW_ENABLE_COPROCESSING@")
+set (PARAVIEW_ENABLE_WEB "@PARAVIEW_ENABLE_WEB@")
+
+# cleanup
+unset(__pv_install_tree)

@@ -1,0 +1,120 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:52 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetCompositeOrder" "3" "August  9, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetCompositeOrder \-\- specify the order in which images are composited\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+void \fBicetCompositeOrder\fP(
+const IceTInt *
+\fIprocess_ranks\fP
+);
+.PP
+.SH Description
+
+.PP
+If \fBICET_ORDERED_COMPOSITE\fP
+is enabled and the current strategy 
+supports ordered composition (verified with the 
+\fBICET_STRATEGY_SUPPORTS_ORDERING\fP
+state variable, then the order 
+which images are composited is specified with \fBicetCompositeOrder\fP\&.
+If compositing is done with z\-buffer comparisons 
+(e.g. \fBicetCompositeMode\fP
+is called with 
+\fBICET_COMPOSITE_MODE_Z_BUFFER\fP),
+then the ordering does not 
+matter, and \fBICET_ORDERED_COMPOSITE\fP
+should probably be disabled. 
+However, if compositing is done with color blending 
+(e.g. \fBicetCompositeMode\fP
+is called with 
+\fBICET_COMPOSITE_MODE_BLEND\fP),
+then the order in which the images 
+are composed can drastically change the output. 
+.PP
+For ordered image compositing to work, the geometric objects rendered by 
+processes must be arranged such that if the geometry of one process is 
+``in front\&'' of the geometry of another process for any camera ray, that 
+ordering holds for all camera rays. It is the application\&'s 
+responsibility to ensure that such an ordering exists and to find that 
+ordering. The easiest way to do this is to ensure that the geometry of 
+each process falls cleanly into regions of a grid, octree, k\-d tree, or 
+similar structure. 
+.PP
+Once the geometry order is determined for a particular rendering 
+viewpoint, it is given to \fBIceT \fPin the form of an array of ranks. The 
+parameter \fIprocess_ranks\fP
+should have exactly 
+\fBICET_NUM_PROCESSES\fP
+entries, each with a unique, valid process 
+rank. The first process should have the geometry that is ``in front\&'' of 
+all others, the next directly behind that, and so on. It should be noted 
+that the application may actually impose only a partial order on the 
+geometry, but that can easily be converted to the linear ordering required 
+by \fBIceT \fP\&.
+.PP
+When ordering is on, it is accepted that \fBicetCompositeOrder\fP
+will 
+be called in between every frame since the order of the geometry may 
+change with the viewpoint. 
+.PP
+If data replication is in effect (see \fBicetDataReplicationGroup\fP),
+all processes are still expected to be listed in \fIprocess_ranks\fP\&.
+Correct ordering can be achieved by ensuring that all processes in each 
+group are listed in contiguous entries in \fIprocess_ranks\fP\&.
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_VALUE\fP
+ Not every entry in the parameter \fIprocess_ranks\fP
+was a unique, 
+valid process rank. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+If an \fBICET_INVALID_VALUE\fP
+error is raised, internal arrays 
+pertaining to the ordering of images may not be restored properly. If 
+such an error is raised, the function should be re\-invoked with a valid 
+ordering before preceding. Unpredictable results may occur otherwise. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetCompositeMode\fP(3)
+\fIicetStrategy\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

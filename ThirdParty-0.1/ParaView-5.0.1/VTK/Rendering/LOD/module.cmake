@@ -1,0 +1,13 @@
+vtk_module(vtkRenderingLOD
+  GROUPS
+    Rendering
+  DEPENDS
+    vtkRenderingCore
+    vtkFiltersModeling
+  TEST_DEPENDS
+    vtkTestingRendering
+    vtkRendering${VTK_RENDERING_BACKEND}
+    vtkInteractionStyle
+  KIT
+    vtkRendering
+  )

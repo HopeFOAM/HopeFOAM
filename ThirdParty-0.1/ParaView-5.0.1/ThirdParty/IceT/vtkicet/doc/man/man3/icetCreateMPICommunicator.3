@@ -1,0 +1,102 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:53 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetCreateMPICommunicator" "3" "August  9, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetCreateMPICommunicator \-\- Converts an MPI communicator to an \fBIceT \fPcommunicator.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceTMPI.h>
+.PP
+.TS H
+l l l .
+\fBIceTCommunicator\fP \fBicetCreateMPICommunicator\fP(
+                                 \fBMPI_Comm\fP  \fImpi_comm\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+\fBIceT \fPrequires a communicator in order to perform correctly. An 
+application is free to build its own communicator, but many will simply 
+prefer to use MPI, which is a well established parallel communication 
+tool. Thus, \fBIceT \fPcomes with an implementation of 
+\fBIceTCommunicator\fP
+that uses the MPI communication layer 
+underneath. 
+.PP
+\fBicetCreateMPICommunicator\fP
+is used to create an 
+\fBIceTCommunicator\fP
+that uses the \fImpi_comm\fP
+MPI communication 
+object. The resulting \fBIceTCommunicator\fP
+shares the same process 
+group and process rank as the original \fBMPI_Comm\fP
+communicator. 
+.PP
+\fImpi_comm\fP
+is duplicated, which has two consiquences. First, all 
+process in \fImpi_comm\fP\&'s
+group may need to call 
+\fBicetCreateMPICommunicator\fP
+in order for any of them to proceed 
+(depending on the MPI implementation). Second, \fImpi_comm\fP
+and the 
+resulting \fBIceTCommunicator\fP
+are decoupled from each other. 
+Communications in one cannot affect another. Also, one communicator may 
+be destroyed without affecting the other. 
+.PP
+.SH Return Value
+
+.PP
+An \fBIceTCommunicator\fP
+with the same process group and rank as 
+\fImpi_comm\fP\&.
+The communicator may be destroyed with a call to 
+\fBicetDestroyMPICommunicator\fP\&.
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+All MPI errors are ignored. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetDestroyMPICommunicator\fP(3),
+\fIicetCreateContext\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

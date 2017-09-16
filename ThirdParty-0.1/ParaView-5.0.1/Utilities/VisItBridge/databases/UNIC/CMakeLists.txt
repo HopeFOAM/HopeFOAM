@@ -1,0 +1,9 @@
+
+set(SOURCES
+  avtUNICFileFormat.C
+  )
+ADD_VISIT_READER(VisItUNICReader "1.0"
+  VISIT_READER_TYPE "STMD"
+  VISIT_READER_NAME "avtUNICFileFormat"    
+  SERVER_SOURCES ${SOURCES}
+  )

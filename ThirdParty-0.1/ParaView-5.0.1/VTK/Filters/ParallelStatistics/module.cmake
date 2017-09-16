@@ -1,0 +1,14 @@
+vtk_module(vtkFiltersParallelStatistics
+  DEPENDS
+    vtkCommonMath
+    vtkCommonDataModel
+    vtkCommonSystem
+    vtkalglib
+    vtkFiltersStatistics
+    vtkParallelCore
+  TEST_DEPENDS
+    vtkParallelMPI
+    vtkTestingCore
+  KIT
+    vtkParallel
+  )

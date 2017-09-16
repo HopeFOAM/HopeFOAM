@@ -1,0 +1,4 @@
+applyCurveBoundary.C
+correctRegIOobject.C
+
+EXE = $(FOAM_USER_APPBIN)/applyCurveBoundary

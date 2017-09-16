@@ -1,0 +1,21 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Web:      www.OpenFOAM.org
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+Description
+    Calculates the Mach Number field from the velocity field.
+
+\*---------------------------------------------------------------------------*/
+
+type            MachNo;
+libs            ("libfieldFunctionObjects.so");
+
+field           U;
+
+executeControl  writeTime;
+writeControl    writeTime;
+
+// ************************************************************************* //

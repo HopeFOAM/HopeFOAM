@@ -1,0 +1,100 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:52 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetCreateContext" "3" "August  9, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetCreateContext \-\- creates a new context.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+\fBIceTContext\fP \fBicetCreateContext\fP(	\fBIceTCommunicator\fP	\fIcomm\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+The \fBicetCreateContext\fP
+function creates a new 
+.igcontext!\fBIceT \fP\fBIceT \fP
+context, makes it current, and returns a 
+handle to the new context. The handle returned is of type 
+\fBIceTContext\fP\&.
+This is an opaque type that should not be handled 
+directly, but rather simply passed to other \fBIceT \fPfunctions. 
+.PP
+Like \fbOpenGL \fP,the \fBIceT \fPengine behaves like a large state machine. The 
+parameters for engine operation is held in the current state. The entire 
+state is encapsulated in a context. Each new context contains its own 
+state. 
+.PP
+It is therefore possible to change the entire current state of \fBIceT \fPby 
+simply switching contexts. Switching contexts is much faster, and often 
+more convenient, than trying to change many state parameters. 
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+It may be tempting to use contexts to run different \fBIceT \fPoperations on 
+separate program threads. Although certainly possible, great care must 
+be taken. First of all, all threads will share the same context. Second 
+of all, \fBIceT \fPis not thread safe. Therefore, a multi\-threaded program 
+would have to run all \fBIceT \fPcommands in `critical sections\&' to ensure 
+that the correct context is being used, and the methods execute safely in 
+general. 
+.PP
+.SH Notes
+
+.PP
+\fBicetCreateContext\fP
+duplicates the communicator \fIcomm\fP\&.
+Thus, 
+to avoid deadlocks on certain implementations (such as MPI), the user 
+level program should call \fBicetCreateContext\fP
+on all processes with 
+the same \fIcomm\fP
+object at about the same time. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetDestroyContext\fP(3),
+\fIicetGetContext\fP(3),
+\fIicetSetContext\fP(3),
+\fIicetCopyState\fP(3),
+\fIicetGet\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

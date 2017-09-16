@@ -1,0 +1,11 @@
+
+SET(SOURCES
+avtCGNSFileFormat.C
+)
+
+#cgns
+ADD_VISIT_READER(VisItCGNSReader "1.0" 
+  VISIT_READER_TYPE "MTMD"
+  VISIT_READER_NAME "avtCGNSFileFormat"       
+  SERVER_SOURCES ${SOURCES}  
+  )

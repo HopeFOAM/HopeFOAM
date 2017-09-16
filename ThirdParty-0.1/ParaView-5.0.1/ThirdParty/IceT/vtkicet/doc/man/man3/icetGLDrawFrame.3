@@ -1,0 +1,140 @@
+'\" t
+.\" Manual page created with latex2man on Fri Sep 26 14:31:03 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetGLDrawFrame" "3" "September 26, 2014" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetGLDrawFrame \-\- renders and composites a frame using \fbOpenGL \fP\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceTGL.h>
+.PP
+.TS H
+l l l .
+void  \fBicetGLDrawFrame\fP( void );
+.TE
+.PP
+.SH Description
+
+.PP
+Initiates a frame draw using the current \fbOpenGL \fPtransformation matrices 
+(modelview and projection). 
+.PP
+Before \fBIceT \fPmay render an image, the tiled display needs to be defined 
+(using \fBicetAddTile\fP),
+the drawing function needs to be set (using 
+\fBicetGLDrawCallback\fP),
+and composite strategy must be set (using 
+\fBicetStrategy\fP).
+The single image sub\-strategy may also optionally 
+be set (using \fBicetSingleImageStrategy\fP).
+.PP
+All processes in the current \fBIceT \fPcontext must call 
+\fBicetGLDrawFrame\fP
+for it to complete. 
+.PP
+The \fbOpenGL \fPprojection matrix and modelview matrix must be set using 
+\fBglLoadMatrix\fP
+or a number of other functions. Likewise, 
+the \fbOpenGL \fPbackground color must be set with 
+\fBglClearColor\fP\&.
+\fBIceT \fPwill use the matrices to determine 
+what pixels need to be rendered and composited. \fBIceT \fPwill also modify 
+the projection matrix to project onto (or in between) tiles. 
+.PP
+If \fBICET_GL_DISPLAY\fP
+is enabled, then the fully composited image 
+is written back to the \fbOpenGL \fPframebuffer for display. It is the 
+application\&'s responsibility to synchronize the processes and swap front 
+and back buffers. If the \fbOpenGL \fPbackground color is set to something 
+other than black, \fBICET_GL_DISPLAY_COLORED_BACKGROUND\fP
+should 
+also be enabled. Displaying with 
+\fBICET_GL_DISPLAY_COLORED_BACKGROUND\fP
+disabled may be slightly 
+faster (depending on graphics hardware) but can result in black 
+rectangles in the background. If \fBICET_GL_DISPLAY_INFLATE\fP
+is 
+enabled and the size of the renderable window (determined by the current 
+\fbOpenGL \fPviewport) is greater than that of the tile being displayed, then 
+the image will first be ``inflated\&'' to the size of the actual display. 
+This inflation will be assisted by texture hardware if 
+\fBICET_GL_DISPLAY_INFLATE_WITH_HARDWARE\fP
+is on. If 
+\fBICET_GL_DISPLAY_INFLATE\fP
+is disabled, the image is drawn at its 
+original resolution at the lower left corner of the display. 
+.PP
+The image remaining in the frame buffer is undefined if 
+\fBICET_GL_DISPLAY\fP
+is disabled or the process is not displaying a 
+tile. 
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_OPERATION\fP
+ Raised if the \fBicetGLInitialize\fP
+has not been called or if the 
+drawing callback has not been set. Also can be raised if 
+\fBicetGLDrawFrame\fP
+is called recursively, probably from within the 
+drawing callback. 
+.TP
+\fBICET_OUT_OF_MEMORY\fP
+ Not enough memory left to hold intermittent frame buffers and other 
+temporary data. 
+.PP
+\fBicetGLDrawFrame\fP
+may also indirectly raise an error if there is an 
+issue with the strategy or callback. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+If compositing with color blending on, the image returned may have a 
+black background instead of the \fIbackground_color\fP
+requested. This 
+can be corrected by blending the returned image over the desired 
+background. This will be done for you if the 
+\fBICET_CORRECT_COLORED_BACKGROUND\fP
+is on. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetAddTile\fP(3),
+\fIicetBoundingBox\fP(3),
+\fIicetBoundingVertices\fP(3),
+\fIicetDrawFrame\fP(3),
+\fIicetGLDrawCallback\fP(3),
+\fIicetSingleImageStrategy\fP(3),
+\fIicetStrategy\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

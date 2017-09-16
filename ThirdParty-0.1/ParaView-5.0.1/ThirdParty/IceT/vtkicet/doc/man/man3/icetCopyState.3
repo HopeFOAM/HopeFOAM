@@ -1,0 +1,96 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:52 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetCopyState" "3" "August  9, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetCopyState \-\- copy state machine of one context to another.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+void \fBicetCopyState\fP(	\fBIceTContext\fP	\fIdest\fP,
+	const \fBIceTContext\fP	\fIsrc\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+The \fBicetCopyState\fP
+function replaces the state of \fIdest\fP
+with 
+the current state of \fIsrc\fP\&.
+This function can be used to quickly 
+duplicate a context. 
+.PP
+The \fBIceTCommunicator\fP
+object associated with \fIdest\fP
+is 
+\fInot\fP
+changed (nor can it ever be). Consequently, the following 
+state values are not copied either, since they refer to process ids that 
+are directly tied to the \fBIceTCommunicator\fP
+object: 
+\fBICET_RANK\fP,
+\fBICET_NUM_PROCESSES\fP,
+\fBICET_DATA_REPLICATION_GROUP\fP,
+\fBICET_DATA_REPLICATION_GROUP_SIZE\fP,
+\fBICET_COMPOSITE_ORDER\fP,
+and \fBICET_PROCESS_ORDERS\fP\&.
+However, every other state parameter is copied. 
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+The state is copied blindly. It is therefore possible to copy states 
+that are invalid for a context\&'s communicator. For example, a display 
+rank may not refer to a valid process id. 
+.PP
+.SH Notes
+
+.PP
+Behavior is undefined if \fIdest\fP
+or \fIsrc\fP
+has never been created 
+or has already been destroyed. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetCreateContext\fP(3),
+\fIicetGetContext\fP(3),
+\fIicetSetContext\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

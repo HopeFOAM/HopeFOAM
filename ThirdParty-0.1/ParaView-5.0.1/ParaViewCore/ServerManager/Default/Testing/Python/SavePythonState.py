@@ -1,0 +1,19 @@
+# test driver for the second half of the SavePythonState test. it
+# sets up the testing environment, loads the state file (passed
+# on the command line), and verifys the resulting image
+
+import sys
+from paraview import smtesting
+print sys.argv
+smtesting.ProcessCommandLineArguments()
+
+execfile(sys.argv[1])
+
+
+_view = GetActiveView()
+_view.ViewSize = [300, 300]
+_view.SMProxy.UpdateVTKObjects()
+
+if not smtesting.DoRegressionTesting(_view.SMProxy):
+  # This will lead to VTK object leaks.
+  sys.exit(1)

@@ -1,0 +1,156 @@
+** -*- text -*- *************************************************************
+**
+** Revision history of IceT.
+**
+** Copyright 2003 Sandia Corporation
+** Under the terms of Contract DE-AC04-94AL85000 with Sandia Corporation,
+** the U.S. Government retains certain rights in this software.
+**
+** This source code is released under the New BSD License.
+**
+*****************************************************************************
+
+Revision 2.2:
+	Added the icetCompositeImage function to allow IceT to operate on
+	pre-rendered images rather than rely on a rendering callback.
+
+Revision 2.1:
+	Added Radix-k as a single-image strategy.
+
+	Changed the collection method for single image compositing to use
+	the built-in gather functions of MPI.  The old method had memory
+	problems with large numbers of processes and would probably be
+	inefficient anyway.
+
+	Changed the single image compositing methods to work strictly with
+	compressed images.  This prevents having to pad images with
+	background only to then test that same background later during
+	compression.
+
+	Added interlace images option that provides a hint to the
+	compositing algorithms to try shuffling the pixels in images to
+	better load balance the active pixels during compositing.
+
+	Patch 1: Fixed compatibility issue with compiling against MPI
+	version 1.  Fixed build issues for Windows.
+
+Revision 2.0: A major restructuring of the IceT code comprising the
+	following changes:
+
+	* Remove the dependence of OpenGL from the core library.  Segregate
+	  all OpenGL references and linkages to its own library.
+
+	* Formalize an IceTImage object that stores pixel data.  This
+          object is capable of storing pixel data with various formats
+          rather than being fixed at 32-bit integers.
+
+	* Provide the concept of a "single-image strategy."  The
+          single-image strategy performs a traditional composition of a
+          single image, and is used as a subroutine in some of the
+          multi-tile strategies.  Since IceT is commonly used for
+          compositing single tiles anyway, the development and selection of
+          single-image strategies is significant.
+
+	* Several identifiers and functions were changed in the IceT
+          interface.  Many were to implement the previous features, and
+          others were simply to clarify the interface.
+
+	* Use the Glut library for OpenGL window creation in the tests.
+
+	* Changed exposed files to conform to the current version of the
+	  IceT acronym.  (It used to be ICE-T.)
+
+	Patch 1: Fixed minor compile issues.  Fixed a common case where the
+	time to compare/blend was not measured.  Fixed a corner case where
+	binary swap had negative sized image partitions.
+
+Revision 1.0: Basically the same as 0.5.4, which has been stable for years
+	now, with the addition of official documentation.
+
+Revision 0.5: Introduced the concept of ordered composition, especially
+	with respect to color blending.  Once the image layer order is
+	specified by the user level application, some composition
+	strategies will perform image composition in that order, using the
+	Porter and Duff OVER operator correctly when color blending is
+	enabled.
+
+	Added ability to handle replicated data.  If geometry is replicated
+	over several processors, IceT will break the amount of screen the
+	data is replicated over and divide it amongst the processors that
+	all contain the same data.
+
+	patch 1: Some changes to compile with Mac OS X and with LAM MPI.
+
+	patch 2: Got rid of some compiler warnings.  Change the image
+	inflation to use the graphics hardware to inflate with textures
+	rather than inflate the image with software and then send more data
+	to the graphics card.
+
+	patch 3: Fixed the "demo bug."
+
+	patch 4: Miscellaneous build fixes and improvements.  This
+	unfortunately includes removing the man page documents.  I am in
+	the process of updating the documents, so that should be ready
+	"real soon now."  (As an aside, IceT is ready for its official
+	"1.0" release.  I'm just waiting to finish the documentation to do
+	that.)
+
+	Fixed an issue with the MSVC 6.0 compiler and 64 bit integers.
+
+	Fixed a problem when rendering objects behind the viewer with a
+	perspective projection matrix.
+
+Revision 0.4: Abstracted the image formats a bit.  IceT can now perform
+	a composite on just the depth buffer.  This is useful when creating
+	shadow buffers.  This should also make it easier to implement
+	image-only compositing for parallel volume rendering.
+
+	Abstracted the communications layer such that it is no longer
+	dependent on MPI.  Of course, using MPI is still supported and is
+	the only communications layer currently provided (although the user
+	can potentially make his own).
+
+	Removed icetInit, which only called icetCreateContext to make a
+	"default" context.  The only real consequence of this change is
+	that IceT can now be placed in a state where it has no current
+	context.  This could lead to seg-faults if the user does not set
+	another context as current and then tries to use IceT, but this is
+	an erroneous use of IceT anyway.
+
+	Changed build system to use CMake instead of autoconf.
+
+	The library has been split into three parts: libicet, libicet_mpi,
+	and libicet_strategies (mostly for convenience with the CMake build
+	processes).  The major consequence (besides obvious linker flags)
+	is that a default strategy is no longer set.
+
+	patch 1: More updates to the build system to actually allow other
+	CMake-built programs use IceT.
+
+	patch 2: Fixed a bug with the background color.
+
+Revision 0.3: Added the ability to render tiles smaller then the actual
+	display window and then inflate the image back onto the tiles.
+	Also changed the convention of how the projection matrix is set
+	from using set functions or callbacks to simply setting it before
+	calling icetDrawFrame.  The projection matrix is restored before
+	icetDrawFrame returns.
+
+	Removed clunky icetDisplayNodes function.  Display nodes are now
+	specified in icetAddTile.
+
+	Problems that appeared in revision 0.2 seem to be mostly fixed
+	now.  Added a check in the uncompress and compare compressed
+	functions to make sure there are no buffer overruns.  Adds a bit of
+	overhead, but seems to have stopped an occasional seg fault that
+	probably occurred when MPI dorked the data.
+
+Revision 0.2: A whole host of fixes.  Added a regression testing suite.
+	Current version seems quite stable except for intermittent problems
+	with split strategy under Myrinet.  Probably either race condition
+	or Myrinet/MPI bug.
+
+Revision 0.1: Semi-stable after movement from MTIC to IceT and building
+	autoconf scripts for use on Win32 rather than MSVC project files.
+	Found some issues with split and reduce strategies after moving to
+	Myrinet.

@@ -1,0 +1,12 @@
+vtk_module(vtkRenderingQt
+  GROUPS
+    Qt
+  DEPENDS
+    vtkRenderingLabel
+  PRIVATE_DEPENDS
+    vtkFiltersTexture
+    vtkFiltersSources
+    vtkGUISupportQt
+  TEST_DEPENDS
+    vtkTestingCore
+  )

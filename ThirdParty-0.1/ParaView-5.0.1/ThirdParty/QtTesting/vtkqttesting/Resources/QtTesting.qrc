@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/frameForward.png</file>
+        <file>Icons/pause.png</file>
+        <file>Icons/repeat.png</file>
+        <file>Icons/timePlay.png</file>
+        <file>Icons/clear.svg</file>
+        <file>Icons/minus.png</file>
+        <file>Icons/plus.png</file>
+        <file>Icons/info.png</file>
+        <file>Icons/playback-stop.png</file>
+        <file>Icons/record.png</file>
+    </qresource>
+</RCC>

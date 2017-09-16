@@ -1,0 +1,14 @@
+vtk_module(vtkFiltersAMR
+  GROUPS
+    StandAlone
+  DEPENDS
+    vtkParallelCore
+    vtkFiltersGeneral
+  TEST_DEPENDS
+    vtkImagingCore
+    vtkIOAMR
+    vtkTestingCore
+    vtkTestingRendering
+  KIT
+    vtkParallel
+  )

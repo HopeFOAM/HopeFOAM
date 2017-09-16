@@ -1,0 +1,290 @@
+'\" t
+.\" Manual page created with latex2man on Thu Oct  9 15:41:59 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetCompositeImage" "3" "October  9, 2014" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetCompositeImage \-\- composites a pre\-rendered image\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+\fBIceTImage\fP \fBicetCompositeImage\fP(
+	const IceTVoid *	\fIcolor_buffer\fP,
+	const IceTVoid *	\fIdepth_buffer\fP,
+	const IceTInt *	\fIvalid_pixels_viewport\fP,
+	const IceTDouble *	\fIprojection_matrix\fP,
+	const IceTDouble *	\fImodelview_matrix\fP,
+	const IceTFloat *	\fIbackground_color\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+The \fBicetCompositeImage\fP
+function takes image buffer data and 
+composites it to a single image. This function behaves similarly to 
+\fBicetDrawFrame\fP
+except that instead of using callback functions to 
+render and retrieve image data, the images are pre\-rendered and passed 
+directly to \fBicetCompositeImage\fP\&.
+Although it is more efficient to 
+allow \fBIceT \fPto determine rendering projections and use callbacks, it is 
+often more convenient for applications to integrate \fBIceT \fPas a separate 
+compositing step after the rendering. 
+.PP
+Before \fBIceT \fPmay composite an image, the display needs to be defined 
+(using \fBicetAddTile\fP),
+the buffer formats need to be specified 
+(using \fBicetSetColorFormat\fPand \fBicetSetDepthFormat\fP),and the composite 
+strategy must be set (using \fBicetStrategy\fP).
+The single image 
+sub\-strategy may also optionally be set (using 
+\fBicetSingleImageStrategy\fP).
+.PP
+All process must call \fBicetCompositeImage\fP
+for the operation to 
+complete on any process in a parallel job. 
+.PP
+The \fIcolor_buffer\fP
+and \fIdepth_buffer\fP
+arguments point to 
+memory buffers that contain the image data. The image data is always 
+stored in densely packed arrays in row\-major order (a.k.a. x\-major order 
+or by scan\-lines). The first horizontal scan\-line is at the bottom of the 
+image with subsequent scan\-lines moving up. The size of each image buffer 
+is expected to be the width and the height of the global viewport (which 
+is set indirectly with \fBicetAddTile\fP).
+The global viewport is 
+stored in the \fBICET_GLOBAL_VIEWPORT\fP
+state variable. If only one 
+tile is specified, then the width and height of the global viewport will 
+be the same as this one tile. 
+.PP
+The format for \fIcolor_buffer\fP
+is expected to be the same as what is 
+set with \fBicetSetColorFormat\fP\&.The following formats and their 
+interpretations with respect to \fIcolor_buffer\fP
+are as follows. 
+.PP
+.TP
+\fBICET_IMAGE_COLOR_RGBA_UBYTE\fP
+ Each entry is an RGBA 
+color tuple. Each component is valued in the range from 0 to 255 
+and is stored as an 8\-bit integer. The buffer will always be allocated 
+on memory boundaries such that each color value can be treated as a 
+single 32\-bit integer. 
+.TP
+\fBICET_IMAGE_COLOR_RGBA_FLOAT\fP
+ Each entry is an RGBA 
+color tuple. Each component is in the range from 0.0 to 1.0 and is 
+stored as a 32\-bit float. 
+.TP
+\fBICET_IMAGE_COLOR_NONE\fP
+ No color values are stored in the 
+image. 
+.PP
+Likewise, the format for \fIdepth_buffer\fP
+is expected to be the same 
+as what is set with \fBicetSetDepthFormat\fP\&.The following formats and 
+their interpretations with respect to \fIdepth_buffer\fP
+are as 
+follows. 
+.PP
+.TP
+\fBICET_IMAGE_DEPTH_FLOAT\fP
+ Each entry is in the range from 
+0.0 (near plane) to 1.0 (far plane) and is stored as a 32\-bit 
+float. 
+.TP
+\fBICET_IMAGE_DEPTH_NONE\fP
+ No depth values are stored in the 
+image. 
+.PP
+If the current format does not have a color or depth, then the respective 
+buffer argument should be set to NULL\&.
+.PP
+Care should be taken to make sure that the color and depth buffer formats 
+are consistent to the formats expected by \fBIceT \fP\&.Mismatched formats will 
+result in garbage images and possible memory faults. 
+.PP
+Also note that when compositing with color blending 
+(\fBicetCompositeMode\fP
+is set to 
+\fBICET_COMPOSITE_MODE_BLEND\fP),
+the color buffer must be rendered 
+with a black background in order for the composite to complete 
+correctly. A colored background can later be added using the 
+\fIbackground_color\fP
+as described below. 
+.PP
+\fIvalid_pixels_viewport\fP
+is an optional argument that makes it 
+possible to specify a subset of pixels that are valid. In parallel 
+rendering it is common for a single process to render geometry in only a 
+small portion of the image, and \fBIceT \fPcan take advantage of this 
+information. If the rendering system identifies such a region, it can be 
+specified with \fIvalid_pixels_viewport\fP\&.
+.PP
+Like all viewports in \fBIceT \fP,\fIvalid_pixels_viewport\fP
+is an array 
+of 4 integers in the form $<x, y, width, height >$.This 
+viewport is given in relation to the image passed in the 
+\fIcolor_buffer\fP
+and \fIdepth_buffer\fP
+arguments. Everything 
+outside of this rectangular region will be ignored. For example, if the 
+\fIvalid_pixels_viewport\fP
+$<10, 20, 150, 100 >$is 
+given, then \fBicetCompositeImage\fP
+will ignore all pixels in the 
+bottom 10 rows, the left 20 columns, anything above the 
+$160^th$
+(10+150) row, and anything to the right of the 
+$120^th$
+(20+100) column. 
+.PP
+If \fIvalid_pixels_viewport\fP
+is NULL,
+then all pixels in the 
+input image are assumed to be valid. 
+.PP
+\fIprojection_matrix\fP
+and \fImodelview_matrix\fP
+are optional 
+arguments that specify the projection that was used during rendering. 
+When applied to the geometry bounds information given with 
+\fBicetBoundingBox\fP
+or \fBicetBoundingVertices\fP,
+this provides 
+\fBIceT \fPwith further information on local image projections. If the given 
+matrices are not the same used in the rendering or the given bounds do 
+not contain the geometry, \fBIceT \fPmay clip the geometry in surprising ways. 
+If these arguments are set to NULL,
+then geometry projection will 
+not be considered when determining what parts of images are valid. 
+.PP
+The \fIbackground_color\fP
+argument specifies the desired background 
+color for the image. It is given as an array of 4 floating point values 
+specifying, in order, the red, green, blue, and alpha channels of the 
+color in the range from 0.0 to 1.0\&. 
+.PP
+When rendering using a depth buffer, the background color is used to fill 
+in empty regions of images. When rendering using color blending, the 
+background color is used to correct colored backgrounds. 
+.PP
+As stated previously, color blended compositing only works correctly if 
+the images are rendered with a clear black background. Otherwise the 
+background color will be added multiple times by each process that 
+contains geometry in that pixel. If the 
+\fBICET_CORRECT_COLORED_BACKGROUND\fP
+feature is enabled, this 
+background color is blended back into the final composited image. 
+.PP
+.SH Return Value
+
+.PP
+On each .igdisplay processdisplay
+process (as defined by 
+\fBicetAddTile\fP),
+\fBicetCompositeImage\fP
+returns the fully 
+composited image in an \fBIceTImage\fP
+object. The contents of the 
+image are undefined for any non\-display process. 
+.PP
+If the \fBICET_COMPOSITE_ONE_BUFFER\fP
+option is on and both a color 
+and depth buffer is specified with \fBicetSetColorFormat\fPand 
+\fBicetSetDepthFormat\fP,then the returned image might be missing the depth 
+buffer. The rational behind this option is that often both the color and 
+depth buffer is necessary in order to composite the color buffer, but the 
+composited depth buffer is not needed. In this case, the compositing 
+might save some time by not transferring depth information at the latter 
+stage of compositing. 
+.PP
+The returned image uses memory buffers that will be reclaimed the next 
+time \fBIceT \fPrenders or composites a frame. Do not use this image after 
+the next call to \fBicetCompositeImage\fP
+(unless you have changed the 
+\fBIceT \fPcontext). 
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_VALUE\fP
+ An argument is set to NULL
+where data is required. 
+.TP
+\fBICET_OUT_OF_MEMORY\fP
+ Not enough memory left to hold intermittent frame buffers and other 
+temporary data. 
+.PP
+\fBicetDrawFrame\fP
+may also indirectly raise an error if there is an 
+issue with the strategy or callback. 
+.PP
+.SH Warnings
+
+.PP
+.TP
+\fBICET_INVALID_VALUE\fP
+ An argument to \fBicetCompositeImage\fP
+is inconsistent with the 
+current \fBIceT \fPstate. 
+.PP
+.SH Bugs
+
+.PP
+The images provided must match the format expected by \fBIceT \fPor else 
+unpredictable behavior may occur. The images must also be carefully 
+rendered to follow the provided viewport and projections. Images that a 
+color blended must be rendered with a black background and rendered with 
+the correct alpha value. 
+.PP
+If compositing with color blending on, the image returned may have a 
+black background instead of the \fIbackground_color\fP
+requested. This 
+can be corrected by blending the returned image over the desired 
+background. This will be done for you if the 
+\fBICET_CORRECT_COLORED_BACKGROUND\fP
+feature is enabled. 
+.PP
+.SH Copyright
+
+Copyright (C)2014 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetAddTile\fP(3),
+\fIicetBoundingBox\fP(3),
+\fIicetBoundingVertices\fP(3),
+\fIicetDrawCallback\fP(3),
+\fIicetDrawFrame\fP(3),
+\fIicetSetColorFormat\fP(3),
+\fIicetSetDepthFormat\fP(3),
+\fIicetSingleImageStrategy\fP(3),
+\fIicetStrategy\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

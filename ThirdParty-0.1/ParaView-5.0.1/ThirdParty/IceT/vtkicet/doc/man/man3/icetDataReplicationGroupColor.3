@@ -1,0 +1,90 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:53 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetDataReplicationGroupColor" "3" "September 20, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetDataReplicationGroupColor \-\- define data replication.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+void \fBicetDataReplicationGroupColor\fP(	IceTInt	\fIcolor\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+\fBIceT \fPhas the ability to take advantage of geometric data that is 
+replicated among processes. If a group of processes share the same 
+geometry data, then \fBIceT \fPwill split the region of the display that the 
+data projects onto among the processes, thereby reducing the total amount 
+of image composition work that needs to be done. 
+.PP
+Despite the name of the function, \fBicetDataReplicationGroupColor\fP
+has nothing to do the color of the data being replicated. Instead, 
+\fIcolor\fP
+is used to mark the local process as part of a given group. 
+When \fBicetDataReplicationGroupColor\fP
+is called, it finds all other 
+processes that have the same color and builds a group based on this 
+information. 
+.PP
+\fBicetDataReplicationGroupColor\fP
+must be called on every processes 
+before the function will return. 
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+\fBIceT \fPassumes that \fBicetDataReplicationGroup\fP
+is called with the 
+exact same parameters on all processes belonging to a given group. 
+Likewise, \fBIceT \fPalso assumes that all processes have called 
+\fBicetBoundingVertices\fP
+or \fBicetBoundingBox\fP
+with the exact 
+same parameters on all processes belonging to a given group. These 
+requirements are not strictly enforced, but failing to do so may cause 
+some of the geometry to not be rendered. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetDataReplicationGroup\fP(3),
+\fIicetBoundingVertices\fP(3),
+\fIicetBoundingBox\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

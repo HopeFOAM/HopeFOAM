@@ -1,0 +1,3 @@
+dgEulerFoam.C
+
+EXE = ../dgEulerFoamVortex

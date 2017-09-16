@@ -1,0 +1,119 @@
+'\" t
+.\" Manual page created with latex2man on Fri Sep 26 14:31:04 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetSingleImageStrategy" "3" "September 26, 2014" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetSingleImageStrategy \-\- set the sub\-strategy used to composite the image for a single tile.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+void \fBicetSingleImageStrategy\fP(	IceTEnum	\fIstrategy\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+The main \fBIceT \fPalgorithms are specially designed to composite data 
+defined on multiple tiles. Some of these algorithms, namely 
+\fBICET_STRATEGY_REDUCE\fP
+and \fBICET_STRATEGY_SEQUENTIAL\fP,
+operate at least in part by compositing single images together. \fBIceT \fP
+also comes with multiple separate strategies for performing this single 
+image compositing, and this can be selected with the 
+\fBicetSingleImageStrategy\fP
+function. 
+.PP
+A single image strategy is chosen from one of the following provided 
+enumerated values: 
+.PP
+.TP
+\fBICET_SINGLE_IMAGE_STRATEGY_AUTOMATIC\fP
+ Automatically 
+chooses which single image strategy to use based on the number of 
+processes participating in the composition. 
+.igsingle image strategy!automatic
+.TP
+\fBICET_SINGLE_IMAGE_STRATEGY_BSWAP\fP
+ The classic binary swap 
+compositing algorithm. At each phase of the algorithm, each process 
+partners with another, sends half of its image to its partner, and 
+receives the opposite half from its partner. The processes are then 
+partitioned into two groups that each have the same image part, and the 
+algorithm recurses. 
+.igsingle image strategy!binary swap
+.TP
+\fBICET_SINGLE_IMAGE_STRATEGY_RADIXK\fP
+ The radix\-k 
+acompositing algorithm is similar to binary swap except that groups of 
+processes can be larger than two. Larger groups require more overall 
+messages but overlap blending and communication. The size of the groups 
+is indirectly controlled by the \fBICET_MAGIC_K\fP
+environment 
+variable or CMake variable. 
+.TP
+\fBICET_SINGLE_IMAGE_STRATEGY_TREE\fP
+ At each phase, each 
+process partners with another, and one of the processes sends its entire 
+image to the other. The algorithm recurses with the group of processes 
+that received images until only one process has an image. 
+.igsingle image strategy!tree
+.PP
+By default \fBIceT \fPsets the single image strategy to 
+\fBICET_SINGLE_IMAGE_STRATEGY_AUTOMATIC\fP
+when a context is 
+created. This is the single image strategy that will be used if no other 
+is selected. 
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_ENUM\fP
+ The \fIstrategy\fP
+argument does not represent a valid single image 
+strategy. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Copyright
+
+Copyright (C)2010 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetCompositeImage\fP(3),
+\fIicetDrawFrame\fP(3),
+\fIicetGetStrategyName\fP(3),
+\fIicetGLDrawFrame\fP(3),
+\fIicetSingleImageStrategy\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

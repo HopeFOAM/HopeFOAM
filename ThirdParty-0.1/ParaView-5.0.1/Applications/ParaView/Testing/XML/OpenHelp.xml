@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<pqevents>
+  <pqevent object="pqClientMainWindow/menubar/menu_Help" command="activate" arguments="actionHelp" />
+  <!-- adding pause to allow help to load up -->
+  <pqevent object="pqClientMainWindow" command="pause" arguments="500"/>
+  <pqevent object="pqClientMainWindow/menubar/menuSources" command="activate" arguments="ConeSource" />
+  <pqevent object="pqClientMainWindow/propertiesDock/propertiesPanel/Help" command="activate" arguments="" />
+</pqevents>

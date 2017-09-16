@@ -1,0 +1,92 @@
+'\" t
+.\" Manual page created with latex2man on Mon Sep 22 15:51:54 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetImageGetNumPixels" "3" "August  9, 2010" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetImageGetWidth\fP,\fBicetImageGetHeight\fP,\fBicetImageGetNumPixels\fP\-\- get dimensions of an image 
+.PP
+.igmanpage:icetImageGetWidth
+.igicetImageGetWidth|(textbf
+.PP
+.igmanpage:icetImageGetHeight
+.igicetImageGetHeight|(textbf
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l l l .
+IceTSizeType	\fBicetImageGetWidth\fP	(  const \fBIceTImage\fP	\fIimage\fP	);
+IceTSizeType	\fBicetImageGetHeight\fP	(  const \fBIceTImage\fP	\fIimage\fP	);
+IceTSizeType	\fBicetImageGetNumPixels\fP	(  const \fBIceTImage\fP	\fIimage\fP	);
+.TE
+.PP
+.SH Description
+
+.PP
+\fBicetImageGetWidth\fP,\fBicetImageGetHeight\fP,and \fBicetImageGetNumPixels\fPallow 
+you to query the size of an \fIimage\fP
+with respect to the number of 
+pixels. These functions define the buffer size returned by 
+\fBicetImageGetColor\fP
+and \fBicetImageGetDepth\fP\&.
+.PP
+.SH Return Value
+
+.PP
+\fBicetImageGetWidth\fPreturns the number of pixels along the horizontal axis 
+of the \fIimage\fP
+and \fBicetImageGetHeight\fPreturns the number of pixels 
+along the vertical axis of the \fIimage\fP\&.
+\fBicetImageGetNumPixels\fPis a 
+convenience function that returns the total number of pixels in 
+\fIimage\fP
+(the width times the height). 
+.PP
+.SH Errors
+
+.PP
+None. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Copyright
+
+Copyright (C)2010 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetImageGetColor\fP(3),
+\fIicetImageGetDepth\fP(3)
+.PP
+.igicetImageGetWidth|)textbf
+.PP
+.igicetImageGetHeight|)textbf
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

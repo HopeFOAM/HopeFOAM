@@ -1,0 +1,152 @@
+'\" t
+.\" Manual page created with latex2man on Fri Sep 26 14:31:04 MDT 2014
+.\" NOTE: This file is generated, DO NOT EDIT.
+.de Vb
+.ft CW
+.nf
+..
+.de Ve
+.ft R
+
+.fi
+..
+.TH "icetStrategy" "3" "September 26, 2014" "\fBIceT \fPReference" "\fBIceT \fPReference"
+.SH NAME
+
+\fBicetStrategy \-\- set the strategy used to composite images.\fP
+.PP
+.SH Synopsis
+
+.PP
+#include <IceT.h>
+.PP
+.TS H
+l l l .
+void \fBicetStrategy\fP(	IceTEnum	\fIstrategy\fP  );
+.TE
+.PP
+.SH Description
+
+.PP
+The \fBIceT \fPAPI comes packaged with several algorithms for compositing 
+images. The algorithm to use is determined by selecting a 
+\fIstrategy\fP\&.
+The strategy is selected with \fBicetStrategy\fP\&.
+A 
+strategy must be selected before \fBicetDrawFrame\fP,
+\fBicetCompositeImage\fP,
+or \fBicetGLDrawFrame\fP
+is called. 
+.PP
+A strategy is chosen from one of the following provided enumerated 
+values: 
+.PP
+.TP
+\fBICET_STRATEGY_SEQUENTIAL\fP
+ Basically applies a ``traditional\&'' single tile composition (such as 
+binary swap) to each tile in the order they were defined. Because each 
+process must take part in the composition of each tile regardless of 
+whether they draw into it, this strategy is usually inefficient when 
+compositing for more than one tile, but is recommended for the single 
+tile case because it bypasses some of the communication necessary for 
+the other multi\-tile strategies. 
+.igstrategy!sequential
+.TP
+\fBICET_STRATEGY_DIRECT\fP
+ As each process renders an image 
+for a tile, that image is sent directly to the process that will 
+display that tile. This usually results in a few processes receiving 
+and processing the majority of the data, and is therefore usually an 
+inefficient strategy. 
+.igstrategy!direct
+.TP
+\fBICET_STRATEGY_SPLIT\fP
+ Like \fBICET_STRATEGY_DIRECT\fP,
+except that the tiles are split up, and each process is assigned a 
+piece of a tile in such a way that each process receives and handles 
+about the same amount of data. This strategy is often very efficient, 
+but due to the large amount of messages passed, it has not proven to be 
+very scalable or robust. 
+.igstrategy!split
+.TP
+\fBICET_STRATEGY_REDUCE\fP
+ A two phase algorithm. In the 
+first phase, tile images are redistributed such that each process has 
+one image for one tile. In the second phase, a ``traditional\&'' single 
+tile composition is performed for each tile. Since each process 
+contains an image for only one tile, all these compositions may happen 
+simultaneously. This is a well rounded strategy that seems to perform 
+well in a wide variety of multi\-tile applications. (However, in the 
+special case where only one tile is defined, the sequential strategy is 
+probably better.) 
+.igstrategy!reduce
+.TP
+\fBICET_STRATEGY_VTREE\fP
+ An extension to the binary tree 
+algorithm for image composition. Sets up a ``virtual\&'' composition 
+tree for each tile image. Processes that belong to multiple trees 
+(because they render to more than one tile) are allowed to float 
+between trees. This strategy is not quite as well load balanced as 
+\fBICET_STRATEGY_REDUCE\fP
+or \fBICET_STRATEGY_SPLIT\fP,
+but 
+has very well behaved network communication. 
+.igstrategy!virtual trees
+.PP
+Not all of the strategies support ordered image composition. 
+\fBICET_STRATEGY_SEQUENTIAL\fP,
+\fBICET_STRATEGY_DIRECT\fP,
+and 
+\fBICET_STRATEGY_REDUCE\fP
+do support ordered image composition. 
+\fBICET_STRATEGY_SPLIT\fP
+and \fBICET_STRATEGY_VTREE\fP
+do not 
+support ordered image composition and will ignore 
+\fBICET_ORDERED_COMPOSITE\fP
+if it is enabled. 
+.PP
+Some of the strategies, namely \fBICET_STRATEGY_SEQUENTIAL\fP
+and 
+\fBICET_STRATEGY_REDUCE\fP,
+use a sub\-strategy that composites the 
+image for a single tile. This single image strategy can also be 
+specified with \fBicetSingleImageStrategy\fP\&.
+.PP
+.SH Errors
+
+.PP
+.TP
+\fBICET_INVALID_ENUM\fP
+ The \fIstrategy\fP
+argument does not represent a valid strategy. 
+.PP
+.SH Warnings
+
+.PP
+None. 
+.PP
+.SH Bugs
+
+.PP
+None known. 
+.PP
+.SH Copyright
+
+Copyright (C)2003 Sandia Corporation 
+.PP
+Under the terms of Contract DE\-AC04\-94AL85000 with Sandia Corporation, the 
+U.S. Government retains certain rights in this software. 
+.PP
+This source code is released under the New BSD License. 
+.PP
+.SH See Also
+
+.PP
+\fIicetCompositeImage\fP(3),
+\fIicetDrawFrame\fP(3),
+\fIicetGetStrategyName\fP(3),
+\fIicetGLDrawFrame\fP(3),
+\fIicetSingleImageStrategy\fP(3)
+.PP
+.\" NOTE: This file is generated, DO NOT EDIT.

@@ -1,0 +1,123 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM.
+#
+#     OpenFOAM is free software: you can redistribute it and/or modify it
+#     under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+#
+#     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+#     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+#     for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Script
+#     makeCmake
+#
+# Description
+#     Build script for cmake
+#
+#------------------------------------------------------------------------------
+cmakePACKAGE=cmake-3.2.1
+
+#------------------------------------------------------------------------------
+# run from third-party directory only
+wmakeCheckPwd "$WM_THIRD_PARTY_DIR" || {
+    echo "Error: Current directory is not \$WM_THIRD_PARTY_DIR"
+    echo "    The environment variables are inconsistent with the installation."
+    echo "    Check the OpenFOAM entries in your dot-files and source them."
+    exit 1
+}
+. etc/tools/ThirdPartyFunctions
+#------------------------------------------------------------------------------
+
+usage() {
+    exec 1>&2
+    while [ "$#" -ge 1 ]; do echo "$1"; shift; done
+    cat<<USAGE
+
+usage: ${0##*/} [OPTION] [cmake-VERSION]
+options:
+  -gcc              force g++ instead of the value from \$WM_CXX
+  -help
+
+* build cmake
+      $cmakePACKAGE
+
+USAGE
+    exit 1
+}
+
+# ensure CMake gets the correct C++ compiler
+[ -n "$WM_CXX" ] && export CXX="$WM_CXX"
+[ -n "$WM_CC" ] && export CC="$WM_CC"
+
+
+# parse options
+while [ "$#" -gt 0 ]
+do
+    case "$1" in
+    -h | -help)
+        usage
+        ;;
+    -gcc)
+        export CC=gcc   # use gcc
+        export CXX=g++  # use g++
+        shift
+        ;;
+    cmake-[1-9]*)
+        cmakePACKAGE="${1%%/}"
+        shift
+        ;;
+    *)
+        usage "unknown option/argument: '$*'"
+        ;;
+    esac
+done
+
+
+#------------------------------------------------------------------------------
+prefixDIR=$installBASE/$cmakePACKAGE
+
+#
+# Build CMAKE
+#
+echo "---------------"
+if [ -d "$prefixDIR" -a -r "$prefixDIR/bin/cmake" ]
+then
+    echo "Already built: $cmakePACKAGE"
+else
+    echo "Starting build: $cmakePACKAGE"
+(
+    sourceDIR=$WM_THIRD_PARTY_DIR/$cmakePACKAGE
+    buildDIR=$buildBASE/$cmakePACKAGE
+
+    cd $sourceDIR || exit 1
+    make distclean 2>/dev/null
+
+    rm -rf $buildDIR
+    mkdir -p $buildDIR
+    cd $buildDIR
+
+    $sourceDIR/bootstrap --prefix=$prefixDIR \
+    && time make -j $WM_NCOMPPROCS \
+    && make install \
+    && echo "Built: $cmakePACKAGE"
+) || {
+    echo "Error building: $cmakePACKAGE"
+    exit 1
+}
+fi
+
+#------------------------------------------------------------------------------

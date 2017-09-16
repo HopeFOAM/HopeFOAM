@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>pqEditMenuBuilder</class>
+ <widget class="QMenu" name="pqEditMenuBuilder">
+  <property name="title">
+   <string>&amp;Edit</string>
+  </property>
+  <action name="actionEditUndo">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../../Components/Resources/pqComponents.qrc">
+     <normaloff>:/pqWidgets/Icons/pqUndo24.png</normaloff>:/pqWidgets/Icons/pqUndo24.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionEditRedo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../../Components/Resources/pqComponents.qrc">
+     <normaloff>:/pqWidgets/Icons/pqRedo24.png</normaloff>:/pqWidgets/Icons/pqRedo24.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionEditCameraUndo">
+   <property name="icon">
+    <iconset resource="../../../Components/Resources/pqComponents.qrc">
+     <normaloff>:/pqWidgets/Icons/pqUndoCamera24.png</normaloff>:/pqWidgets/Icons/pqUndoCamera24.png</iconset>
+   </property>
+   <property name="text">
+    <string>Camera Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionEditCameraRedo">
+   <property name="icon">
+    <iconset resource="../../../Components/Resources/pqComponents.qrc">
+     <normaloff>:/pqWidgets/Icons/pqRedoCamera24.png</normaloff>:/pqWidgets/Icons/pqRedoCamera24.png</iconset>
+   </property>
+   <property name="text">
+    <string>Camera Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionChangeInput">
+   <property name="text">
+    <string>Change &amp;Input...</string>
+   </property>
+   <property name="iconText">
+    <string>Change Input...</string>
+   </property>
+   <property name="toolTip">
+    <string>Change a Filter's Input</string>
+   </property>
+   <property name="statusTip">
+    <string>Change a Filter's Input</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset resource="../../../Components/Resources/pqComponents.qrc">
+     <normaloff>:/pqWidgets/Icons/pqCopy22.png</normaloff>:/pqWidgets/Icons/pqCopy22.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Copy</string>
+   </property>
+   <property name="statusTip">
+    <string>Copy properties</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="icon">
+    <iconset resource="../../../Components/Resources/pqComponents.qrc">
+     <normaloff>:/pqWidgets/Icons/pqPaste22.png</normaloff>:/pqWidgets/Icons/pqPaste22.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Paste</string>
+   </property>
+   <property name="statusTip">
+    <string>Paste copied properties</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset resource="../../../Widgets/Resources/QtWidgets.qrc">
+     <normaloff>:/QtWidgets/Icons/pqDelete24.png</normaloff>:/QtWidgets/Icons/pqDelete24.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Delete</string>
+   </property>
+   <property name="statusTip">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionDelete_All">
+   <property name="text">
+    <string>Reset Session</string>
+   </property>
+  </action>
+  <action name="actionIgnoreTime">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Ignore Time</string>
+   </property>
+   <property name="toolTip">
+    <string>Disregard this source/filter's time from animations</string>
+   </property>
+   <property name="statusTip">
+    <string>Disregard this source/filter's time from animations</string>
+   </property>
+   <property name="whatsThis">
+    <string>Disregard this source/filter's time from animations</string>
+   </property>
+  </action>
+  <action name="actionEditSettings">
+   <property name="text">
+    <string>Settings...</string>
+   </property>
+   <property name="iconText">
+    <string>Settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionQuery">
+   <property name="icon">
+    <iconset resource="../../../Components/Resources/pqComponents.qrc">
+     <normaloff>:/pqWidgets/Icons/pqFindData32.png</normaloff>:/pqWidgets/Icons/pqFindData32.png</iconset>
+   </property>
+   <property name="text">
+    <string>Find Data...</string>
+   </property>
+   <property name="iconText">
+    <string>Find Data</string>
+   </property>
+   <property name="toolTip">
+    <string>Find data matching various criteria from the current source (v).</string>
+   </property>
+   <property name="shortcut">
+    <string>V</string>
+   </property>
+  </action>
+  <addaction name="actionEditUndo"/>
+  <addaction name="actionEditRedo"/>
+  <addaction name="separator"/>
+  <addaction name="actionEditCameraUndo"/>
+  <addaction name="actionEditCameraRedo"/>
+  <addaction name="separator"/>
+  <addaction name="actionQuery"/>
+  <addaction name="actionChangeInput"/>
+  <addaction name="actionCopy"/>
+  <addaction name="actionPaste"/>
+  <addaction name="actionIgnoreTime"/>
+  <addaction name="actionDelete"/>
+  <addaction name="actionDelete_All"/>
+  <addaction name="separator"/>
+  <addaction name="actionEditSettings"/>
+ </widget>
+ <resources>
+  <include location="../../../Components/Resources/pqComponents.qrc"/>
+  <include location="../../../Widgets/Resources/QtWidgets.qrc"/>
+ </resources>
+ <connections/>
+</ui>

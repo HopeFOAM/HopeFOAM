@@ -1,0 +1,17 @@
+vtk_module(pqCore
+  GROUPS
+    ParaViewQt
+  DEPENDS
+    pqWidgets
+    vtkGUISupportQt
+  PRIVATE_DEPENDS
+    vtkPVAnimation
+    vtkPVClientServerCoreDefault
+    vtkPVServerManagerApplication
+    vtkPVServerManagerDefault
+    vtksys
+    vtkTestingRendering
+  EXCLUDE_FROM_WRAPPING
+  TEST_LABELS
+    PARAVIEW
+)

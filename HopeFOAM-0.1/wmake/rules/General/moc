@@ -1,0 +1,3 @@
+SUFFIXES += .qt
+
+qttoo = $(QTDIR)/bin/moc -f $< -o $(@D)/$(<F).C ; $(CC) $(c++FLAGS) -c $(@D)/$(<F).C -o $@

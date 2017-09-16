@@ -1,0 +1,15 @@
+vtk_module(vtkIOMINC
+  GROUPS
+    StandAlone
+  DEPENDS
+    vtkIOGeometry
+    vtkCommonExecutionModel
+    vtkRenderingCore
+    vtkFiltersHybrid
+    vtkIOImage
+  TEST_DEPENDS
+    vtkRendering${VTK_RENDERING_BACKEND}
+  PRIVATE_DEPENDS
+    vtksys
+    vtknetcdf
+  )
