@@ -22,8 +22,8 @@
 
 HopeFOAM is a major extension of OpenFOAM to variable higher order finite element method and other numerical methods for computational mechanics. It is developed by Exercise Group, Innovation Institute for Defence Science and Technology, the Academy of Military Science (AMS), China. The Group aims at developing open source software packages for large scale computational science and engineering.
 
-HopeFOAM has following features:
-  
+HopeFOAM has following features: 
+   
     ## High Order
     
       In addition to the finite volume discretisation method used in OpenFOAM, HopeFOAM aims at incorporating high-order discretisation methods into the computational mechanics Toolbox, among which DGM(Discontinuous Galerkin Method) is the first one.
