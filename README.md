@@ -42,7 +42,8 @@ The current version of HopeFOAM is a major extension of the OpenFOAM-4.0 release
 
 * **Release Note**
 
-HopeFOAM-0.1 is the first publicly released version of HopeFOAM and developed by a major extension of OpenFOAM-4.0. The well-known high-order discretization method, Discontinuous Galerkin Method (DGM) is implemented in HopeFOAM-0.x. There are copious references about the method in the book: __[Hesthaven J S, Warburton T. Nodal discontinuous Galerkin methods: algorithms, analysis, and applications[M]. Springer Science & Business Media, 2007.]__
+HopeFOAM-0.1 is the first publicly released version of HopeFOAM and developed by a major extension of OpenFOAM-4.0. The well-known high-order discretization method, Discontinuous Galerkin Method (DGM) is implemented in HopeFOAM-0.x. There are copious references about the method in the book: __[Hesthaven J S, Warburton T. Nodal discontinuous Galerkin methods: algorithms, analysis, and applications[M]. Springer Science & Business Media, 2007.]__ 
+
 HopeFOAM-0.1 provides 2D-DGM and related support. The major components include data structure, DGM discretization, solvers and related tools. PETSc is used for solving of linear systems of equations. Details information can be found in HopeFOAM-0.1_Programmers_Guide and HopeFOAM-0.1_User_Guide. 3D applications will be supported in a new release in a few months. 
 The guiding principle in the development of HopeFOAM-0.1 is to reuse the primitive data structure of OpenFOAM-4.0 as much as possible and keep it consistent with the user interfaces. Thus, users of OpenFOAM could implement and adopt corresponding high order DGM solvers in a relatively straightforward way. 
 
