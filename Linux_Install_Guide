@@ -91,7 +91,7 @@ Description
 			  
 	(2) Source HopeFOAM-0.1/etc/basrc to update environment variables of HoepFOAM.
 	
-    (3) Modify the type of MPI, Compiler, etc. Update configuration with source command.
+        (3) Modify the type of MPI, Compiler, etc. Update configuration with source command.
 		
         #Edit file $WM_PROJECT_DIR/etc/bashrc to modify some keywords.
         -----------------------------------------------------------------------
