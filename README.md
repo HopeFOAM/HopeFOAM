@@ -24,7 +24,7 @@ HopeFOAM is a major extension of OpenFOAM to variable higher order finite elemen
 
 HopeFOAM has following features:   
 
-#### High Order
+##### High Order
     
 In addition to the finite volume discretisation method used in OpenFOAM, HopeFOAM aims at incorporating high-order discretisation methods into the computational mechanics Toolbox, among which DGM(Discontinuous Galerkin Method) is the first one.
        
