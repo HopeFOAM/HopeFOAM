@@ -20,31 +20,31 @@
 
 * **About HopeFOAM**
 
-HopeFOAM is a major extension of OpenFOAM to variable higher order finite element method and other numerical methods for computational mechanics. It is developed by Exercise Group, Innovation Institute for Defence Science and Technology, the Academy of Military Science (AMS), China. The Group aims at developing open source software packages for large scale computational science and engineering.
+  HopeFOAM is a major extension of OpenFOAM to variable higher order finite element method and other numerical methods for computational mechanics. It is developed by Exercise Group, Innovation Institute for Defence Science and Technology, the Academy of Military Science (AMS), China. The Group aims at developing open source software packages for large scale computational science and engineering.
 
-HopeFOAM has following features:   
+  HopeFOAM has following features:   
 
 ##### High Order
     
-In addition to the finite volume discretisation method used in OpenFOAM, HopeFOAM aims at incorporating high-order discretisation methods into the computational mechanics Toolbox, among which DGM(Discontinuous Galerkin Method) is the first one.
+  In addition to the finite volume discretisation method used in OpenFOAM, HopeFOAM aims at incorporating high-order discretisation methods into the computational mechanics Toolbox, among which DGM(Discontinuous Galerkin Method) is the first one.
        
 ##### Parallel 
     
-In order to improve the performance and scalability of parallel computing, parallel computational toolkits/software are integrated into HopeFOAM to accelerate the discretization and computational procedures.
+  In order to improve the performance and scalability of parallel computing, parallel computational toolkits/software are integrated into HopeFOAM to accelerate the discretization and computational procedures.
   
 ##### Extensible
     
-By incorporating with the high order discretisation and efficient parallel computing, HopeFOAM provides an extensible software framework for further development of application module and easy-to-use interfaces for developers
+  By incorporating with the high order discretisation and efficient parallel computing, HopeFOAM provides an extensible software framework for further development of application module and easy-to-use interfaces for developers
   
 ##### FOAM
     
-The current version of HopeFOAM is a major extension of the OpenFOAM-4.0 released by the OpenFOAM Foundation on the 28th of June, 2016.
+  The current version of HopeFOAM is a major extension of the OpenFOAM-4.0 released by the OpenFOAM Foundation on the 28th of June, 2016.
 
 * **Release Note**
 
-HopeFOAM-0.1 is the first publicly released version of HopeFOAM and developed by a major extension of OpenFOAM-4.0. The well-known high-order discretization method, Discontinuous Galerkin Method (DGM) is implemented in HopeFOAM-0.x. There are copious references about the method in the book: __[Hesthaven J S, Warburton T. Nodal discontinuous Galerkin methods: algorithms, analysis, and applications[M]. Springer Science & Business Media, 2007.]__ 
+  HopeFOAM-0.1 is the first publicly released version of HopeFOAM and developed by a major extension of OpenFOAM-4.0. The well-known high-order discretization method, Discontinuous Galerkin Method (DGM) is implemented in HopeFOAM-0.x. There are copious references about the method in the book: __[Hesthaven J S, Warburton T. Nodal discontinuous Galerkin methods: algorithms, analysis, and applications[M]. Springer Science & Business Media, 2007.]__ 
 
-HopeFOAM-0.1 provides 2D-DGM and related support. The major components include data structure, DGM discretization, solvers and related tools. PETSc is used for solving of linear systems of equations. Details information can be found in HopeFOAM-0.1_Programmers_Guide and HopeFOAM-0.1_User_Guide. 3D applications will be supported in a new release in a few months. 
+  HopeFOAM-0.1 provides 2D-DGM and related support. The major components include data structure, DGM discretization, solvers and related tools. PETSc is used for solving of linear systems of equations. Details information can be found in HopeFOAM-0.1_Programmers_Guide and HopeFOAM-0.1_User_Guide. 3D applications will be supported in a new release in a few months. 
 The guiding principle in the development of HopeFOAM-0.1 is to reuse the primitive data structure of OpenFOAM-4.0 as much as possible and keep it consistent with the user interfaces. Thus, users of OpenFOAM could implement and adopt corresponding high order DGM solvers in a relatively straightforward way. 
 
   
