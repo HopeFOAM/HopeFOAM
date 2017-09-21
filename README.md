@@ -48,7 +48,7 @@ HopeFOAM-0.1 provides 2D-DGM and related support. The major components include d
 The guiding principle in the development of HopeFOAM-0.1 is to reuse the primitive data structure of OpenFOAM-4.0 as much as possible and keep it consistent with the user interfaces. Thus, users of OpenFOAM could implement and adopt corresponding high order DGM solvers in a relatively straightforward way. 
 
   
-* **Copyright**
+* **Copyright/版权**
 
   HopeFOAM is free software: you can redistribute it and/or modify it
   under the terms of the GNU General Public License as published by the
@@ -63,27 +63,30 @@ The guiding principle in the development of HopeFOAM-0.1 is to reuse the primiti
   You should have received a copy of the GNU General Public License
  ?along with HopeFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-* **Contact us**
+* **Contact us/联系我们**
 
   If you have any questions, please contact us by email <hopefoam@163.com>
 
-* **Installation** 
+* **Installation/安装指南** 
 
   Please refer to the file Linux_Install_Guide located at root dir of HopeFOAM 
   [https://github.com/HopeFOAM/HopeFOAM/blob/master/Linux_Install_Guide]
   
-* **Document**
+* **Document/文档**
 
   Please see the document files under the source code Dir SOUCEDE_DIR/doc
 
-* **Download**
+* **Download/相关下载**
 
-  [[Source Code] https://github.com/HopeFOAM/HopeFOAM]  
+  [[Source Code/源代码] https://github.com/HopeFOAM/HopeFOAM]  
   
-  [[Source Code zip download] https://codeload.github.com/HopeFOAM/HopeFOAM/zip/master]
+  [[Source Code zip download/源代码压缩包下载] https://codeload.github.com/HopeFOAM/HopeFOAM/zip/master]
   
+  [[Programmers Guide/英文编程手册] https://github.com/HopeFOAM/HopeFOAM/tree/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_Programmers_Guide.pdf] 
+  
+  [[User Guide/英文用户手册] https://github.com/HopeFOAM/HopeFOAM/tree/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_User_Guide.pdf]
   
-  [[Programmers Guide] https://github.com/HopeFOAM/HopeFOAM/tree/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_Programmers_Guide.pdf]  
+  [[中文编程手册 https://github.com/HopeFOAM/HopeFOAM/blob/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_Programmers_Guide_Chinese.pdf]
   
-  [[User Guide] https://github.com/HopeFOAM/HopeFOAM/tree/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_User_Guide.pdf]
+  [[中文用户手册] https://github.com/HopeFOAM/HopeFOAM/blob/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_User_Guide_Chinese.pdf]
   
