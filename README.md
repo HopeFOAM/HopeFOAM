@@ -26,19 +26,19 @@
 
 ##### High Order
     
-    In addition to the finite volume discretisation method used in OpenFOAM, HopeFOAM aims at incorporating high-order discretisation methods into the computational mechanics Toolbox, among which DGM(Discontinuous Galerkin Method) is the first one.
+   In addition to the finite volume discretisation method used in OpenFOAM, HopeFOAM aims at incorporating high-order discretisation methods into the computational mechanics Toolbox, among which DGM(Discontinuous Galerkin Method) is the first one.
        
 ##### Parallel 
     
-     In order to improve the performance and scalability of parallel computing, parallel computational toolkits/software are integrated into HopeFOAM to accelerate the discretization and computational procedures.
+   In order to improve the performance and scalability of parallel computing, parallel computational toolkits/software are integrated into HopeFOAM to accelerate the discretization and computational procedures.
   
 ##### Extensible
     
-     By incorporating with the high order discretisation and efficient parallel computing, HopeFOAM provides an extensible software framework for further development of application module and easy-to-use interfaces for developers
+   By incorporating with the high order discretisation and efficient parallel computing, HopeFOAM provides an extensible software framework for further development of application module and easy-to-use interfaces for developers
   
 ##### FOAM
     
-     The current version of HopeFOAM is a major extension of the OpenFOAM-4.0 released by the OpenFOAM Foundation on the 28th of June, 2016.
+   The current version of HopeFOAM is a major extension of the OpenFOAM-4.0 released by the OpenFOAM Foundation on the 28th of June, 2016.
 
 * **Release Note**
 
