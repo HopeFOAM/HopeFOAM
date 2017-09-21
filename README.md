@@ -78,21 +78,27 @@ The guiding principle in the development of HopeFOAM-0.1 is to reuse the primiti
 
 * **Download/相关下载**
 
-    Source Code/源代码 
+    Source Code/源代码  
+    
     https://github.com/HopeFOAM/HopeFOAM]   
   
-    Source Code zip download/源代码压缩包下载 
+    Source Code zip download/源代码压缩包下载  
+    
     https://codeload.github.com/HopeFOAM/HopeFOAM/zip/master
   
     Programmers Guide/英文编程手册  
+    
     https://github.com/HopeFOAM/HopeFOAM/tree/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_Programmers_Guide.pdf 
   
-    User Guide/英文用户手册 
+    User Guide/英文用户手册   
+    
     https://github.com/HopeFOAM/HopeFOAM/tree/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_User_Guide.pdf   
   
-    Programmers Guide Chinese/中文编程手册 
+    Programmers Guide Chinese/中文编程手册   
+    
     https://github.com/HopeFOAM/HopeFOAM/blob/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_Programmers_Guide_Chinese.pdf
   
-    User Guide Chinese/中文用户手册 
+    User Guide Chinese/中文用户手册   
+    
     https://github.com/HopeFOAM/HopeFOAM/blob/master/HopeFOAM-0.1/doc/Guides/HopeFOAM-0.1_User_Guide_Chinese.pdf
   
