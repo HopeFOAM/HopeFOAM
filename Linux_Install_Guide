@@ -58,7 +58,7 @@ Description
 		   option in directory of HopeFOAM-0.1/wmake.
 		
 		c. Download boost-1.55.0 and CGAL-4.8 source code, unzip them to HopeFOAM/ThirdParty-0.1.
-		   Edit line 69 of Allwmake and make it the same as the path of libmpi.so: 
+		   Edit line 67 of Allwmake and make it the same as the path of libmpi.so: 
 		   ------------------------------------------------------------------------
 		   $MPI_ARCH_PATH/lib${WM_COMPILER_LIB_ARCH}/libmpi.so
 		   ------------------------------------------------------------------------
