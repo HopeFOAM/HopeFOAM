@@ -55,7 +55,7 @@ Description
 		   ------------------------------------------------------------------------
 		
 		b. According to your operating system type and compiler, modify the compiling
-		   option in directory of HopeFOAM-0.1/etc/wmake.
+		   option in directory of HopeFOAM-0.1/wmake.
 		
 		c. Download boost-1.55.0 and CGAL-4.8 source code, unzip them to HopeFOAM/ThirdParty-0.1.
 		   Edit line 69 of Allwmake and make it the same as the path of libmpi.so: 
@@ -89,7 +89,7 @@ Description
 		      set their path in /HopeFOAM/HopeFOAM-0.1/etc/config.sh/CGAL.
 			  
 			  
-	(2) Source HopeFOAM-0.1/etc/basrc to update environment variables of HoepFOAM.
+	(2) Source HopeFOAM-0.1/etc/basrc to update environment variables of HopeFOAM.
 	
         (3) Modify the type of MPI, Compiler, etc. Update configuration with source command.
 		
