@@ -92,10 +92,10 @@ class dgMatrix
         //- row and column size of matrix related to each cel;
         labelList rowSize_, colSize_, onnSize_;
         //- temp space for petsc matrix dof location
-        labelList dofRows_, dofCols_;
+        List<PetscInt> dofRows_, dofCols_;
         //- different in operators, 1order:ddt; 2order:div/grad; 3order:laplacian
-        labelList d_nnz_;//array containing the number of nonzeros in the various rows of the DIAGONAL portion of the local submatrix
-        labelList o_nnz_;//array containing the number of nonzeros in the various rows of the OFF-DIAGONAL portion of the local submatrix 
+        List<PetscInt> d_nnz_;//array containing the number of nonzeros in the various rows of the DIAGONAL portion of the local submatrix
+        List<PetscInt> o_nnz_;//array containing the number of nonzeros in the various rows of the OFF-DIAGONAL portion of the local submatrix 
 
 protected:
 
