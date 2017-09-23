@@ -180,7 +180,8 @@ Foam::SolverPerformance<Type> Foam::dgMatrix<Type>::solveSegregated
 
         ierr = KSPSolve(ksp,b,u);
         // Get final residual and iteration number
-        ierr = KSPGetIterationNumber(ksp, &solverPerf.nIterations());
+	PetscInt iter_num = solverPerf.nIterations();
+        ierr = KSPGetIterationNumber(ksp, &iter_num);
         ierr = KSPGetResidualNorm(ksp, &solverPerf.finalResidual());
 
         solverPerfVec.replace(cmpt, solverPerf);
