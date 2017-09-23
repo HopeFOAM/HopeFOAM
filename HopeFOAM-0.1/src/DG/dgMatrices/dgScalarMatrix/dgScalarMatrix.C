@@ -155,7 +155,9 @@ Foam::SolverPerformance<Foam::scalar> Foam::dgMatrix<Foam::scalar>::solveSegrega
     //ierr = PetscLogStagePop();
     
     // Get final residual and iteration number
-    ierr = KSPGetIterationNumber(ksp, &solverPerf.nIterations());
+    PetscInt iter_num;
+    ierr = KSPGetIterationNumber(ksp, &iter_num);
+    solverPerf.nIterations() = iter_num;
     ierr = KSPGetResidualNorm(ksp, &solverPerf.finalResidual());
     /*
     MatMult(C,u,Br);
