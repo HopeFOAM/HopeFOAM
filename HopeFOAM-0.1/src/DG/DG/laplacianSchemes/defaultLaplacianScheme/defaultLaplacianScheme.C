@@ -111,7 +111,7 @@ defaultLaplacianScheme<Type, GType>::laplacianFunc
     List<denseMatrix<scalar>>& lu2 = ldu->lu2();
     forAll(faceEleInCell, faceI){
         //- prepare face quadrature data
-        scalar gtau = (faceEleInCell[faceI]->fscale_)*20*pow(faceEleInCell[faceI]->gaussOrder_+1, 2);
+        scalar gtau = (faceEleInCell[faceI]->fscale_)*20*std::pow(faceEleInCell[faceI]->gaussOrder_+1, 2);
         const scalarList& faceWJ = faceEleInCell[faceI]->faceWJ_;
         label nFaceGauss = faceEleInCell[faceI]->nGaussPoints_;
 

@@ -133,7 +133,7 @@ KSP Foam::dgMesh::massMatrixSolver()
 		Mat C;
 		PetscErrorCode ierr;
 		label totalDof = physicalElementData::totalDof();
-		labelList nnz(totalDof);
+		List<PetscInt> nnz(totalDof);
 		label index = 0;
 		for(dgTree<physicalCellElement>::leafIterator iter = physicalElementData::cellElementsTree().leafBegin();
 			iter != physicalElementData::cellElementsTree().end(); ++iter){
@@ -143,7 +143,7 @@ KSP Foam::dgMesh::massMatrixSolver()
         }
 		ierr = MatCreateSeqAIJ(PETSC_COMM_SELF, totalDof, totalDof, NULL, nnz.data(), &C);
 
-		labelList rows(max(nnz));
+		List<PetscInt> rows(max(nnz));
 		for(dgTree<physicalCellElement>::leafIterator iter = physicalElementData::cellElementsTree().leafBegin();
 			iter != physicalElementData::cellElementsTree().end(); ++iter){
 			label dofStart = iter()->value().dofStart();
@@ -194,7 +194,7 @@ bool Foam::dgMesh::write() const
 void Foam::dgMesh::updateLocalRange()
 {
 	PetscErrorCode ierr;
-    label n0=0, n1;
+    PetscInt n0=0, n1;
     if(Pstream::parRun()){
         PetscBool ifInit;
         PetscInitialized(&ifInit);
