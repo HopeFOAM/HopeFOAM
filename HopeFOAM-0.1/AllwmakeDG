@@ -1,4 +1,4 @@
-#!/bin/sh
+ #!/bin/sh
 cd ${0%/*} || exit 1    # Run from this directory
 
 if [ -e "$PETSC_DIR" ]
@@ -22,7 +22,7 @@ targetType=libso
 . $WM_PROJECT_DIR/wmake/scripts/AllwmakeParseArguments
 set -x
 
-wmake $targetType
+wmake $targetType $FOAM_SRC/DG
 wmake $targetType $FOAM_SRC/functionObjects/dgForces
 wmake $targetType $FOAM_APP/utilities/DG/dgToVTK/dgToVTK
 wmake $FOAM_APP/utilities/DG/dgToVTK
