@@ -167,12 +167,12 @@ const
 	dynCode.setMakeOptions
 	(            "EXE_INC = -g \\\n"
 	             "-I$(LIB_SRC)/finiteVolume/lnInclude \\\n"
-	             "-I$(LIB_SRC)/DG2.0/lnInclude \\\n"
+	             "-I$(LIB_SRC)/DG/lnInclude \\\n"
 	             + context.options()
 	             + "\n\nLIB_LIBS = \\\n"
 	             + "    -lOpenFOAM \\\n"
 	             + "    -lfiniteVolume \\\n"
-	             + "    -lDG2 \\\n"
+	             + "    -lDG \\\n"
 	             + context.libs()
 	);
 
